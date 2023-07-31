@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'devlink-server',
+      name: 'docs-copilot-server',
       script: 'npm',
       args: 'run start:prod',
       watch: ['./dist'],
@@ -9,4 +9,4 @@ module.exports = {
     },
   ],
 };
-// cross-env NODE_ENV=production pm2 start dist/src/main.js --name devlink-server
+// cross-env NODE_ENV=production pm2 start dist/src/main.js --name docs-copilot

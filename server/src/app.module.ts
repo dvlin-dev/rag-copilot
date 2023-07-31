@@ -21,7 +21,7 @@ const schema = Joi.object({
     .default('development'),
   DB_PORT: Joi.number().default(3306),
   DB_HOST: Joi.alternatives().try(Joi.string().ip(), Joi.string().domain()),
-  DB_TYPE: Joi.string().valid('mysql'),
+  DB_TYPE: Joi.string().valid('postgres'),
   DB_DATABASE: Joi.string().required(),
   DB_USERNAME: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),

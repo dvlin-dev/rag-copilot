@@ -1,18 +1,16 @@
-# Use root/example as user/password credentials
 version: '3.1'
 
 services:
   db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres
     restart: always
     environment:
-      MYSQL_DATABASE: devlink-db
-      MYSQL_ROOT_PASSWORD: bowling
+      POSTGRES_DB: docs-copilot
+      POSTGRES_PASSWORD: bowling
     ports:
-      - 127.0.0.1:3306:3306
+      - 127.0.0.1:5432:5432
     # volumes:
-    # - ./mysql-data:/var/lib/mysql
+    # - ./pg-data:/var/lib/postgresql/data
 
   redis:
     image: redis

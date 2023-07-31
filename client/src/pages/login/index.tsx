@@ -15,7 +15,7 @@ export default function Login() {
     <main className={styles.loginScreen}>
       <div className={styles.loginCard}>
         <div className={styles.loginHeader}>
-          <h1 className={styles.title}>登录 DevLink</h1>
+          <h1 className={styles.title}>登录 docs-copilot</h1>
         </div>
         <div className={styles.loginPath}>
           <Button

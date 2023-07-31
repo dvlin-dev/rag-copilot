@@ -35,7 +35,7 @@ jobs:
             SOURCE: "dist/"
             REMOTE_HOST: ${{ secrets.SERVER_HOST }}
             REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
-            TARGET: "/home/ubuntu/app/devlink/devlink-server/dist/"
+            TARGET: "/home/ubuntu/app/docs-copilot/dist/"
             EXCLUDE: "/dist/, /node_modules/"
             SCRIPT_AFTER: |
               whoami

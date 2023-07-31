@@ -20,7 +20,7 @@ export class EmailService {
       await this.mailerService.sendMail({
         to,
         from: config['user'] as string,
-        subject: 'devlink 验证码',
+        subject: 'docs-copilot 验证码',
         html: getChineseTemplate(code, getCurrentTime()),
       });
       await this.redis.set(`${to}_code`, code, 'EX', 60 * 30);

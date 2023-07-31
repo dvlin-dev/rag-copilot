@@ -2,11 +2,11 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 const defaultMeta = {
-  title: 'devlink',
-  siteName: 'devlink',
-  description: 'devlink',
-  keywords: 'devlink',
-  url: 'https://devlink.wiki',
+  title: 'docs-copilot',
+  siteName: 'docs-copilot',
+  description: 'docs-copilot',
+  keywords: 'docs-copilot',
+  url: 'https://docs-copilot.devlink.wiki',
   type: 'website',
   robots: 'follow, index',
   image: 'https://qiniuyun.devlink.wiki/devlink_d_black.png',

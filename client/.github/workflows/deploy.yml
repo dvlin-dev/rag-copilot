@@ -17,7 +17,7 @@ jobs:
       run: |
         echo NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }} >> .env
         echo NEXT_PUBLIC_GITHUB_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GITHUB_CLIENT_ID }} >> .env
-        
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:

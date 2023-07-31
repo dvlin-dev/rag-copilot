@@ -84,7 +84,7 @@ const Index: FC = () => {
               onClick={() => push('/')}
             />
           ),
-          text: 'Devlink Admin',
+          text: 'docs-copilot admin',
         }}
         footer={{
           collapseButton: true,

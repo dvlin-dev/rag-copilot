@@ -205,7 +205,7 @@ export class UserService {
   async createAdminAccount() {
     const config = getServerConfig();
     const adminEmail = config['user'] as string;
-    const adminUserName = 'devlinkroot';
+    const adminUserName = 'docs-copilot-root';
     const adminPassword = config['DB_PASSWORD'] as string;
 
     const existingAdmin = await this.userRepository.findOne({

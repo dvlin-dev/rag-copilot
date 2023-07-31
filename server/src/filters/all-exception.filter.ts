@@ -72,7 +72,7 @@ export class AllExceptionFilter implements ExceptionFilter {
       }
     }
 
-    this.logger.error('[devLink]', responseBody);
+    this.logger.error('[docs-copilot]', responseBody);
     httpAdapter.reply(response, responseBody, httpStatus);
   }
 }

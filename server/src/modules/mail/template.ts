@@ -166,7 +166,7 @@ export const getChineseTemplate = (
     text-transform: uppercase;
   "
 >
-  Securely powered by devlink.
+  Securely powered by docs-copilot.
 </p>
 </div>
 `;

@@ -41,3 +41,5 @@ next-env.d.ts
 client/.next
 server/dist
 server/logs
+
+test

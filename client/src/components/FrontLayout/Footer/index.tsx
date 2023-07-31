@@ -27,7 +27,9 @@ export default function Footer() {
         <div className={styles.group}>
           <div className={styles.groupHeader}>产品</div>
           <div className={styles.groupItem}>
-            <HoverLink href='/commitlist'>devlink 相关项目开发日志</HoverLink>
+            <HoverLink href='https://github.com/bowling00/docs-copilot'>
+              docs-copilot
+            </HoverLink>
           </div>
           <div className={styles.groupItem}>
             <HoverLink href='https://github.com/developerlinks/devlink-cli'>

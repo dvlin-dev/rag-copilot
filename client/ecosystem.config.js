@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'devlink-web',
+      name: 'docs-copilot-web',
       script: 'npm',
       args: 'start',
       instances: 'max',
