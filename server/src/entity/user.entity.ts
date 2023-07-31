@@ -18,6 +18,7 @@ import { Profile } from 'src/entity/profile.entity';
 import { Follow } from './follow.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Device } from './device.entity';
+import { Document } from './documet.entity';
 
 export enum AccountType {
   EMAIL = 'email',
@@ -73,4 +74,10 @@ export class User {
 
   @OneToMany(() => Device, (device) => device.user, { cascade: true })
   devices: Device[];
+
+  @OneToMany(() => Document, (document) => document.user, {
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  documents: Document[];
 }
