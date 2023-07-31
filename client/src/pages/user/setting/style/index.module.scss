@@ -1,0 +1,33 @@
+.settingPage {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 20px 0;
+
+  .settingContainer {
+    width: 960px;
+    display: flex;
+    gap: 32px;
+
+    .settingNav {
+      width: 250px;
+      position: sticky;
+      top: 50px;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .settingView {
+      flex: 1;
+
+      .settingBaseTitle {
+        font-size: 24px;
+        font-weight: 500;
+        padding: 8px 0;
+      }
+
+      .settingViewItem {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

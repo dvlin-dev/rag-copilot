@@ -1,0 +1,20 @@
+.cropperContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .cropperCard {
+    flex: 1;
+    text-align: center;
+  }
+  .cropperResult {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .previewCard {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+@import '@/styles/color.scss';
+
+.SettingCard {
+  color: $color-text-default;
+  width: 100%;
+
+  .cardCover {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    gap: 10px;
+  }
+
+  .footerStyle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+}

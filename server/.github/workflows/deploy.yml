@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        # 获取代码
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.16.1'
+
+      - name: install dependencies
+        run: npm install -g pnpm && pnpm install
+
+      - name: build
+        run: pnpm run build && ls
+        env:
+          NODE_ENV: production
+
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+            SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+            ARGS: "-rlgoDzvc -i --delete"
+            SOURCE: "dist/"
+            REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+            REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
+            TARGET: "/home/ubuntu/app/devlink/devlink-server/dist/"
+            EXCLUDE: "/dist/, /node_modules/"
+            SCRIPT_AFTER: |
+              whoami
+              cd /home/ubuntu/app/devlink/auth/
+              ls -al
+              pwd
+              echo "auth restart"
+              sh deploy.sh

@@ -1,0 +1,44 @@
+@import '@/styles/color.scss';
+@import '@/styles/variable.scss';
+
+.ThirdPartyLoginInfoCard {
+  .cardTitle {
+    font-size: 24px;
+    font-weight: 500;
+    padding: 8px 0;
+  }
+
+  .card {
+    border: 1px solid $color-border-default;
+    padding: $padding-card;
+    background-color: #fff;
+    border-radius: $border-radius-default;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+
+    .cardLeft {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .userInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        .platformName {
+          font-weight: 600;
+        }
+        .userName {
+          display: flex;
+          color: $color-text-default;
+        }
+      }
+    }
+
+    .cardRight {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+}

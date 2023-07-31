@@ -1,0 +1,15 @@
+.avatarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .hoverMark {
+    background-color: var(--semi-color-overlay-bg);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--semi-color-white);
+  }
+}

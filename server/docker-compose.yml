@@ -1,0 +1,24 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: devlink-db
+      MYSQL_ROOT_PASSWORD: bowling
+    ports:
+      - 127.0.0.1:3306:3306
+    # volumes:
+    # - ./mysql-data:/var/lib/mysql
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 127.0.0.1:6379:6379
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf

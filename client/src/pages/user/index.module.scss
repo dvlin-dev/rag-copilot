@@ -1,0 +1,22 @@
+.userPage {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  .userContainer {
+    margin-top: 20px;
+    width: 960px;
+    display: flex;
+    gap: 32px;
+
+    .useInfoAside {
+      width: 250px;
+      position: sticky;
+      top: 50px;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .userView {
+      flex: 1;
+    }
+  }
+}

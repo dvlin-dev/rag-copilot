@@ -1,0 +1,30 @@
+@import '@/styles/color.scss';
+
+.deviceMange {
+  margin-top: 40px;
+  .deviceMangeTitle {
+    font-size: 24px;
+    font-weight: 500;
+    padding: 8px 0;
+  }
+
+  .deviceMangeHeader {
+    display: flex;
+    justify-content: space-start;
+    align-items: center;
+    padding: 0 8px;
+    height: 48px;
+    color: $color-text-default;
+  }
+
+  .deviceMangeTable {
+    border: 1px solid $color-border-default;
+  }
+
+  .error {
+    color: $color-error;
+  }
+  .disabled {
+    color: $color-text-gray;
+  }
+}
