@@ -1,0 +1,155 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String              @id @default(uuid())
+  github_id    String?             @unique
+  username     String              @unique
+  email        String?             @unique
+  password     String?
+  account_type UserAccountTypeEnum
+  created_at   DateTime            @default(now())
+  device       Device[]
+  logs         Log[]
+  profile      Profile?
+  users_roles  UsersRole[]
+  Project      Project[]
+}
+
+model Profile {
+  id           String            @id @default(uuid())
+  gender       ProfileGenderEnum
+  avatar       String?
+  photo        String?
+  address      String?
+  description  String?
+  github_login String?
+  github_name  String?
+  userId       String?           @unique
+  user         User?             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model Device {
+  id                       String   @id @default(uuid())
+  device_id                String
+  device_type              String
+  client_ip                String
+  last_login_at            DateTime @default(now())
+  refresh_token            String?
+  refresh_token_expires_at BigInt?
+  user_id                  String?  @unique
+  user                     User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model Log {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  path       String
+  data       String
+  result     Int
+  user_id    String?
+  user       User?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Role {
+  id          Int         @id @default(autoincrement())
+  name        String
+  users_roles UsersRole[]
+}
+
+model UsersRole {
+  user_id String @unique
+  role_id Int    @unique
+  roles   Role   @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, role_id])
+  @@index([role_id])
+  @@index([user_id])
+}
+
+enum ProfileGenderEnum {
+  male
+  female
+  other
+}
+
+enum UserAccountTypeEnum {
+  email
+  github
+}
+
+model Project {
+  id                String         @id @default(uuid())
+  name              String
+  project_detail_id String
+  user_id           String
+  documents         Document[]
+  conversations     Conversation[]
+  project_detail    ProjectDetail  @relation(fields: [project_detail_id], references: [id])
+  user              User           @relation(fields: [user_id], references: [id])
+}
+
+model ProjectDetail {
+  id          String    @id @default(uuid())
+  description String?
+  prompt      String?
+  questions   String[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  white_list  String[]
+  ip_limit    Int?
+  Project     Project[]
+}
+
+model Document {
+  id          String   @id @default(uuid())
+  name        String?
+  description String?
+  indexs      Index[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  project_id  String
+  project     Project  @relation(fields: [project_id], references: [id])
+}
+
+model Index {
+  id          String                 @id @default(uuid())
+  content     String
+  vector      Unsupported("vector")?
+  namespace   String?
+  metadata    Json?
+  document_id String
+  document    Document               @relation(fields: [document_id], references: [id])
+}
+
+model Conversation {
+  id         String    @id @default(uuid())
+  projectId  String?
+  messages   Message[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  Project    Project?  @relation(fields: [projectId], references: [id])
+}
+
+model Message {
+  id             String        @id @default(uuid())
+  content        String
+  role           MessageRole
+  rating_value   Int?
+  created_at     DateTime      @default(now())
+  conversationId String?
+  Conversation   Conversation? @relation(fields: [conversationId], references: [id])
+}
+
+enum MessageRole {
+  system
+  ai
+  hunman
+}
