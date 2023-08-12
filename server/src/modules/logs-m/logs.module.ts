@@ -8,8 +8,6 @@ import * as DailyRotateFile from 'winston-daily-rotate-file';
 import { LogEnum } from 'src/enum/config.enum';
 import { LogsController } from './logs.controller';
 import { LogsService } from './logs.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Logs } from 'src/entity/logs.entity';
 
 function createDailyRotateTrasnport(level: string, filename: string) {
   return new DailyRotateFile({
@@ -55,7 +53,6 @@ function createDailyRotateTrasnport(level: string, filename: string) {
         } as WinstonModuleOptions;
       },
     }),
-    TypeOrmModule.forFeature([Logs]),
   ],
   controllers: [LogsController],
   providers: [LogsService],

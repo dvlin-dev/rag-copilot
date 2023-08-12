@@ -9,11 +9,6 @@ import { ConfigEnum } from 'src/enum/config.enum';
 import { JwtStrategy } from './auth.strategy';
 import { MailModule } from '../mail/mail.module';
 import { EmailService } from '../mail/mail.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/entity/user.entity';
-import { Profile } from 'src/entity/profile.entity';
-import { UserService } from 'src/modules/user/user.service';
-import { Device } from 'src/entity/device.entity';
 
 @Global()
 @Module({
@@ -32,7 +27,6 @@ import { Device } from 'src/entity/device.entity';
       },
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Profile, Device]),
   ],
   providers: [AuthService, JwtStrategy, EmailService],
   controllers: [AuthController],

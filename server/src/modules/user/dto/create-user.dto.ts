@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { UsersRole } from '@prisma/client';
 import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
-import { Roles } from 'src/entity/roles.entity';
 
 export class CreateUserDto {
   @ApiProperty({ description: '用户名' })
@@ -21,5 +21,5 @@ export class CreateUserDto {
   @Length(6, 64)
   password: string;
 
-  roles?: Roles[] | number[];
+  roles?: UsersRole[] | number[];
 }

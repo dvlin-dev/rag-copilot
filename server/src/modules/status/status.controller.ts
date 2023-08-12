@@ -15,12 +15,11 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { StatusService } from './status.service';
-import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { JwtGuard } from 'src/guards/jwt.guard';
 import { ComponentStatus } from './enum';
 import { ConfigService } from '@nestjs/config';
 import { ConfigEnum } from 'src/enum/config.enum';
-import { getServerConfig } from 'ormconfig';
+import { getServerConfig } from 'src/utils';
 
 class ChangeStatusDto {
   @ApiProperty({
@@ -32,7 +31,6 @@ class ChangeStatusDto {
 
 @ApiTags('状态')
 @Controller('status')
-@UseFilters(new TypeormFilter())
 export class StatusController {
   constructor(
     private readonly rolesService: StatusService,

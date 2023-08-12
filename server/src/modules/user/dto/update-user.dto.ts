@@ -7,7 +7,7 @@ import {
   IsUUID,
   Length,
 } from 'class-validator';
-import { Gender } from '../../../entity/profile.entity';
+import { ProfileGenderEnum } from '@prisma/client';
 
 export class UpdateUserDto {
   @ApiProperty({ description: '用户名' })
@@ -21,10 +21,10 @@ export class UpdateUserDto {
   @IsEmail()
   email?: string;
 
-  @ApiProperty({ description: '性别', enum: Gender }) // 指定枚举类型
+  @ApiProperty({ description: '性别', enum: ProfileGenderEnum }) // 指定枚举类型
   @IsOptional()
-  @IsEnum(Gender)
-  gender?: Gender;
+  @IsEnum(ProfileGenderEnum)
+  gender?: ProfileGenderEnum;
 
   @ApiProperty({ description: '照片' })
   @IsOptional()

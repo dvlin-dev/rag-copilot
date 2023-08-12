@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailService } from './mail.service';
-import { getServerConfig } from 'ormconfig';
-import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
-import * as path from 'path';
+import { getServerConfig } from 'src/utils';
 
 const config = getServerConfig();
 @Module({

@@ -6,17 +6,11 @@ import {
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { UserService } from 'src/modules/user/user.service';
-// import { getUserDto } from '../user/dto/get-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
-import { Profile } from 'src/entity/profile.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AccountType, User } from '../../entity/user.entity';
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 import { SignupUserDto } from './dto/signup-user.dto';
 import { KickedOutTips } from 'src/constant';
-import { Device } from 'src/entity/device.entity';
 import {
   SignInByEmailAndCodeDto,
   SignInByEmailAndPassowrdDto,
@@ -25,6 +19,8 @@ import fetch from 'node-fetch';
 import { ConfigService } from '@nestjs/config';
 import { SignInByGithubAuthDto } from './dto/github-auth.dto';
 import { generateHash } from 'src/utils';
+import { PrismaService } from 'nestjs-prisma';
+import { Prisma, Profile, User, UserAccountTypeEnum } from '@prisma/client';
 
 export interface JwtPayload {
   userId: string;
@@ -43,11 +39,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwt: JwtService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(Profile)
-    private readonly profileRepository: Repository<Profile>,
-    @InjectRepository(Device)
-    private readonly deviceRepository: Repository<Device>,
+    private prisma: PrismaService,
     @InjectRedis() private readonly redis: Redis,
     private configService: ConfigService
   ) {
@@ -81,8 +73,6 @@ export class AuthService {
       clientIp
     );
 
-    await this.userRepository.save(user);
-
     await this.storeAccessTokenInRedis(user.id, deviceId, accessToken);
 
     return {
@@ -93,38 +83,57 @@ export class AuthService {
   }
 
   async updateOrCreateDevice(
-    deviceId: string,
-    deviceType: string,
+    device_id: string,
+    device_type: string,
     user: User,
-    refreshToken: string,
-    clientIp: string
+    refresh_token: string,
+    client_ip: string
   ) {
-    const device = await this.deviceRepository.findOne({
-      where: { deviceId, user: { id: user.id } },
+    const device = await this.prisma.device.findUnique({
+      where: {
+        device_id,
+        user_id: user.id,
+      },
     });
     if (!device) {
       // 设备不存在，创建新设备记录
-      const newDevice = this.deviceRepository.create({
-        deviceId,
-        deviceType,
-        clientIp,
+      const newDevice = {
+        device_id,
+        device_type,
+        client_ip,
         user,
-        lastLoginAt: new Date(), // 设置最后登录时间为当前时间
-        refreshToken,
-        refreshTokenExpiresAt: Number(
+        last_login_at: new Date(), // 设置最后登录时间为当前时间
+        refresh_token,
+        refresh_token_expires_at: Number(
           new Date(Date.now() + jwtRefreshExpirationInSeconds * 1000)
         ),
+      };
+      await this.prisma.device.create({
+        data: {
+          device_id,
+          device_type,
+          client_ip,
+          last_login_at: new Date(), // 设置最后登录时间为当前时间
+          refresh_token,
+          refresh_token_expires_at: Number(
+            new Date(Date.now() + jwtRefreshExpirationInSeconds * 1000)
+          ),
+          user_id: user.id,
+        },
       });
-      await this.deviceRepository.save(newDevice);
     } else {
       // 设备已存在，更新最后登录时间
-      device.lastLoginAt = new Date(); // 更新设备的最后登录时间为当前时间
-      device.refreshToken = refreshToken;
-      device.clientIp = clientIp;
-      device.refreshTokenExpiresAt = Number(
-        new Date(Date.now() + jwtRefreshExpirationInSeconds * 1000)
-      );
-      await this.deviceRepository.save(device);
+      const updateData: Prisma.DeviceUpdateArgs = {
+        where: {
+          device_id,
+          // TODO
+        } as Prisma.DeviceWhereUniqueInput,
+        data: {
+          last_login_at: new Date(),
+        },
+      };
+
+      await this.prisma.device.update(updateData);
     }
   }
 
@@ -181,8 +190,6 @@ export class AuthService {
     }
 
     const { accessToken, refreshToken } = await this.jwtToken(user, deviceId);
-
-    await this.userRepository.save(user);
 
     await this.updateOrCreateDevice(
       deviceId,
@@ -242,19 +249,19 @@ export class AuthService {
     // 从解码的 refreshToken 中获取用户 ID
     const { userId, deviceId } = decodedRefreshToken;
 
-    const user = await this.userRepository.findOne({
+    const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
 
-    const device = await this.deviceRepository.findOne({
+    const device = await this.prisma.device.findUnique({
       where: { id: deviceId, user: { id: user.id } },
     });
 
     // 验证 refreshToken 是否存在和未过期
     if (
       !device ||
-      device.refreshToken !== refreshToken ||
-      device.refreshTokenExpiresAt < Date.now()
+      device.refresh_token !== refreshToken ||
+      device.refresh_token_expires_at < Date.now()
     ) {
       throw new UnauthorizedException('无效或过期的 refreshToken');
     }
@@ -289,31 +296,36 @@ export class AuthService {
     return res;
   }
 
-  async findUserDevices(userId: string) {
-    const devices = await this.deviceRepository.find({
-      where: { user: { id: userId } },
-      select: ['id', 'deviceId', 'deviceType', 'lastLoginAt', 'clientIp'],
-      order: {
-        lastLoginAt: 'DESC',
-      },
+  async findUserDevices(user_id: string) {
+    const devices = await this.prisma.device.findUnique({
+      where: {
+        user: {
+          id: user_id,
+        },
+      } as Prisma.DeviceWhereUniqueInput,
+      /**
+       * order: {
+        last_login_at: 'DESC',
+        },
+       */
     });
     return {
       devices,
     };
   }
 
-  async forceLogoutDevice(userId: string, deviceId: string): Promise<void> {
-    const device = await this.deviceRepository.findOne({
-      where: { id: deviceId, user: { id: userId } },
-      relations: ['user'],
-    });
-    if (device) {
-      await this.deviceRepository.remove(device);
-    } else {
-      throw new NotFoundException('设备不存在');
-    }
-    await this.deleteAccessTokenInRedis(device.user.email, device.deviceId);
-  }
+  // async forceLogoutDevice(userId: string, deviceId: string): Promise<void> {
+  //   const device = await this.deviceRepository.findOne({
+  //     where: { id: deviceId, user: { id: userId } },
+  //     relations: ['user'],
+  //   });
+  //   if (device) {
+  //     await this.deviceRepository.remove(device);
+  //   } else {
+  //     throw new NotFoundException('设备不存在');
+  //   }
+  //   await this.deleteAccessTokenInRedis(device.user.email, device.deviceId);
+  // }
 
   async githubAUth(dto: SignInByGithubAuthDto, req: Request) {
     const { code, deviceId, deviceType } = dto;
@@ -334,16 +346,15 @@ export class AuthService {
         const username = !!(await findUserByGithubName)?.id
           ? login + hash
           : login;
-        user = await this.userService.create({
+        user = (await this.userService.create({
           username,
-          githubId: id,
-          accountType: AccountType.GITHUB,
+          github_id: id,
+          account_type: UserAccountTypeEnum.github,
           profile: {
-            githubLogin: login,
-            githubName: name,
-          },
-        });
-        await this.userRepository.save(user);
+            github_login: login,
+            github_name: name,
+          } as Profile,
+        })) as any;
       }
       // 生成 accessToken 和 refreshToken
       const { accessToken: newAccessToken, refreshToken } = await this.jwtToken(

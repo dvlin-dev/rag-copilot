@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ProfileGenderEnum } from '@prisma/client';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { RolesEnum } from 'src/entity/roles.entity';
-import { Gender } from '../../../entity/profile.entity';
 
 export class getUserDto {
   @ApiProperty({ description: '页数', required: false })
@@ -22,13 +21,21 @@ export class getUserDto {
   @IsString()
   email?: string;
 
-  @ApiProperty({ description: '角色', enum: RolesEnum, required: false })
+  @ApiProperty({
+    description: '角色',
+    enum: ProfileGenderEnum,
+    required: false,
+  })
   @IsOptional()
   @IsString()
   role?: number;
 
-  @ApiProperty({ description: '性别', enum: Gender, required: false })
+  @ApiProperty({
+    description: '性别',
+    enum: ProfileGenderEnum,
+    required: false,
+  })
   @IsOptional()
-  @IsEnum(Gender)
-  gender?: Gender;
+  @IsEnum(ProfileGenderEnum)
+  gender?: ProfileGenderEnum;
 }

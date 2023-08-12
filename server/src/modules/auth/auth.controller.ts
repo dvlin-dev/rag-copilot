@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Post,
-  UseFilters,
   UseInterceptors,
   ClassSerializerInterceptor,
   Get,
@@ -14,7 +13,6 @@ import {
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
-import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { AuthService, JwtPayload } from './auth.service';
 import {
   SignInByEmailAndPassowrdDto,
@@ -38,7 +36,6 @@ import { SignInByGithubAuthDto } from './dto/github-auth.dto';
 @ApiTags('用户验证')
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseFilters(new TypeormFilter())
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -134,7 +131,7 @@ export class AuthController {
     }
     const { userId } = req.user as JwtPayload;
 
-    return await this.authService.forceLogoutDevice(userId, deviceId);
+    // return await this.authService.forceLogoutDevice(userId, deviceId);
   }
 
   @ApiOperation({ summary: 'github 授权' })

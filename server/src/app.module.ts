@@ -3,16 +3,14 @@ import { UserModule } from './modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 import * as Joi from 'joi';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { connectionParams } from '../ormconfig';
 import { LogsModule } from './modules/logs-m/logs.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigEnum } from './enum/config.enum';
 import { StatusModule } from './modules/status/status.module';
 import { OssModule } from './modules/oss/oss.module';
-import { FollowModule } from './modules/follow/follow.module';
+import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
 
 const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
 const schema = Joi.object({
@@ -56,6 +54,17 @@ const schema = Joi.object({
       ],
       validationSchema: schema,
     }),
+    PrismaModule.forRoot({
+      isGlobal: true,
+      prismaServiceOptions: {
+        middlewares: [
+          loggingMiddleware({
+            logger: new Logger('PrismaMiddleware'),
+            logLevel: 'log',
+          }),
+        ],
+      },
+    }),
     RedisModule.forRootAsync({
       useFactory: (configService: ConfigService, logger: LoggerService) => {
         const host = configService.get(ConfigEnum.REDIS_HOST);
@@ -76,14 +85,12 @@ const schema = Joi.object({
       },
       inject: [ConfigService, Logger],
     }),
-    TypeOrmModule.forRoot(connectionParams),
     UserModule,
     LogsModule,
     RolesModule,
     AuthModule,
     StatusModule,
     OssModule,
-    FollowModule,
   ],
   controllers: [],
   providers: [Logger],

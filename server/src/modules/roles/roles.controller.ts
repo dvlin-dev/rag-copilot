@@ -14,13 +14,12 @@ import {
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('权限')
 @Controller('roles')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseFilters(new TypeormFilter())
+// @UseFilters(new TypeormFilter())
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 

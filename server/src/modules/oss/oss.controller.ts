@@ -9,11 +9,10 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OssService } from './oss.service';
 import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TypeormFilter } from 'src/filters/typeorm.filter';
 
 @ApiTags('OSS')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseFilters(new TypeormFilter())
+// @UseFilters(new TypeormFilter())
 @Controller('oss')
 export class OssController {
   constructor(private readonly ossService: OssService) {}

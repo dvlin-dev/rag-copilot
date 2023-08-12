@@ -1,24 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Logs } from 'src/entity/logs.entity';
-import { Repository } from 'typeorm';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class LogsService {
-  constructor(
-    @InjectRepository(Logs) private readonly logsRepository: Repository<Logs>
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  findById(id: string) {
-    return this.logsRepository.findOne({
-      where: {
-        user: {
-          id,
-        },
-      },
-      relations: {
-        user: true,
-      },
-    });
-  }
+  // findById(id: string) {
+  //   return this.prisma.log.findUnique({
+  //     where: {
+  //       user_id: id,
+  //     },
+  //     relations: {
+  //       user: true,
+  //     },
+  //   });
+  // }
 }

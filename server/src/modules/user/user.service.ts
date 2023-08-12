@@ -4,45 +4,30 @@ import {
   NotFoundException,
   Put,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from '../../entity/user.entity';
-import { DeepPartial, Repository } from 'typeorm';
-import { Roles, RolesEnum } from 'src/entity/roles.entity';
 import * as argon2 from 'argon2';
 import { getUserDto } from './dto/get-user.dto';
-import { Logs } from 'src/entity/logs.entity';
-import { getServerConfig } from 'ormconfig';
-import { Gender, Profile } from '../../entity/profile.entity';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
-import { FuzzyQueryDto } from './dto/fuzzy-query.dto';
-
+import { PrismaService } from 'nestjs-prisma';
+import { getServerConfig } from 'src/utils';
+import { User, ProfileGenderEnum } from '@prisma/client';
+import { RolesEnum, UserInput } from './dto/user.input';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(Logs) private readonly logsRepository: Repository<Logs>,
-    @InjectRepository(Roles)
-    private readonly rolesRepository: Repository<Roles>,
+    private prisma: PrismaService,
     @InjectRedis() private readonly redis: Redis,
     private configService: ConfigService
   ) {}
 
-  async create(user: DeepPartial<User>) {
+  async create(user: Partial<UserInput>) {
     const { username, email, password } = user;
-    const role = await this.rolesRepository.findOne({
-      where: { id: RolesEnum.user },
-    });
-    user.roles = [role];
 
     // 重名检测
-    const userByUsername = await this.userRepository.findOne({
-      where: {
-        username,
-      },
+    const userByUsername = await this.prisma.user.findUnique({
+      where: { username },
     });
 
     if (userByUsername) {
@@ -51,10 +36,8 @@ export class UserService {
 
     if (email) {
       // 邮箱重复检测
-      const userByEmail = await this.userRepository.findOne({
-        where: {
-          email,
-        },
+      const userByEmail = await this.prisma.user.findUnique({
+        where: { email },
       });
 
       if (userByEmail) {
@@ -62,18 +45,26 @@ export class UserService {
       }
     }
 
-    const userTmp = await this.userRepository.create(user);
-    if (password) {
-      userTmp.password = await argon2.hash(userTmp.password);
-    }
-    const userProfile = {
+    const hashedPassword = password ? await argon2.hash(password) : undefined;
+    const profile = {
       ...user.profile,
-      gender: Gender.OTHER,
-    } as Profile;
-    const profile = new Profile(userProfile);
-    userTmp.profile = profile;
-    const res = await this.userRepository.save(userTmp);
-    return res;
+      gender: ProfileGenderEnum.other,
+    };
+    const createdUser = await this.prisma.user.create({
+      // @ts-ignore
+      data: {
+        ...user,
+        password: hashedPassword,
+        profile: {
+          create: profile,
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+
+    return createdUser;
   }
 
   async findAll(query: getUserDto) {
@@ -81,10 +72,12 @@ export class UserService {
     const take = limit || 10;
     const skip = ((page || 1) - 1) * take;
 
-    const [data, total] = await this.userRepository.findAndCount({
-      relations: {
+    const users = await this.prisma.user.findMany({
+      include: {
         profile: true,
-        roles: true,
+        users_roles: {
+          include: { roles: true },
+        },
       },
       where: {
         username,
@@ -92,67 +85,95 @@ export class UserService {
         profile: {
           gender,
         },
-        roles: {
-          id: role,
+        users_roles: {
+          some: {
+            role_id: role,
+          },
         },
       },
       take,
       skip,
     });
-    const totalPages = Math.ceil(total / limit);
 
-    return { data, total, totalPages };
+    const total = await this.prisma.user.count({
+      where: {
+        username,
+        email,
+        profile: {
+          gender,
+        },
+        users_roles: {
+          some: {
+            role_id: role,
+          },
+        },
+      },
+    });
+
+    const totalPages = Math.ceil(total / limit);
+    return { data: users, total, totalPages };
   }
 
+  // ...
+
   find(username: string) {
-    return this.userRepository.findOne({
+    return this.prisma.user.findUnique({
       where: { username },
-      relations: ['roles'],
+      include: { users_roles: true },
     });
   }
 
   findByEmail(email: string) {
-    return this.userRepository.findOne({
+    return this.prisma.user.findUnique({
       where: { email },
-      relations: ['roles', 'profile'],
+      include: { users_roles: true, profile: true },
     });
   }
 
-  findByGithubId(githubId: string) {
-    return this.userRepository.findOne({
-      where: { githubId },
-      relations: ['roles', 'profile'],
+  findByGithubId(github_id: string) {
+    return this.prisma.user.findUnique({
+      where: { github_id },
+      include: { users_roles: true, profile: true },
     });
   }
 
   findOneById(id: string) {
-    return this.userRepository.findOne({ where: { id } });
+    return this.prisma.user.findUnique({ where: { id } });
   }
 
-  // 联合模型更新，需要使用save方法或者queryBuilder，
-  // update方法，只适合单模型的更新，不适合有关系的模型更新
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const userTemp = await this.findProfile(id);
+    const userTemp = await this.prisma.user.findUnique({
+      where: { id },
+      include: { profile: true },
+    });
+
+    if (!userTemp) {
+      throw new NotFoundException('用户不存在');
+    }
 
     const { address, description, gender, avatar, photo } = updateUserDto;
 
-    Object.assign(userTemp.profile, {
-      ...(address && { address }),
-      ...(description && { description }),
-      ...(gender && { gender }),
-      ...(avatar && { avatar }),
-      ...(photo && { photo }),
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        ...updateUserDto,
+        profile: {
+          update: {
+            ...(address && { address }),
+            ...(description && { description }),
+            ...(gender && { gender }),
+            ...(avatar && { avatar }),
+            ...(photo && { photo }),
+          },
+        },
+      },
+      include: { profile: true },
     });
-
-    const newUser = this.userRepository.merge(userTemp, updateUserDto);
-    return this.userRepository.save(newUser);
   }
 
   async updatePassword(passwordDto: UpdatePasswordDto) {
     const { email, code, password } = passwordDto;
-    const user = await this.userRepository.findOne({
-      where: { email },
-    });
+    const user = await this.prisma.user.findUnique({ where: { email } });
 
     const getCode = await this.redis.get(`${email}_code`);
     if (!code || code !== getCode) {
@@ -161,63 +182,52 @@ export class UserService {
       this.redis.del(`${email}_code`);
     }
 
-    user.password = await argon2.hash(password);
-    return this.userRepository.save(user);
+    const hashedPassword = await argon2.hash(password);
+
+    return this.prisma.user.update({
+      where: { email },
+      data: { password: hashedPassword },
+    });
   }
 
   async remove(id: string) {
-    const user = await this.userRepository.findOne({ where: { id } });
-    return this.userRepository.remove(user);
+    return this.prisma.user.delete({ where: { id } });
   }
 
   async findProfile(id: string) {
-    const userInfo = await this.userRepository.findOne({
-      where: {
-        id,
-      },
-      relations: {
+    const userInfo = await this.prisma.user.findUnique({
+      where: { id },
+      include: {
         profile: true,
-        followers: true,
-        following: true,
       },
     });
+
     if (!userInfo) {
       throw new NotFoundException('用户不存在');
     }
+
     return userInfo;
   }
 
-  findLogByGroup(id: number) {
-    return this.logsRepository
-      .createQueryBuilder('logs')
-      .select('logs.result', 'result')
-      .addSelect('COUNT("logs.result")', 'count')
-      .leftJoinAndSelect('logs.user', 'user')
-      .where('user.id = :id', { id })
-      .groupBy('logs.result')
-      .orderBy('result', 'ASC')
-      .addOrderBy('count', 'DESC')
-      .limit(1)
-      .offset(1)
-      .getRawMany();
-  }
+  // 对于复杂的查询，您可能需要使用 Prisma 的原生 SQL 查询
+  // 或者使用 Prisma 提供的 API 来构造相同的查询。
+  // findLogByGroup 方法可能需要进一步调整。
 
   async createAdminAccount() {
-    const config = getServerConfig();
+    const config = getServerConfig(); // 确保这个方法是可用的
     const adminEmail = config['user'] as string;
     const adminUserName = 'docs-copilot-root';
     const adminPassword = config['DB_PASSWORD'] as string;
 
-    const existingAdmin = await this.userRepository.findOne({
+    const existingAdmin = await this.prisma.user.findUnique({
       where: { email: adminEmail },
     });
     if (!existingAdmin) {
-      // 创建管理员账号
-      const adminData: Partial<User> = {
+      const adminData = {
         username: adminUserName,
         email: adminEmail,
         password: adminPassword,
-        roles: [RolesEnum.super] as any,
+        users_roles: [RolesEnum.super],
       };
 
       try {

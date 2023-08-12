@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { getServerConfig } from 'ormconfig';
 import { getChineseTemplate } from './template';
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
+import { getServerConfig } from 'src/utils';
 
 @Injectable()
 export class EmailService {

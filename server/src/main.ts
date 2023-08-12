@@ -2,9 +2,9 @@ import 'module-alias/register';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupApp } from './setup';
-import { getServerConfig } from '../ormconfig';
 import { generateDocument } from './doc';
 import { httpsOptions } from './https-options';
+import { getServerConfig } from './utils';
 
 async function bootstrap() {
   const config = getServerConfig();

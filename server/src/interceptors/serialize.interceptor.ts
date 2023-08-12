@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { map, Observable } from 'rxjs';
-import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class SerializeInterceptor implements NestInterceptor {
   constructor(private dto: any) {}

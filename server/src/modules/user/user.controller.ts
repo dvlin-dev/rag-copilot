@@ -19,12 +19,10 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from '../../entity/user.entity';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { getUserDto } from './dto/get-user.dto';
 import { CreateUserPipe } from './pipes/create-user.pipe';
 import { JwtGuard } from 'src/guards/jwt.guard';
-import { TypeormFilter } from 'src/filters/typeorm.filter';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -33,10 +31,11 @@ import {
 } from '@nestjs/swagger';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { TokenExpiredMessage } from 'src/constant';
+import { UserInput } from './dto/user.input';
 
 @ApiTags('用户')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseFilters(new TypeormFilter())
+// @UseFilters(new TypeormFilter())
 @Controller('user')
 export class UserController {
   constructor(
@@ -66,7 +65,7 @@ export class UserController {
   @ApiBearerAuth()
   addUser(@Body(CreateUserPipe) dto: CreateUserDto, @Req() req) {
     // 判断权限
-    const user = dto as User;
+    const user = dto as UserInput;
     return this.userService.create(user);
   }
 
@@ -83,10 +82,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @Patch('update')
-  async updateUser(
-    @Body() updateUserDto: UpdateUserDto,
-    @Req() req
-  ): Promise<User> {
+  async updateUser(@Body() updateUserDto: UpdateUserDto, @Req() req) {
     if (!req.user.userId) {
       throw new UnauthorizedException(TokenExpiredMessage);
     }
@@ -96,7 +92,7 @@ export class UserController {
 
   @ApiOperation({ summary: '更改/找回 密码' })
   @Post('updatePassword')
-  async updatePassword(@Body() password: UpdatePasswordDto): Promise<User> {
+  async updatePassword(@Body() password: UpdatePasswordDto) {
     return this.userService.updatePassword(password);
   }
 
