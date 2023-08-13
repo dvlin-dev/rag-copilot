@@ -19,5 +19,6 @@ export class SearchVectorDto {
   docs_id: string;
 
   @ApiProperty({ description: '数量', required: true })
-  number: number;
+  @IsNotEmpty()
+  size: number;
 }

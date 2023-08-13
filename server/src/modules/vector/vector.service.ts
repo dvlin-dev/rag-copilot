@@ -41,13 +41,12 @@ export class VectorService {
     );
   }
   async similaritySearch(searchVectorDto: SearchVectorDto) {
-    const { message, number, docs_id } = searchVectorDto;
+    const { message, size, docs_id } = searchVectorDto;
     const keyConfiguration = getKeyConfigurationFromEnvironment();
     const vectorStore = await this.getVectorStore(keyConfiguration);
-
     const documents = await vectorStore.similaritySearchWithScore(
       message,
-      number,
+      Number(size),
       {
         docs_id: { equals: docs_id },
       }
