@@ -86,12 +86,12 @@ export class AuthController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @Post('/logout')
-  async logout(@Req() req, @Body('deviceId') deviceId: string) {
-    if (!req.user.userId) {
+  async logout(@Req() req, @Body('device_id') device_id: string) {
+    if (!req.user.user_id) {
       throw new UnauthorizedException(TokenExpiredMessage);
     }
-    const { userId } = req.user;
-    return await this.redis.del(`${userId}_${deviceId}_token`);
+    const { user_id } = req.user;
+    return await this.redis.del(`${user_id}_${device_id}_token`);
   }
 
   @ApiOperation({ summary: '注册' })
@@ -113,25 +113,25 @@ export class AuthController {
   @ApiBearerAuth()
   @Get('get_user_devices')
   async getUserDevices(@Req() req) {
-    if (!req.user.userId) {
+    if (!req.user.user_id) {
       throw new UnauthorizedException(TokenExpiredMessage);
     }
-    const { userId } = req.user as JwtPayload;
-    return await this.authService.findUserDevices(userId);
+    const { user_id } = req.user as JwtPayload;
+    return await this.authService.findUserDevices(user_id);
   }
 
   @ApiOperation({ summary: '强制退出某设备' })
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
-  @ApiParam({ name: 'deviceId', description: '需要强制退出的设备 ID' })
-  @Delete('delete_user_device/:deviceId')
-  async forceLogoutDevice(@Req() req, @Param('deviceId') deviceId: string) {
-    if (!req.user.userId) {
+  @ApiParam({ name: 'device_id', description: '需要强制退出的设备 ID' })
+  @Delete('delete_user_device/:device_id')
+  async forceLogoutDevice(@Req() req, @Param('device_id') device_id: string) {
+    if (!req.user.user_id) {
       throw new UnauthorizedException(TokenExpiredMessage);
     }
-    const { userId } = req.user as JwtPayload;
+    const { user_id } = req.user as JwtPayload;
 
-    // return await this.authService.forceLogoutDevice(userId, deviceId);
+    // return await this.authService.forceLogoutDevice(user_id, device_id);
   }
 
   @ApiOperation({ summary: 'github 授权' })

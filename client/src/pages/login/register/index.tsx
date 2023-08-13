@@ -21,12 +21,14 @@ export default function Email() {
         return Promise.resolve();
       })
       .then(async () => {
-        const { deviceId, deviceType } = await generateDeviceInfo(values.email);
-        if (deviceId && deviceType) {
+        const { device_id, device_type } = await generateDeviceInfo(
+          values.email
+        );
+        if (device_id && device_type) {
           const params: LoginByPasswordParams = {
             ...values,
-            deviceId,
-            deviceType,
+            device_id,
+            device_type,
           };
           return loginApi(params);
         }

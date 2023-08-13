@@ -31,7 +31,7 @@ CREATE TABLE "Profile" (
     "description" TEXT,
     "github_login" TEXT,
     "github_name" TEXT,
-    "userId" TEXT,
+    "user_id" TEXT,
 
     CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
 );
@@ -158,7 +158,7 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
+CREATE UNIQUE INDEX "Profile_user_id_key" ON "Profile"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Device_user_id_key" ON "Device"("user_id");
@@ -176,7 +176,7 @@ CREATE INDEX "UsersRole_role_id_idx" ON "UsersRole"("role_id");
 CREATE INDEX "UsersRole_user_id_idx" ON "UsersRole"("user_id");
 
 -- AddForeignKey
-ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "Profile" ADD CONSTRAINT "Profile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "Device" ADD CONSTRAINT "Device_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE NO ACTION;

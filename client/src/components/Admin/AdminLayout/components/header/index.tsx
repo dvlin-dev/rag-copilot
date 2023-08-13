@@ -30,9 +30,9 @@ const Index: FC = () => {
 
   const logoutHandle = async () => {
     setLogoutIsLoading(true);
-    const deviceId = getDeviceId();
-    deviceId &&
-      logout(deviceId)
+    const device_id = getDeviceId();
+    device_id &&
+      logout(device_id)
         .then(() => {
           NoticeSuccess('退出成功', user?.username);
           push('/login');

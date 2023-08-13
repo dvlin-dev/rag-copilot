@@ -10,7 +10,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigEnum } from './enum/config.enum';
 import { StatusModule } from './modules/status/status.module';
 import { OssModule } from './modules/oss/oss.module';
-import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
+import { VectorModule } from './modules/vector/vector.module';
+import { DocsModule } from './modules/docs/docs.module';
+import { PrismaModule } from './utils/prisma/prisma.module';
 
 const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
 const schema = Joi.object({
@@ -56,14 +58,6 @@ const schema = Joi.object({
     }),
     PrismaModule.forRoot({
       isGlobal: true,
-      prismaServiceOptions: {
-        middlewares: [
-          loggingMiddleware({
-            logger: new Logger('PrismaMiddleware'),
-            logLevel: 'log',
-          }),
-        ],
-      },
     }),
     RedisModule.forRootAsync({
       useFactory: (configService: ConfigService, logger: LoggerService) => {
@@ -91,6 +85,8 @@ const schema = Joi.object({
     AuthModule,
     StatusModule,
     OssModule,
+    VectorModule,
+    DocsModule,
   ],
   controllers: [],
   providers: [Logger],

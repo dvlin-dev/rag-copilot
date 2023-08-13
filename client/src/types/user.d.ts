@@ -1,18 +1,18 @@
-export interface LoginByPasswordParams {
+declare interface LoginByPasswordParams {
   email: string;
   password: string;
-  deviceId: string;
-  deviceType: string;
+  device_id: string;
+  device_type: string;
 }
 
-export type RegisterByEmail = {
+declare type RegisterByEmail = {
   email: 'string';
   password: 'string';
   code: 'string';
   username: 'string';
 };
 
-export interface User {
+declare interface User {
   id: string;
   githubId: string;
   username: string;
@@ -31,7 +31,7 @@ export interface User {
   tags: Tag[];
 }
 
-interface Profile {
+declare interface Profile {
   id: string;
   gender: Gender;
   avatar: string;
@@ -44,18 +44,18 @@ interface Profile {
   refreshTokenExpiresAt: number;
 }
 
-export enum Gender {
+declare enum Gender {
   MALE = 'male',
   FEMALE = 'female',
   OTHER = 'other',
 }
 
-export declare enum AccountType {
+declare enum AccountType {
   EMAIL = 'email',
   GITHUB = 'github',
 }
 
-export declare class Group {
+declare class Group {
   id: string;
   name: string;
   description: string;
@@ -64,7 +64,7 @@ export declare class Group {
   material: Material[];
 }
 
-export declare class CollectionGroup {
+declare class CollectionGroup {
   id: string;
   name: string;
   description: string;
@@ -73,7 +73,7 @@ export declare class CollectionGroup {
   material: Material[];
 }
 
-export interface Material {
+declare interface Material {
   id: string;
   name: string;
   npmName: string;
@@ -95,7 +95,7 @@ export interface Material {
   stars: User[];
 }
 
-export interface Comment {
+declare interface Comment {
   id: string;
 
   content: string;
@@ -115,7 +115,7 @@ export interface Comment {
   user: User;
 }
 
-export interface Tag {
+declare interface Tag {
   id: string;
   name: string;
   description: string;
@@ -125,25 +125,25 @@ export interface Tag {
   user: User;
 }
 
-export interface Like {
+declare interface Like {
   id: string;
   user: User;
   materials: Material;
   likeDate: Date;
 }
 
-export interface Follow {
+declare interface Follow {
   id: string;
   follower: User;
   following: User;
   followDate: Date;
 }
-export interface Roles {
+declare interface Roles {
   id: number;
   name: string;
 }
 
-export interface UpdateUserDto {
+declare interface UpdateUserDto {
   username?: string;
 
   email?: string;

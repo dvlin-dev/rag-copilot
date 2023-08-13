@@ -17,11 +17,11 @@ export default function Email() {
     setLoading(true);
     generateDeviceInfo(values.email)
       .then((res) => {
-        const { deviceId, deviceType } = res;
+        const { device_id, device_type } = res;
         const params: LoginByPasswordParams = {
           ...values,
-          deviceId,
-          deviceType,
+          device_id,
+          device_type,
         };
         return loginApi(params);
       })
@@ -44,7 +44,7 @@ export default function Email() {
         (item) => item.name === 'super' || item.name === 'admin'
       ) !== -1;
     // 判断权限
-    push(isAdmin ? '/admin' : '/');
+    push(isAdmin ? '/admin' : '/worksplace');
     ToastSuccess('欢迎回来 👏');
   };
 

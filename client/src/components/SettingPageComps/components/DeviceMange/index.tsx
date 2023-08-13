@@ -18,7 +18,7 @@ const DeviceMange = () => {
   const columns = [
     {
       title: '客户端',
-      dataIndex: 'deviceType',
+      dataIndex: 'device_type',
       render: (text, record, index) => {
         return <div>{text}</div>;
       },

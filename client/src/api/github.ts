@@ -1,12 +1,10 @@
 import http from '@/utils/http';
-import { User } from '../types/user';
-
 export const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
 interface githubAuthDto {
   code: string;
-  deviceId: string;
-  deviceType: string;
+  device_id: string;
+  device_type: string;
 }
 
 export const getGithubUser = (

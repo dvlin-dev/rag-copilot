@@ -1,7 +1,7 @@
 /*
   Warnings:
 
-  - You are about to drop the column `userId` on the `Profile` table. All the data in the column will be lost.
+  - You are about to drop the column `user_id` on the `Profile` table. All the data in the column will be lost.
   - The primary key for the `UsersRole` table will be changed. If it partially fails, the table could be left without primary key constraint.
   - You are about to drop the `Document` table. If the table is not empty, all the data it contains will be lost.
   - A unique constraint covering the columns `[device_id]` on the table `Device` will be added. If there are existing duplicate values, this will fail.
@@ -17,10 +17,10 @@ ALTER TABLE "Document" DROP CONSTRAINT "Document_project_id_fkey";
 ALTER TABLE "Index" DROP CONSTRAINT "Index_document_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "Profile" DROP CONSTRAINT "Profile_userId_fkey";
+ALTER TABLE "Profile" DROP CONSTRAINT "Profile_user_id_fkey";
 
 -- DropIndex
-DROP INDEX "Profile_userId_key";
+DROP INDEX "Profile_user_id_key";
 
 -- DropIndex
 DROP INDEX "UsersRole_role_id_idx";
@@ -35,7 +35,7 @@ ALTER TABLE "Device" ALTER COLUMN "user_id" SET NOT NULL;
 ALTER TABLE "Index" ADD COLUMN     "source" TEXT;
 
 -- AlterTable
-ALTER TABLE "Profile" DROP COLUMN "userId",
+ALTER TABLE "Profile" DROP COLUMN "user_id",
 ADD COLUMN     "user_id" TEXT NOT NULL;
 
 -- AlterTable

@@ -31,11 +31,11 @@ const GithubRedirect = () => {
     const code = new URL(window.location.href).searchParams.get('code');
     if (code) {
       generateDeviceInfo(code).then((res) => {
-        const { deviceId, deviceType } = res;
+        const { device_id, device_type } = res;
         const params = {
           code,
-          deviceId,
-          deviceType,
+          device_id,
+          device_type,
         };
         getGithubUser(params)
           .then((res) => {

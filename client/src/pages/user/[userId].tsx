@@ -7,15 +7,15 @@ import styles from './index.module.scss';
 import { fetcher } from '@/utils/http';
 
 interface UserProps {
-  userId: string;
+  user_id: string;
 }
 
-const User = ({ userId }: UserProps) => {
+const User = ({ user_id }: UserProps) => {
   const {
     data: user,
     error,
     isLoading,
-  } = useSWR(`/user/profile?id=${userId}`, fetcher);
+  } = useSWR(`/user/profile?id=${user_id}`, fetcher);
 
   if (isLoading) return <div>用户信息获取中...</div>;
   if (error) return <div>用户信息获取失败</div>;
@@ -32,8 +32,8 @@ const User = ({ userId }: UserProps) => {
 };
 
 User.getInitialProps = async ({ query }: { query: UserProps }) => {
-  const { userId } = query;
-  return { userId };
+  const { user_id } = query;
+  return { user_id };
 };
 
 export default User;

@@ -40,7 +40,7 @@ declare interface Profile {
   description?: string | null;
   github_login?: string | null;
   github_name?: string | null;
-  userId?: string | null;
+  user_id?: string | null;
 }
 
 declare interface Device {

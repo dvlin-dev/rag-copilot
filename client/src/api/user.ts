@@ -1,8 +1,3 @@
-import type {
-  LoginByPasswordParams,
-  RegisterByEmail,
-  UpdateUserDto,
-} from '../types/user';
 import http from '../utils/http';
 
 // TODO response type
@@ -48,12 +43,12 @@ export function updateUserInfo(data: UpdateUserDto) {
   });
 }
 
-export function logout(deviceId: string) {
+export function logout(device_id: string) {
   return http({
     url: '/auth/logout',
     method: 'post',
     data: {
-      deviceId,
+      device_id,
     },
   });
 }

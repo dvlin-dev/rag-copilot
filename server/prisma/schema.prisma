@@ -20,6 +20,7 @@ model User {
   profile      Profile?
   users_roles  UsersRole[]
   Project      Project[]
+  Docs         Docs[]
 }
 
 model Profile {
@@ -43,8 +44,8 @@ model Device {
   last_login_at            DateTime @default(now())
   refresh_token            String?
   refresh_token_expires_at BigInt?
-  user_id                  String   @unique
-  user                     User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user_id                  String
+  user                     User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Log {
@@ -105,25 +106,28 @@ model ProjectDetail {
 }
 
 model Docs {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String?
   description String?
   indexs      Index[]
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
-  project_id  String
-  project     Project  @relation(fields: [project_id], references: [id])
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  project     Project[]
+  user_id     String
+  user        User?     @relation(fields: [user_id], references: [id])
 }
 
 model Index {
-  id          String                 @id @default(uuid())
-  content     String
-  vector      Unsupported("vector")?
-  source      String?
-  namespace   String?
-  metadata    Json?
-  document_id String
-  document    Docs                   @relation(fields: [document_id], references: [id])
+  id        String                 @id @default(uuid())
+  content   String
+  vector    Unsupported("vector")?
+  source    String?
+  namespace String?
+  metadata  Json?
+  docs_id   String
+  docs      Docs                   @relation(fields: [docs_id], references: [id])
+
+  // @@index([document_id])
 }
 
 model Conversation {

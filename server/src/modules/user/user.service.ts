@@ -10,10 +10,10 @@ import * as argon2 from 'argon2';
 import { getUserDto } from './dto/get-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
-import { PrismaService } from 'nestjs-prisma';
 import { getServerConfig } from 'src/utils';
 import { User, ProfileGenderEnum } from '@prisma/client';
 import { RolesEnum, UserInput } from './dto/user.input';
+import { PrismaService } from 'src/utils/prisma/prisma.service';
 @Injectable()
 export class UserService {
   constructor(
