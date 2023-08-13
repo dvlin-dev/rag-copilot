@@ -43,7 +43,7 @@ export class VectorController {
 
   @ApiOperation({ summary: '获取所有的向量列表' })
   @ApiResponse({ status: 200, description: '成功获取用户资料' })
-  @Get('/getVectors')
+  @Get(':id/getVectors')
   async getAll(@Query('docs_id') docs_id: string) {
     const vectors = await this.vectorService.getAll(docs_id);
     return {

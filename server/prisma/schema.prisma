@@ -114,7 +114,7 @@ model Docs {
   updated_at  DateTime  @default(now())
   project     Project[]
   user_id     String
-  user        User?     @relation(fields: [user_id], references: [id])
+  user        User      @relation(fields: [user_id], references: [id])
 }
 
 model Index {

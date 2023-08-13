@@ -36,17 +36,22 @@ export class DocsController {
 
   @ApiOperation({ summary: '获取知识库详情' })
   @ApiResponse({ status: 200, description: '成功获取知识库资料' })
-  @Get(':id')
+  @Get(':id/detail')
   get(@Query('id') id: string) {
     return this.docsService.get(id);
   }
 
   @ApiOperation({ summary: '获取知识库列表' })
   @ApiResponse({ status: 200, description: '成功获取知识库列表' })
-  @Get()
-  getAll(@Query('user_id') user_id: string, @Req() req) {
-    const _user_id = user_id || req.user.user_id;
-    return this.docsService.getAll(_user_id);
+  @Get('/list')
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  async getAll(@Req() req) {
+    const user_id = req.user.user_id;
+    const lists = await this.docsService.getAll(user_id);
+    return {
+      lists,
+    };
   }
 
   @ApiOperation({ summary: '创建知识库' })
@@ -54,7 +59,6 @@ export class DocsController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   create(@Body() createVectorDto: CreateDocsDto, @Req() req) {
-    console.info('req.user.user_id', req.user);
     const user_id = req.user.user_id;
     return this.docsService.create(createVectorDto, user_id);
   }

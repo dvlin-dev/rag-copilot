@@ -14,9 +14,19 @@ import { getModel } from './utils/openai';
 export class VectorService {
   constructor(private prisma: PrismaService) {}
 
-  get(id: string) {}
+  get(id: string) {
+    return this.prisma.index.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
   getAll(docs_id: string) {
-    return this.prisma.docs.findMany();
+    return this.prisma.index.findMany({
+      where: {
+        docs_id,
+      },
+    });
   }
   async create(createVectorDto: CreateVectorDto) {
     const { docs_id, content, source, namespace, metadata } = createVectorDto;

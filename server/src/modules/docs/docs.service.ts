@@ -6,7 +6,14 @@ import { PrismaService } from 'src/utils/prisma/prisma.service';
 export class DocsService {
   constructor(private prisma: PrismaService) {}
 
-  get(id: string) {}
+  get(id: string) {
+    return this.prisma.docs.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   getAll(user_id: string) {
     return this.prisma.docs.findMany({
       where: {
