@@ -75,7 +75,7 @@ export class UserService {
     const users = await this.prisma.user.findMany({
       include: {
         profile: true,
-        users_roles: {
+        roles: {
           include: { roles: true },
         },
       },
@@ -85,7 +85,7 @@ export class UserService {
         profile: {
           gender,
         },
-        users_roles: {
+        roles: {
           some: {
             role_id: role,
           },
@@ -102,7 +102,7 @@ export class UserService {
         profile: {
           gender,
         },
-        users_roles: {
+        roles: {
           some: {
             role_id: role,
           },
@@ -119,21 +119,21 @@ export class UserService {
   find(username: string) {
     return this.prisma.user.findUnique({
       where: { username },
-      include: { users_roles: true },
+      include: { roles: true },
     });
   }
 
   findByEmail(email: string) {
     return this.prisma.user.findUnique({
       where: { email },
-      include: { users_roles: true, profile: true },
+      include: { roles: true, profile: true },
     });
   }
 
   findByGithubId(github_id: string) {
     return this.prisma.user.findUnique({
       where: { github_id },
-      include: { users_roles: true, profile: true },
+      include: { roles: true, profile: true },
     });
   }
 
@@ -227,7 +227,7 @@ export class UserService {
         username: adminUserName,
         email: adminEmail,
         password: adminPassword,
-        users_roles: [RolesEnum.super],
+        roles: [RolesEnum.super],
       };
 
       try {

@@ -18,7 +18,7 @@ model User {
   devices      Device[]
   logs         Log[]
   profile      Profile?
-  users_roles  UsersRole[]
+  roles        UsersRole[]
   Project      Project[]
   Docs         Docs[]
 }
@@ -126,8 +126,6 @@ model Index {
   metadata  Json?
   docs_id   String
   docs      Docs                   @relation(fields: [docs_id], references: [id])
-
-  // @@index([document_id])
 }
 
 model Conversation {

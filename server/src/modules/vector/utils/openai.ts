@@ -1,4 +1,4 @@
-import { OpenAIChat } from 'langchain/llms/openai';
+import { OpenAI } from 'langchain/llms/openai';
 import { ModelType } from '../../../types/chat';
 import { KeyConfiguration } from '../../../types/keyConfiguration';
 
@@ -15,7 +15,7 @@ export const getModel = async (keyConfiguration: KeyConfiguration) => {
 
   const commonConfig = {
     temperature: 0.6,
-    streaming: true,
+    // streaming: true,
   };
 
   const azureConfig = {
@@ -30,7 +30,7 @@ export const getModel = async (keyConfiguration: KeyConfiguration) => {
     openAIApiKey: apiKey,
   };
 
-  return new OpenAIChat(
+  return new OpenAI(
     apiType === ModelType.AZURE_OPENAI
       ? { ...commonConfig, ...azureConfig }
       : { ...commonConfig, ...openAIConfig }

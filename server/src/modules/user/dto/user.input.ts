@@ -4,7 +4,7 @@ export interface UserInput extends User {
   devices: Device[];
   logs: Log[];
   profile: Profile;
-  users_roles: UsersRole[] | RolesEnum[];
+  roles: UsersRole[] | RolesEnum[];
   Project: Project[];
 }
 

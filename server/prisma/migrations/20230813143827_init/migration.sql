@@ -15,7 +15,7 @@ CREATE TABLE "User" (
     "username" TEXT NOT NULL,
     "email" TEXT,
     "password" TEXT,
-    "account_type" "UserAccountTypeEnum" NOT NULL,
+    "account_type" "UserAccountTypeEnum" NOT NULL DEFAULT 'email',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -31,7 +31,7 @@ CREATE TABLE "Profile" (
     "description" TEXT,
     "github_login" TEXT,
     "github_name" TEXT,
-    "user_id" TEXT,
+    "user_id" TEXT NOT NULL,
 
     CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
 );
@@ -45,7 +45,7 @@ CREATE TABLE "Device" (
     "last_login_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "refresh_token" TEXT,
     "refresh_token_expires_at" BIGINT,
-    "user_id" TEXT,
+    "user_id" TEXT NOT NULL,
 
     CONSTRAINT "Device_pkey" PRIMARY KEY ("id")
 );
@@ -73,9 +73,7 @@ CREATE TABLE "Role" (
 -- CreateTable
 CREATE TABLE "UsersRole" (
     "user_id" TEXT NOT NULL,
-    "role_id" INTEGER NOT NULL,
-
-    CONSTRAINT "UsersRole_pkey" PRIMARY KEY ("user_id","role_id")
+    "role_id" INTEGER NOT NULL
 );
 
 -- CreateTable
@@ -103,15 +101,15 @@ CREATE TABLE "ProjectDetail" (
 );
 
 -- CreateTable
-CREATE TABLE "Document" (
+CREATE TABLE "Docs" (
     "id" TEXT NOT NULL,
     "name" TEXT,
     "description" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "project_id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
 
-    CONSTRAINT "Document_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Docs_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -119,9 +117,10 @@ CREATE TABLE "Index" (
     "id" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "vector" vector,
+    "source" TEXT,
     "namespace" TEXT,
     "metadata" JSONB,
-    "document_id" TEXT NOT NULL,
+    "docs_id" TEXT NOT NULL,
 
     CONSTRAINT "Index_pkey" PRIMARY KEY ("id")
 );
@@ -148,6 +147,12 @@ CREATE TABLE "Message" (
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "_DocsToProject" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_github_id_key" ON "User"("github_id");
 
@@ -161,7 +166,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Profile_user_id_key" ON "Profile"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Device_user_id_key" ON "Device"("user_id");
+CREATE UNIQUE INDEX "Device_device_id_key" ON "Device"("device_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UsersRole_user_id_key" ON "UsersRole"("user_id");
@@ -170,13 +175,13 @@ CREATE UNIQUE INDEX "UsersRole_user_id_key" ON "UsersRole"("user_id");
 CREATE UNIQUE INDEX "UsersRole_role_id_key" ON "UsersRole"("role_id");
 
 -- CreateIndex
-CREATE INDEX "UsersRole_role_id_idx" ON "UsersRole"("role_id");
+CREATE UNIQUE INDEX "_DocsToProject_AB_unique" ON "_DocsToProject"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "UsersRole_user_id_idx" ON "UsersRole"("user_id");
+CREATE INDEX "_DocsToProject_B_index" ON "_DocsToProject"("B");
 
 -- AddForeignKey
-ALTER TABLE "Profile" ADD CONSTRAINT "Profile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "Profile" ADD CONSTRAINT "Profile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Device" ADD CONSTRAINT "Device_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
@@ -197,13 +202,19 @@ ALTER TABLE "Project" ADD CONSTRAINT "Project_project_detail_id_fkey" FOREIGN KE
 ALTER TABLE "Project" ADD CONSTRAINT "Project_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Document" ADD CONSTRAINT "Document_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Docs" ADD CONSTRAINT "Docs_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Index" ADD CONSTRAINT "Index_document_id_fkey" FOREIGN KEY ("document_id") REFERENCES "Document"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Index" ADD CONSTRAINT "Index_docs_id_fkey" FOREIGN KEY ("docs_id") REFERENCES "Docs"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Conversation" ADD CONSTRAINT "Conversation_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD CONSTRAINT "Message_conversationId_fkey" FOREIGN KEY ("conversationId") REFERENCES "Conversation"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_DocsToProject" ADD CONSTRAINT "_DocsToProject_A_fkey" FOREIGN KEY ("A") REFERENCES "Docs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_DocsToProject" ADD CONSTRAINT "_DocsToProject_B_fkey" FOREIGN KEY ("B") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -27,7 +27,7 @@ declare interface User {
   device: Device[];
   logs: Log[];
   profile?: Profile | null;
-  users_roles: UsersRole[];
+  roles: UsersRole[];
   Project: Project[];
 }
 
@@ -66,7 +66,7 @@ declare interface Log {
 declare interface Role {
   id: number;
   name: string;
-  users_roles: UsersRole[];
+  roles: UsersRole[];
 }
 
 declare interface UsersRole {
@@ -107,11 +107,11 @@ declare interface Docs {
 declare interface Index {
   id: string;
   content: string;
-  vector?: any; // Unsupported type, using 'any' for now.
+  vector?: any;
   source?: string | null;
   namespace?: string | null;
-  metadata?: any; // Assuming JSON, using 'any' for now.
-  document_id: string;
+  metadata?: any;
+  docs_id: string;
 }
 
 declare interface Conversation {

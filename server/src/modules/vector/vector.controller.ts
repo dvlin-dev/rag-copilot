@@ -41,6 +41,16 @@ export class VectorController {
     return this.vectorService.get(id);
   }
 
+  @ApiOperation({ summary: '获取所有的向量列表' })
+  @ApiResponse({ status: 200, description: '成功获取用户资料' })
+  @Get('/getVectors')
+  async getAll(@Query('docs_id') docs_id: string) {
+    const vectors = await this.vectorService.getAll(docs_id);
+    return {
+      vectors,
+    };
+  }
+
   @ApiOperation({ summary: '添加向量数据' })
   @Post()
   @UseGuards(JwtGuard)
@@ -59,11 +69,6 @@ export class VectorController {
   @ApiResponse({ status: 200, description: '成功获取' })
   @Get(':id/similarity_search')
   async similaritySearch(@Query() searchVectorDto: SearchVectorDto) {
-    const documents = await this.vectorService.similaritySearch(
-      searchVectorDto
-    );
-    return {
-      documents,
-    };
+    return await this.vectorService.similaritySearch(searchVectorDto);
   }
 }
