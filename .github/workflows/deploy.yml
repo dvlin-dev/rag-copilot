@@ -23,7 +23,7 @@ jobs:
         run: npm install -g pnpm && cd server && pnpm install
 
       - name: build
-        run: pnpm run build && ls
+        run: ls && cd server && pnpm run build
         env:
           NODE_ENV: production
 
