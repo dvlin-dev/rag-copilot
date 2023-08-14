@@ -20,7 +20,7 @@ jobs:
           node-version: '18.16.1'
 
       - name: install dependencies
-        run: npm install -g pnpm && pnpm install
+        run: npm install -g pnpm && cd server && pnpm install
 
       - name: build
         run: cd server && pnpm run build && ls
