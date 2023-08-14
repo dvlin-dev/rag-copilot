@@ -6,6 +6,7 @@ import {
   Get,
   Inject,
   LoggerService,
+  Param,
   Patch,
   Post,
   Query,
@@ -23,6 +24,7 @@ import { DocsService } from './docs.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateDocsDto } from './dto/create-vector.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
+import { UpdateDocsDto } from './dto/update-vector.dto';
 
 @ApiTags('知识库')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -63,9 +65,19 @@ export class DocsController {
     return this.docsService.create(createVectorDto, user_id);
   }
 
-  @Patch(':id')
-  edit() {}
+  @ApiOperation({ summary: '更新知识库信息' })
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  @Patch('')
+  update(@Body() updateDocsDto: UpdateDocsDto) {
+    return this.docsService.update(updateDocsDto);
+  }
 
+  @ApiOperation({ summary: '删除知识库' })
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @Delete(':id')
-  delete() {}
+  delete(@Param('id') id: string) {
+    return this.docsService.delete(id);
+  }
 }

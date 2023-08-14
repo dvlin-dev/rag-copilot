@@ -6,6 +6,7 @@ import {
   Get,
   Inject,
   LoggerService,
+  Param,
   Patch,
   Post,
   Query,
@@ -23,6 +24,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateVectorDto } from './dto/create-vector.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
 import { SearchVectorDto } from './dto/seatch.dto';
+import { UpdateVectorDto } from './dto/update-vector.dto';
 
 @ApiTags('向量')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -59,16 +61,29 @@ export class VectorController {
     return this.vectorService.create(createVectorDto);
   }
 
-  @Patch(':id')
-  edit() {}
+  @ApiOperation({ summary: '更新向量信息' })
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  @Patch('')
+  update(@Body() updateVectorDto: UpdateVectorDto) {
+    return this.vectorService.update(updateVectorDto);
+  }
 
+  @ApiOperation({ summary: '删除向量' })
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @Delete(':id')
-  delete() {}
+  delete(@Param('id') id: string) {
+    return this.vectorService.delete(id);
+  }
 
   @ApiOperation({ summary: '相似度搜索' })
   @ApiResponse({ status: 200, description: '成功获取' })
   @Get(':id/similarity_search')
   async similaritySearch(@Query() searchVectorDto: SearchVectorDto) {
-    return await this.vectorService.similaritySearch(searchVectorDto);
+    const docs = await this.vectorService.similaritySearch(searchVectorDto);
+    return {
+      docs,
+    };
   }
 }

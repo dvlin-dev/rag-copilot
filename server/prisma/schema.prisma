@@ -7,6 +7,77 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Project {
+  id                String         @id @default(uuid())
+  name              String
+  project_detail_id String
+  user_id           String
+  documents         Docs[]
+  conversations     Conversation[]
+  project_detail    ProjectDetail  @relation(fields: [project_detail_id], references: [id])
+  user              User           @relation(fields: [user_id], references: [id])
+}
+
+model ProjectDetail {
+  id          String    @id @default(uuid())
+  description String?
+  prompt      String?
+  questions   String[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  white_list  String[]
+  ip_limit    Int?
+  Project     Project[]
+}
+
+model Docs {
+  id          String    @id @default(uuid())
+  name        String?
+  description String?
+  indexs      Index[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  project     Project[]
+  user_id     String
+  user        User      @relation(fields: [user_id], references: [id])
+}
+
+model Index {
+  id        String                 @id @default(uuid())
+  content   String
+  vector    Unsupported("vector")?
+  source    String?
+  namespace String?
+  metadata  Json?
+  docs_id   String
+  docs      Docs                   @relation(fields: [docs_id], references: [id])
+}
+
+model Conversation {
+  id         String    @id @default(uuid())
+  projectId  String?
+  messages   Message[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  Project    Project?  @relation(fields: [projectId], references: [id])
+}
+
+model Message {
+  id             String        @id @default(uuid())
+  content        String
+  role           MessageRole
+  rating_value   Int?
+  created_at     DateTime      @default(now())
+  conversationId String?
+  Conversation   Conversation? @relation(fields: [conversationId], references: [id])
+}
+
+enum MessageRole {
+  system
+  ai
+  hunman
+}
+
 model User {
   id           String              @id @default(uuid())
   github_id    String?             @unique
@@ -80,75 +151,4 @@ enum ProfileGenderEnum {
 enum UserAccountTypeEnum {
   email
   github
-}
-
-model Project {
-  id                String         @id @default(uuid())
-  name              String
-  project_detail_id String
-  user_id           String
-  documents         Docs[]
-  conversations     Conversation[]
-  project_detail    ProjectDetail  @relation(fields: [project_detail_id], references: [id])
-  user              User           @relation(fields: [user_id], references: [id])
-}
-
-model ProjectDetail {
-  id          String    @id @default(uuid())
-  description String?
-  prompt      String?
-  questions   String[]
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  white_list  String[]
-  ip_limit    Int?
-  Project     Project[]
-}
-
-model Docs {
-  id          String    @id @default(uuid())
-  name        String?
-  description String?
-  indexs      Index[]
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  project     Project[]
-  user_id     String
-  user        User      @relation(fields: [user_id], references: [id])
-}
-
-model Index {
-  id        String                 @id @default(uuid())
-  content   String
-  vector    Unsupported("vector")?
-  source    String?
-  namespace String?
-  metadata  Json?
-  docs_id   String
-  docs      Docs                   @relation(fields: [docs_id], references: [id])
-}
-
-model Conversation {
-  id         String    @id @default(uuid())
-  projectId  String?
-  messages   Message[]
-  created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
-  Project    Project?  @relation(fields: [projectId], references: [id])
-}
-
-model Message {
-  id             String        @id @default(uuid())
-  content        String
-  role           MessageRole
-  rating_value   Int?
-  created_at     DateTime      @default(now())
-  conversationId String?
-  Conversation   Conversation? @relation(fields: [conversationId], references: [id])
-}
-
-enum MessageRole {
-  system
-  ai
-  hunman
 }

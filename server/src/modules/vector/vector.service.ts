@@ -9,6 +9,7 @@ import { Index, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/utils/prisma/prisma.service';
 import { LLMChain, PromptTemplate } from 'langchain';
 import { getModel } from './utils/openai';
+import { UpdateVectorDto } from './dto/update-vector.dto';
 
 @Injectable()
 export class VectorService {
@@ -21,6 +22,37 @@ export class VectorService {
       },
     });
   }
+
+  async update(updateVectorDto: UpdateVectorDto) {
+    const { id, content, source, metadata, namespace } = updateVectorDto;
+    const { id: index_id } = await this.prisma.index.update({
+      where: {
+        id,
+      },
+      data: {
+        content,
+        source,
+        metadata,
+        namespace,
+      },
+    });
+    const keyConfiguration = getKeyConfigurationFromEnvironment();
+    const vector = await getEmbeddings(keyConfiguration).embedQuery(content);
+    return this.prisma.$executeRaw`
+          UPDATE "Index"
+          SET "vector" = ${`[${vector.join(',')}]`}::vector
+          WHERE "id" = ${index_id}
+        `;
+  }
+
+  delete(id: string) {
+    return this.prisma.index.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   getAll(docs_id: string) {
     return this.prisma.index.findMany({
       where: {
@@ -28,6 +60,7 @@ export class VectorService {
       },
     });
   }
+
   async create(createVectorDto: CreateVectorDto) {
     const { docs_id, content, source, namespace, metadata } = createVectorDto;
     const keyConfiguration = getKeyConfigurationFromEnvironment();
@@ -40,30 +73,19 @@ export class VectorService {
       ])
     );
   }
+
   async similaritySearch(searchVectorDto: SearchVectorDto) {
     const { message, size, docs_id } = searchVectorDto;
     const keyConfiguration = getKeyConfigurationFromEnvironment();
     const vectorStore = await this.getVectorStore(keyConfiguration);
-    const documents = await vectorStore.similaritySearchWithScore(
+    const docs = await vectorStore.similaritySearchWithScore(
       message,
       Number(size),
       {
         docs_id: { equals: docs_id },
       }
     );
-    const model = await getModel(keyConfiguration);
-    const context = documents.reduce((acc, item) => {
-      return acc + item[0].pageContent + '\n';
-    }, '');
-    const prompt = PromptTemplate.fromTemplate(
-      '在结尾处用以下几段语境回答问题。如果你不知道答案，只需说你不知道，不要尝试编造答案。\n\n{context}\n\n问题：{question}\n有用的答案：'
-    );
-    const chain = new LLMChain({ llm: model, prompt });
-    const result = (await chain.call({ context, question: message })).text;
-    return {
-      result,
-      docs: documents,
-    };
+    return docs.map((item) => item[0]);
   }
 
   async getVectorStore(keyConfiguration: KeyConfiguration): Promise<any> {
@@ -76,6 +98,9 @@ export class VectorService {
         columns: {
           id: PrismaVectorStore.IdColumn,
           content: PrismaVectorStore.ContentColumn,
+          namespace: PrismaVectorStore.ContentColumn,
+          source: PrismaVectorStore.ContentColumn,
+          metadata: PrismaVectorStore.ContentColumn,
         },
       }
     );

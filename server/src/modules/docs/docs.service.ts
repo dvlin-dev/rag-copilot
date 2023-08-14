@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDocsDto } from './dto/create-vector.dto';
 import { PrismaService } from 'src/utils/prisma/prisma.service';
+import { UpdateDocsDto } from './dto/update-vector.dto';
 
 @Injectable()
 export class DocsService {
@@ -21,6 +22,7 @@ export class DocsService {
       },
     });
   }
+
   create(createDocsDto: CreateDocsDto, user_id: string) {
     const { name, description } = createDocsDto;
     return this.prisma.docs.create({
@@ -28,6 +30,27 @@ export class DocsService {
         name,
         description,
         user_id,
+      },
+    });
+  }
+
+  async update(updateDocsDto: UpdateDocsDto) {
+    const { id, name, description } = updateDocsDto;
+    return this.prisma.docs.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        description,
+      },
+    });
+  }
+
+  delete(id: string) {
+    return this.prisma.docs.delete({
+      where: {
+        id,
       },
     });
   }
