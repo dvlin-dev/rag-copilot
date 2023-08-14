@@ -3,7 +3,13 @@ import { resolve } from 'path';
 
 export const httpsOptions = {
   key: readFileSync(
-    resolve(__dirname, '..', '..', '..', 'devlink.wiki_nginx/devlink.wiki.key')
+    resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'docs-copilot.devlink.wiki_nginx/docs-copilot.devlink.wiki.key'
+    )
   ),
   cert: readFileSync(
     resolve(
@@ -11,7 +17,7 @@ export const httpsOptions = {
       '..',
       '..',
       '..',
-      'devlink.wiki_nginx/devlink.wiki_bundle.crt'
+      'docs-copilot.devlink.wiki_nginx/docs-copilot.devlink.wiki.crt'
     )
   ),
 };
