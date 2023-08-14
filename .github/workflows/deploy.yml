@@ -23,7 +23,7 @@ jobs:
         run: npm install -g pnpm && pnpm install
 
       - name: build
-        run: pnpm run build && ls
+        run: cd server && pnpm run build && ls
         env:
           NODE_ENV: production
 
@@ -35,12 +35,12 @@ jobs:
             SOURCE: "dist/"
             REMOTE_HOST: ${{ secrets.SERVER_HOST }}
             REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
-            TARGET: "/home/ubuntu/app/docs-copilot/dist/"
+            TARGET: "/home/ubuntu/app/docs-copilot/server/dist/"
             EXCLUDE: "/dist/, /node_modules/"
             SCRIPT_AFTER: |
               whoami
-              cd /home/ubuntu/app/devlink/auth/
+              cd /home/ubuntu/app/docs-copilot/server
               ls -al
               pwd
-              echo "auth restart"
+              echo "docs-copilot restart"
               sh deploy.sh
