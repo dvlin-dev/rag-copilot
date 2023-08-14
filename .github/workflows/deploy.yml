@@ -32,7 +32,7 @@ jobs:
         env:
             SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
             ARGS: "-rlgoDzvc -i --delete"
-            SOURCE: "dist/"
+            SOURCE: "server/dist/"
             REMOTE_HOST: ${{ secrets.SERVER_HOST }}
             REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
             TARGET: "/home/ubuntu/app/docs-copilot/server/dist/"
