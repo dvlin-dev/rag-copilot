@@ -50,9 +50,9 @@ export class DocsController {
   @ApiBearerAuth()
   async getAll(@Req() req) {
     const user_id = req.user.user_id;
-    const lists = await this.docsService.getAll(user_id);
+    const data = await this.docsService.getAll(user_id);
     return {
-      lists,
+      data,
     };
   }
 
@@ -60,9 +60,9 @@ export class DocsController {
   @Post()
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
-  create(@Body() createVectorDto: CreateDocsDto, @Req() req) {
+  create(@Body() createDocsDto: CreateDocsDto, @Req() req) {
     const user_id = req.user.user_id;
-    return this.docsService.create(createVectorDto, user_id);
+    return this.docsService.create(createDocsDto, user_id);
   }
 
   @ApiOperation({ summary: '更新知识库信息' })

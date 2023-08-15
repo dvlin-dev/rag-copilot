@@ -1,12 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsEnum,
-  IsOptional,
-  IsString,
-  IsUUID,
-  Length,
-} from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsUUID, Length } from 'class-validator';
 import { ProfileGenderEnum } from '@prisma/client';
 
 export class UpdateUserDto {
@@ -21,9 +14,8 @@ export class UpdateUserDto {
   @IsEmail()
   email?: string;
 
-  @ApiProperty({ description: '性别', enum: ProfileGenderEnum }) // 指定枚举类型
+  @ApiProperty({ description: '性别', enum: ProfileGenderEnum })
   @IsOptional()
-  @IsEnum(ProfileGenderEnum)
   gender?: ProfileGenderEnum;
 
   @ApiProperty({ description: '照片' })

@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ProfileGenderEnum } from '@prisma/client';
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateVectorDto {
   @ApiProperty({ description: 'id', required: true })

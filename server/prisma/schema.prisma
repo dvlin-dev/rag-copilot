@@ -8,26 +8,26 @@ generator client {
 }
 
 model Project {
-  id                String         @id @default(uuid())
-  name              String
-  project_detail_id String
-  user_id           String
-  documents         Docs[]
-  conversations     Conversation[]
-  project_detail    ProjectDetail  @relation(fields: [project_detail_id], references: [id])
-  user              User           @relation(fields: [user_id], references: [id])
+  id            String         @id @default(uuid())
+  name          String
+  description   String?
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @default(now())
+  user_id       String
+  documents     Docs[]
+  conversations Conversation[]
+  user          User           @relation(fields: [user_id], references: [id])
+  project_detail ProjectDetail?
 }
 
 model ProjectDetail {
-  id          String    @id @default(uuid())
-  description String?
-  prompt      String?
-  questions   String[]
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  white_list  String[]
-  ip_limit    Int?
-  Project     Project[]
+  id        String   @id @default(uuid())
+  prompt    String?
+  questions String[]
+  white_list String[]
+  ip_limit   Int?
+  project_id String   @unique
+  Project    Project  @relation(fields: [project_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Docs {
