@@ -57,26 +57,26 @@ export function getDeviceAndOSInfo() {
 
 export const generateDeviceInfo = (
   mark: string
-): Promise<{ device_id: string; device_type: string }> => {
+): Promise<{ deviceId: string; deviceType: string }> => {
   return new Promise((resolve, reject) => {
     return FingerprintJS.load()
       .then((fp) => fp.get())
       .then((result) => {
         const visitorId = result.visitorId;
-        const device_id = generateHash({ visitorId, mark });
-        setDeviceId(device_id);
+        const deviceId = generateHash({ visitorId, mark });
+        setDeviceId(deviceId);
         const { os, device, browser } = getDeviceAndOSInfo();
         resolve({
-          device_id,
-          device_type: `${device}:${os}:${browser}`,
+          deviceId,
+          deviceType: `${device}:${os}:${browser}`,
         });
       })
       .catch(reject);
   });
 };
 
-export function setDeviceId(device_id: string) {
-  localStorage.setItem('devlink_deviceId', device_id);
+export function setDeviceId(deviceId: string) {
+  localStorage.setItem('devlink_deviceId', deviceId);
 }
 
 export const getDeviceId = () => localStorage.getItem('devlink_deviceId');

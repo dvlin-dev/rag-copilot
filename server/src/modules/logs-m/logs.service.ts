@@ -8,7 +8,7 @@ export class LogsService {
   // findById(id: string) {
   //   return this.prisma.log.findUnique({
   //     where: {
-  //       user_id: id,
+  //       userId: id,
   //     },
   //     relations: {
   //       user: true,

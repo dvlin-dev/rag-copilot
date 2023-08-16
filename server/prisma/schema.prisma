@@ -8,26 +8,26 @@ generator client {
 }
 
 model Project {
-  id            String         @id @default(uuid())
-  name          String
-  description   String?
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @default(now())
-  user_id       String
-  documents     Docs[]
-  conversations Conversation[]
-  user          User           @relation(fields: [user_id], references: [id])
-  project_detail ProjectDetail?
+  id             String         @id @default(uuid())
+  name           String
+  description    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now())
+  userId         String
+  documents      Docs[]
+  conversations  Conversation[]
+  user           User           @relation(fields: [userId], references: [id])
+  projectDetail ProjectDetail?
 }
 
 model ProjectDetail {
   id        String   @id @default(uuid())
   prompt    String?
   questions String[]
-  white_list String[]
-  ip_limit   Int?
-  project_id String   @unique
-  Project    Project  @relation(fields: [project_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  whiteList String[]
+  ipLimit   Int?
+  projectId String   @unique
+  Project   Project  @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Docs {
@@ -35,11 +35,11 @@ model Docs {
   name        String?
   description String?
   indexs      Index[]
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
   project     Project[]
-  user_id     String
-  user        User      @relation(fields: [user_id], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
 }
 
 model Index {
@@ -49,27 +49,27 @@ model Index {
   source    String?
   namespace String?
   metadata  Json?
-  docs_id   String
-  docs      Docs                   @relation(fields: [docs_id], references: [id])
+  docsId    String
+  docs      Docs                   @relation(fields: [docsId], references: [id])
 }
 
 model Conversation {
-  id         String    @id @default(uuid())
-  projectId  String?
-  messages   Message[]
-  created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
-  Project    Project?  @relation(fields: [projectId], references: [id])
+  id        String    @id @default(uuid())
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  projectId String?
+  updatedAt DateTime  @default(now())
+  project   Project?  @relation(fields: [projectId], references: [id])
 }
 
 model Message {
   id             String        @id @default(uuid())
   content        String
   role           MessageRole
-  rating_value   Int?
-  created_at     DateTime      @default(now())
+  ratingValue    Int?
+  createdAt      DateTime      @default(now())
   conversationId String?
-  Conversation   Conversation? @relation(fields: [conversationId], references: [id])
+  conversation   Conversation? @relation(fields: [conversationId], references: [id])
 }
 
 enum MessageRole {
@@ -79,54 +79,54 @@ enum MessageRole {
 }
 
 model User {
-  id           String              @id @default(uuid())
-  github_id    String?             @unique
-  username     String              @unique
-  email        String?             @unique
-  password     String?
-  account_type UserAccountTypeEnum @default(email)
-  created_at   DateTime            @default(now())
-  devices      Device[]
-  logs         Log[]
-  profile      Profile?
-  roles        UsersRole[]
-  Project      Project[]
-  Docs         Docs[]
+  id          String              @id @default(uuid())
+  githubId    String?             @unique
+  username    String              @unique
+  email       String?             @unique
+  password    String?
+  accountType UserAccountTypeEnum @default(email)
+  createdAt   DateTime            @default(now())
+  devices     Device[]
+  logs        Log[]
+  profile     UserProfile?
+  roles       UsersRole[]
+  Project     Project[]
+  Docs        Docs[]
 }
 
-model Profile {
-  id           String            @id @default(uuid())
-  gender       ProfileGenderEnum
-  avatar       String?
-  photo        String?
-  address      String?
-  description  String?
-  github_login String?
-  github_name  String?
-  user_id      String            @unique
-  user         User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+model UserProfile {
+  id          String            @id @default(uuid())
+  gender      ProfileGenderEnum
+  avatar      String?
+  photo       String?
+  address     String?
+  description String?
+  githubLogin String?
+  githubName  String?
+  userId      String            @unique
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Device {
-  id                       String   @id @default(uuid())
-  device_id                String   @unique
-  device_type              String
-  client_ip                String
-  last_login_at            DateTime @default(now())
-  refresh_token            String?
-  refresh_token_expires_at BigInt?
-  user_id                  String
-  user                     User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                    String   @id @default(uuid())
+  deviceId              String   @unique
+  deviceType            String
+  clientIp              String
+  lastLoginAt           DateTime @default(now())
+  refreshToken          String?
+  refreshTokenExpiresAt BigInt?
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Log {
-  id         String   @id @default(uuid())
-  created_at DateTime @default(now())
-  path       String
-  data       String
-  result     Int
-  user_id    String?
-  user       User?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  path      String
+  data      String
+  result    Int
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Role {
@@ -136,10 +136,10 @@ model Role {
 }
 
 model UsersRole {
-  user_id String @unique
-  role_id Int    @unique
-  roles   Role   @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  userId String @unique
+  roleId Int    @unique
+  roles  Role   @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum ProfileGenderEnum {

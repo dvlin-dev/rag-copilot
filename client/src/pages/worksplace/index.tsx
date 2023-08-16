@@ -9,7 +9,7 @@ export default function Worksplace() {
   const search = () => {
     searchVector({
       message,
-      docs_id: '17c120ab-29f3-4d14-b83f-2a647872e306',
+      docsId: '17c120ab-29f3-4d14-b83f-2a647872e306',
       number: 5,
     }).then((res) => {
       console.info('res.data.documents', res.data);

@@ -49,8 +49,8 @@ export class ProjectController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   async getAll(@Req() req) {
-    const user_id = req.user.user_id;
-    const data = await this.projectService.getAll(user_id);
+    const userId = req.user.userId;
+    const data = await this.projectService.getAll(userId);
     return {
       data,
     };
@@ -61,8 +61,8 @@ export class ProjectController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   create(@Body() createProjectDto: CreateProjectDto, @Req() req) {
-    const user_id = req.user.user_id;
-    return this.projectService.create(createProjectDto, user_id);
+    const userId = req.user.userId;
+    return this.projectService.create(createProjectDto, userId);
   }
 
   @ApiOperation({ summary: '更新项目信息' })

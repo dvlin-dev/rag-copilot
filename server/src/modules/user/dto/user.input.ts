@@ -1,9 +1,16 @@
-import { Device, Log, Profile, Project, User, UsersRole } from '@prisma/client';
+import {
+  Device,
+  Log,
+  UserProfile,
+  Project,
+  User,
+  UsersRole,
+} from '@prisma/client';
 
 export interface UserInput extends User {
   devices: Device[];
   logs: Log[];
-  profile: Profile;
+  profile: UserProfile;
   roles: UsersRole[] | RolesEnum[];
   Project: Project[];
 }

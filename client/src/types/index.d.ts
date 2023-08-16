@@ -18,12 +18,12 @@ declare enum MessageRole {
 
 declare interface User {
   id: string;
-  github_id?: string | null;
+  githubId?: string | null;
   username: string;
   email?: string | null;
   password?: string | null;
-  account_type: UserAccountTypeEnum;
-  created_at: Date;
+  accountType: UserAccountTypeEnum;
+  createdAt: Date;
   device: Device[];
   logs: Log[];
   profile?: Profile | null;
@@ -38,29 +38,29 @@ declare interface Profile {
   photo?: string | null;
   address?: string | null;
   description?: string | null;
-  github_login?: string | null;
-  github_name?: string | null;
-  user_id?: string | null;
+  githubLogin?: string | null;
+  githubName?: string | null;
+  userId?: string | null;
 }
 
 declare interface Device {
   id: string;
-  device_id: string;
-  device_type: string;
-  client_ip: string;
-  last_login_at: Date;
-  refresh_token?: string | null;
-  refresh_token_expires_at?: bigint | null;
-  user_id?: string | null;
+  deviceId: string;
+  deviceType: string;
+  clientIp: string;
+  lastLoginAt: Date;
+  refreshToken?: string | null;
+  refreshTokenExpiresAt?: bigint | null;
+  userId?: string | null;
 }
 
 declare interface Log {
   id: string;
-  created_at: Date;
+  createdAt: Date;
   path: string;
   data: string;
   result: number;
-  user_id?: string | null;
+  userId?: string | null;
 }
 
 declare interface Role {
@@ -70,15 +70,14 @@ declare interface Role {
 }
 
 declare interface UsersRole {
-  user_id: string;
-  role_id: number;
+  userId: string;
+  roleId: number;
 }
 
 declare interface Project {
   id: string;
   name: string;
-  project_detail_id: string;
-  user_id: string;
+  userId: string;
   documents: Document[];
   conversations: Conversation[];
 }
@@ -88,10 +87,10 @@ declare interface ProjectDetail {
   description?: string | null;
   prompt?: string | null;
   questions: string[];
-  created_at: Date;
-  updated_at: Date;
-  white_list: string[];
-  ip_limit?: number | null;
+  createdAt: Date;
+  updatedAt: Date;
+  whiteList: string[];
+  ipLimit?: number | null;
 }
 
 declare interface Docs {
@@ -99,9 +98,9 @@ declare interface Docs {
   name?: string | null;
   description?: string | null;
   indexs: Index[];
-  created_at: Date;
-  updated_at: Date;
-  project_id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  projectId: string;
 }
 
 declare interface Index {
@@ -111,22 +110,22 @@ declare interface Index {
   source?: string | null;
   namespace?: string | null;
   metadata?: any;
-  docs_id: string;
+  docsId: string;
 }
 
 declare interface Conversation {
   id: string;
   projectId?: string | null;
   messages: Message[];
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 declare interface Message {
   id: string;
   content: string;
   role: MessageRole;
-  rating_value?: number | null;
-  created_at: Date;
+  ratingValue?: number | null;
+  createdAt: Date;
   conversationId?: string | null;
 }

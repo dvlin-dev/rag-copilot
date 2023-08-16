@@ -87,7 +87,7 @@ export class UserService {
         },
         roles: {
           some: {
-            role_id: role,
+            roleId: role,
           },
         },
       },
@@ -104,7 +104,7 @@ export class UserService {
         },
         roles: {
           some: {
-            role_id: role,
+            roleId: role,
           },
         },
       },
@@ -130,9 +130,9 @@ export class UserService {
     });
   }
 
-  findByGithubId(github_id: string) {
+  findByGithubId(githubId: string) {
     return this.prisma.user.findUnique({
-      where: { github_id },
+      where: { githubId },
       include: { roles: true, profile: true },
     });
   }

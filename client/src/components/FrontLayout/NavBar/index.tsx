@@ -42,9 +42,9 @@ export default function NavBar() {
 
   const logoutHandle = async () => {
     setLogoutIsLoading(true);
-    const device_id = getDeviceId();
-    device_id &&
-      logout(device_id)
+    const deviceId = getDeviceId();
+    deviceId &&
+      logout(deviceId)
         .then(() => {
           NoticeSuccess('退出成功', user?.username);
           push('/login');

@@ -15,21 +15,21 @@ export class DocsService {
     });
   }
 
-  getAll(user_id: string) {
+  getAll(userId: string) {
     return this.prisma.docs.findMany({
       where: {
-        user_id,
+        userId,
       },
     });
   }
 
-  create(createDocsDto: CreateDocsDto, user_id: string) {
+  create(createDocsDto: CreateDocsDto, userId: string) {
     const { name, description } = createDocsDto;
     return this.prisma.docs.create({
       data: {
         name,
         description,
-        user_id,
+        userId,
       },
     });
   }

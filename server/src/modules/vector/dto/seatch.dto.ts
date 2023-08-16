@@ -10,7 +10,7 @@ export class SearchVectorDto {
   @ApiProperty({ description: '知识库 id', required: true })
   @IsString()
   @IsNotEmpty()
-  docs_id: string;
+  docsId: string;
 
   @ApiProperty({ description: '数量', required: true })
   @IsNotEmpty()

@@ -1,8 +1,8 @@
 declare interface LoginByPasswordParams {
   email: string;
   password: string;
-  device_id: string;
-  device_type: string;
+  deviceId: string;
+  deviceType: string;
 }
 
 declare type RegisterByEmail = {

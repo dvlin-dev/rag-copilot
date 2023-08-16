@@ -13,7 +13,7 @@ export class ProjectService {
         id,
       },
       include: {
-        project_detail: true,
+        projectDetail: true,
         user: {
           select: {
             id: true,
@@ -26,29 +26,29 @@ export class ProjectService {
     });
   }
 
-  getAll(user_id: string) {
+  getAll(userId: string) {
     return this.prisma.project.findMany({
       where: {
-        user_id,
+        userId,
       },
     });
   }
 
-  create(createProjectDto: CreateProjectDto, user_id: string) {
-    const { name, description, prompt, questions, white_list, ip_limit } =
+  create(createProjectDto: CreateProjectDto, userId: string) {
+    const { name, description, prompt, questions, whiteList, ipLimit } =
       createProjectDto;
     const projectDetail = {
       prompt,
       questions,
-      white_list,
-      ip_limit: Number(ip_limit),
+      whiteList,
+      ipLimit: Number(ipLimit),
     };
     return this.prisma.project.create({
       data: {
         name,
         description,
-        user_id,
-        project_detail: {
+        userId,
+        projectDetail: {
           create: projectDetail,
         },
       },
@@ -56,13 +56,13 @@ export class ProjectService {
   }
 
   async update(updateProjectDto: UpdateProjectDto) {
-    const { id, name, description, prompt, questions, white_list, ip_limit } =
+    const { id, name, description, prompt, questions, whiteList, ipLimit } =
       updateProjectDto;
     const projectDetail = {
       prompt,
       questions,
-      white_list,
-      ip_limit: Number(ip_limit),
+      whiteList,
+      ipLimit: Number(ipLimit),
     };
     return this.prisma.project.update({
       where: {
@@ -71,12 +71,12 @@ export class ProjectService {
       data: {
         name,
         description,
-        project_detail: {
+        projectDetail: {
           update: projectDetail,
         },
       },
       include: {
-        project_detail: true,
+        projectDetail: true,
       },
     });
   }

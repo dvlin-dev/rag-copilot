@@ -18,11 +18,11 @@ export default function Code() {
     setLoading(true);
     generateDeviceInfo(values.email)
       .then((res) => {
-        const { device_id, device_type } = res;
+        const { deviceId, deviceType } = res;
         const params: LoginByPasswordParams = {
           ...values,
-          device_id,
-          device_type,
+          deviceId,
+          deviceType,
         };
         return smsLogin(params);
       })

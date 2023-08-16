@@ -1,7 +1,7 @@
 declare interface searchVector {
   message: string;
 
-  docs_id: string;
+  docsId: string;
 
   number: number;
 }

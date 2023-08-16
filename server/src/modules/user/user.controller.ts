@@ -56,7 +56,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   getUserInfo(@Req() req) {
-    return this.userService.findProfile(req.user.user_id);
+    return this.userService.findProfile(req.user.userId);
   }
 
   @ApiOperation({ summary: '添加用户（后台用）' })
@@ -83,11 +83,11 @@ export class UserController {
   @ApiBearerAuth()
   @Patch('update')
   async updateUser(@Body() updateUserDto: UpdateUserDto, @Req() req) {
-    if (!req.user.user_id) {
+    if (!req.user.userId) {
       throw new UnauthorizedException(TokenExpiredMessage);
     }
 
-    return this.userService.update(req.user.user_id, updateUserDto);
+    return this.userService.update(req.user.userId, updateUserDto);
   }
 
   @ApiOperation({ summary: '更改/找回 密码' })
@@ -101,7 +101,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   removeUser(@Param('id') id: string, @Req() req) {
-    if (!req.user.user_id) {
+    if (!req.user.userId) {
       throw new UnauthorizedException(TokenExpiredMessage);
     }
     //TODO: 判断是否是管理员

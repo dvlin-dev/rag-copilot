@@ -43,12 +43,12 @@ export function updateUserInfo(data: UpdateUserDto) {
   });
 }
 
-export function logout(device_id: string) {
+export function logout(deviceId: string) {
   return http({
     url: '/auth/logout',
     method: 'post',
     data: {
-      device_id,
+      deviceId,
     },
   });
 }

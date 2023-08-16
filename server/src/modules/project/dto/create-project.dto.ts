@@ -28,13 +28,13 @@ export class CreateProjectDto {
   @IsOptional()
   questions: string[];
 
-  @ApiProperty({ description: 'white_list', required: false })
+  @ApiProperty({ description: 'whiteList', required: false })
   @IsArray()
   @IsOptional()
-  white_list: string[];
+  whiteList: string[];
 
-  @ApiProperty({ description: 'ip_limit', required: true })
+  @ApiProperty({ description: 'ipLimit', required: true })
   @IsNumber()
   @IsOptional()
-  ip_limit: string;
+  ipLimit: string;
 }

@@ -53,36 +53,36 @@ export class VectorService {
     });
   }
 
-  getAll(docs_id: string) {
+  getAll(docsId: string) {
     return this.prisma.index.findMany({
       where: {
-        docs_id,
+        docsId,
       },
     });
   }
 
   async create(createVectorDto: CreateVectorDto) {
-    const { docs_id, content, source, namespace, metadata } = createVectorDto;
+    const { docsId, content, source, namespace, metadata } = createVectorDto;
     const keyConfiguration = getKeyConfigurationFromEnvironment();
     const vectorStore = await this.getVectorStore(keyConfiguration);
     return await vectorStore.addModels(
       await this.prisma.$transaction([
         this.prisma.index.create({
-          data: { content, docs_id, source, namespace, metadata },
+          data: { content, docsId, source, namespace, metadata },
         }),
       ])
     );
   }
 
   async similaritySearch(searchVectorDto: SearchVectorDto) {
-    const { message, size, docs_id } = searchVectorDto;
+    const { message, size, docsId } = searchVectorDto;
     const keyConfiguration = getKeyConfigurationFromEnvironment();
     const vectorStore = await this.getVectorStore(keyConfiguration);
     const docs = await vectorStore.similaritySearchWithScore(
       message,
       Number(size),
       {
-        docs_id: { equals: docs_id },
+        docsId: { equals: docsId },
       }
     );
     return docs.map((item) => item[0]);
