@@ -14,6 +14,8 @@ import { VectorModule } from './modules/vector/vector.module';
 import { DocsModule } from './modules/docs/docs.module';
 import { PrismaModule } from './utils/prisma/prisma.module';
 import { ProjectModule } from './modules/project/project.module';
+import { ConversationModule } from './modules/conversation/conversation.module';
+import { MessagetModule } from './modules/message/message.module';
 
 const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
 const schema = Joi.object({
@@ -89,6 +91,8 @@ const schema = Joi.object({
     VectorModule,
     DocsModule,
     ProjectModule,
+    ConversationModule,
+    MessagetModule,
   ],
   controllers: [],
   providers: [Logger],

@@ -8,15 +8,15 @@ generator client {
 }
 
 model Project {
-  id             String         @id @default(uuid())
-  name           String
-  description    String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @default(now())
-  userId         String
-  documents      Docs[]
-  conversations  Conversation[]
-  user           User           @relation(fields: [userId], references: [id])
+  id            String         @id @default(uuid())
+  name          String
+  description   String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now())
+  userId        String
+  documents     Docs[]
+  conversations Conversation[]
+  user          User           @relation(fields: [userId], references: [id])
   projectDetail ProjectDetail?
 }
 
@@ -57,8 +57,8 @@ model Conversation {
   id        String    @id @default(uuid())
   messages  Message[]
   createdAt DateTime  @default(now())
-  projectId String?
   updatedAt DateTime  @default(now())
+  projectId String?
   project   Project?  @relation(fields: [projectId], references: [id])
 }
 
