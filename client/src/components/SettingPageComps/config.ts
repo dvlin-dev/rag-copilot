@@ -4,7 +4,6 @@ export enum ConfigType {
   USERNAME = 'username',
   EMAIL = 'email',
   DESCRIPTION = 'description',
-  ADDRESS = 'address',
 }
 
 export type settingConfigType = {
@@ -36,9 +35,5 @@ export const settingConfig: settingConfigType = {
   description: {
     title: '个人简介',
     tips: '请输入 200 字符以内的简介',
-  },
-  address: {
-    title: '地址',
-    tips: '请输入 200 字符以内的地址描述',
   },
 };

@@ -22,13 +22,6 @@ declare interface User {
   accountType: AccountType;
   roles: Roles[];
   profile: Profile;
-  group: Group[];
-  materials: Material[];
-  likes: Like[];
-  stars: Material[];
-  followers: Follow[];
-  following: Follow[];
-  tags: Tag[];
 }
 
 declare interface Profile {
@@ -36,7 +29,6 @@ declare interface Profile {
   gender: Gender;
   avatar: string;
   photo: string;
-  address: string;
   githubLogin: string;
   githubName: string;
   description: string;
@@ -153,8 +145,6 @@ declare interface UpdateUserDto {
   avatar?: string;
 
   photo?: string;
-
-  address?: string;
 
   description?: string;
 }

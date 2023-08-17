@@ -15,6 +15,7 @@ import '@/styles/nprogress.module.scss';
 import '@/styles/normalize.css';
 import useFetchUserInfo from '@/hooks/useFetchUserInfo';
 import AdminLayout from '@/components/Admin/AdminLayout';
+import WorkSplaceLayout from '@/components/WorkSplaceLayout';
 Router.events.on('routeChangeStart', nProgress.start);
 Router.events.on('routeChangeError', nProgress.done);
 Router.events.on('routeChangeComplete', nProgress.done);
@@ -32,8 +33,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [locale]);
 
   const isAdminRoute = router.pathname.startsWith('/admin');
+  const isWorkSplaceRoute = router.pathname.startsWith('/worksplace');
 
-  const LayoutComponent = isAdminRoute ? AdminLayout : FrontLayout;
+  const LayoutComponent = isAdminRoute
+    ? AdminLayout
+    : isWorkSplaceRoute
+    ? WorkSplaceLayout
+    : FrontLayout;
   return (
     <LocaleProvider locale={getLocale}>
       <IntlProvider

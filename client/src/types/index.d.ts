@@ -36,7 +36,6 @@ declare interface Profile {
   gender: ProfileGenderEnum;
   avatar?: string | null;
   photo?: string | null;
-  address?: string | null;
   description?: string | null;
   githubLogin?: string | null;
   githubName?: string | null;
