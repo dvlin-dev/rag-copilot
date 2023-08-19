@@ -13,6 +13,11 @@
         > :last-child {
           height: 100%;
         }
+
+        .semi-layout-sider-children {
+          display: flex;
+          width: 100%;
+        }
       }
 
       .layout-header {

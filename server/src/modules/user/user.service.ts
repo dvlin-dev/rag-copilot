@@ -151,7 +151,7 @@ export class UserService {
       throw new NotFoundException('用户不存在');
     }
 
-    const { address, description, gender, avatar, photo } = updateUserDto;
+    const { description, gender, avatar, photo } = updateUserDto;
 
     return this.prisma.user.update({
       where: { id },
@@ -159,7 +159,6 @@ export class UserService {
         ...updateUserDto,
         profile: {
           update: {
-            ...(address && { address }),
             ...(description && { description }),
             ...(gender && { gender }),
             ...(avatar && { avatar }),

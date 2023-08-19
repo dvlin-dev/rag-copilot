@@ -1,4 +1,4 @@
-import Layout from '@/components/FrontLayout/Layout';
+import Layout from '@/components/Layout/FrontLayout/Layout';
 import Seo from '@/components/Seo';
 import styles from './index.module.scss';
 import { Button } from '@douyinfe/semi-ui';

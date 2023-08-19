@@ -108,17 +108,17 @@ export class AuthController {
     await this.emailService.sendVerificationCode(email);
   }
 
-  @ApiOperation({ summary: '获取当前登录设备' })
-  @UseGuards(JwtGuard)
-  @ApiBearerAuth()
-  @Get('get_user_devices')
-  async getUserDevices(@Req() req) {
-    if (!req.user.userId) {
-      throw new UnauthorizedException(TokenExpiredMessage);
-    }
-    const { userId } = req.user as JwtPayload;
-    return await this.authService.findUserDevices(userId);
-  }
+  // @ApiOperation({ summary: '获取当前登录设备' })
+  // @UseGuards(JwtGuard)
+  // @ApiBearerAuth()
+  // @Get('get_user_devices')
+  // async getUserDevices(@Req() req) {
+  //   if (!req.user.userId) {
+  //     throw new UnauthorizedException(TokenExpiredMessage);
+  //   }
+  //   const { userId } = req.user as JwtPayload;
+  //   return await this.authService.findUserDevices(userId);
+  // }
 
   @ApiOperation({ summary: '强制退出某设备' })
   @UseGuards(JwtGuard)

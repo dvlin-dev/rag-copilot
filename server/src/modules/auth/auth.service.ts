@@ -296,23 +296,21 @@ export class AuthService {
     return res;
   }
 
-  async findUserDevices(userId: string) {
-    const devices = await this.prisma.device.findUnique({
-      where: {
-        user: {
-          id: userId,
-        },
-      } as Prisma.DeviceWhereUniqueInput,
-      /**
-       * order: {
-        lastLoginAt: 'DESC',
-        },
-       */
-    });
-    return {
-      devices,
-    };
-  }
+  // async findUserDevices(userId: string) {
+  //   const devices = await this.prisma.device.findUnique({
+  //     where: {
+  //       userId,
+  //     },
+  //     /**
+  //      * order: {
+  //       lastLoginAt: 'DESC',
+  //       },
+  //      */
+  //   });
+  //   return {
+  //     devices,
+  //   };
+  // }
 
   // async forceLogoutDevice(userId: string, deviceId: string): Promise<void> {
   //   const device = await this.deviceRepository.findOne({

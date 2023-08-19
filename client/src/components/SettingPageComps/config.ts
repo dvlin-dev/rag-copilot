@@ -22,7 +22,7 @@ export const settingConfig: settingConfigType = {
   avatar: {
     title: '头像',
     description: '点击头像从你的文件中上传一个定制的头像。',
-    tips: '头像是可选的，但强烈推荐使用。它将在您的个人资料页面上显示，并在您发表评论时显示在您的评论旁边。',
+    tips: '头像体积限制 X MB',
   },
   username: {
     title: '你的名字',

@@ -9,13 +9,6 @@
     display: flex;
     gap: 32px;
 
-    .settingNav {
-      width: 250px;
-      position: sticky;
-      top: 50px;
-      transition: all 0.15s ease-in-out;
-    }
-
     .settingView {
       flex: 1;
 

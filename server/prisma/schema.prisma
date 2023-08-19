@@ -99,7 +99,6 @@ model UserProfile {
   gender      ProfileGenderEnum
   avatar      String?
   photo       String?
-  address     String?
   description String?
   githubLogin String?
   githubName  String?

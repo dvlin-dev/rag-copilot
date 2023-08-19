@@ -1,10 +1,9 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Layout, Nav } from '@douyinfe/semi-ui';
-import menuList, { MenuItem } from './config';
+import { MenuItem, DOCS_CONFIG, PROJECT_CONFIG } from './config';
 import { useRouter } from 'next/router';
 import { useLocale } from '@/locales';
 import useStore from '@/store/common/global';
-import Image from 'next/image';
 
 const { Sider } = Layout;
 
@@ -24,12 +23,34 @@ function findMenuByPath(menus: MenuItem[], path: string, keys: any[]): any {
   return [];
 }
 
-const Index: FC = () => {
+export type ContentSiderType = 'project' | 'docs' | undefined;
+
+interface ContentSiderProps {
+  contentSiderType: ContentSiderType;
+  children: React.ReactNode;
+}
+
+const { Content } = Layout;
+
+const ContentSider: FC<ContentSiderProps> = ({
+  contentSiderType,
+  children,
+}) => {
   const { pathname, push } = useRouter();
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const { formatMessage } = useLocale();
   const locale = useStore((state) => state.locale);
+
+  const menuList = useMemo(() => {
+    if (contentSiderType === 'project') {
+      return PROJECT_CONFIG;
+    } else if (contentSiderType === 'docs') {
+      return DOCS_CONFIG;
+    } else {
+      return [];
+    }
+  }, [contentSiderType]);
 
   const navList = useMemo(() => {
     return menuList.map((e) => {
@@ -37,15 +58,6 @@ const Index: FC = () => {
         ...e,
         text: formatMessage({ id: e.text }),
         icon: e?.icon,
-        items: e?.items
-          ? e.items.map((m) => {
-              return {
-                ...m,
-                text: formatMessage({ id: m.text }),
-                icon: m.icon,
-              };
-            })
-          : [],
       };
     });
   }, [menuList, locale]);
@@ -65,33 +77,33 @@ const Index: FC = () => {
   }, [pathname]);
 
   return (
-    <Sider style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
-      <Nav
-        items={navList}
-        openKeys={openKeys}
-        selectedKeys={selectedKeys}
-        onSelect={onSelect}
-        onOpenChange={onOpenChange}
-        style={{ maxWidth: 220, height: '100%' }}
-        header={{
-          logo: (
-            <Image
-              src={'/images/devlink_d_black.svg'}
-              alt='logo'
-              width={27}
-              height={35}
-              style={{ cursor: 'pointer' }}
-              // onClick={() => push('/')}
+    <>
+      {!!contentSiderType ? (
+        <Layout>
+          <Sider
+            style={{
+              backgroundColor: 'var(--semi-color-bg-1)',
+              width: '100%',
+              borderRadius: 10,
+              overflow: 'hidden',
+            }}
+          >
+            <Nav
+              items={navList}
+              openKeys={openKeys}
+              selectedKeys={selectedKeys}
+              onSelect={onSelect}
+              onOpenChange={onOpenChange}
+              style={{ maxWidth: 220, height: '100%' }}
             />
-          ),
-          text: 'docs-copilot',
-        }}
-        // footer={{
-        //   collapseButton: true,
-        // }}
-      />
-    </Sider>
+            <Content className='layout-content'>{children}</Content>
+          </Sider>
+        </Layout>
+      ) : (
+        <>{children}</>
+      )}
+    </>
   );
 };
 
-export default Index;
+export default ContentSider;

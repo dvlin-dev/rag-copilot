@@ -18,28 +18,6 @@ const Account = () => {
   return (
     <main className={styles.settingPage}>
       <div className={styles.settingContainer}>
-        <div className={styles.settingNav}>
-          <Anchor
-            getContainer={getContainer}
-            offsetTop={100}
-            targetOffset={100}
-            railTheme='tertiary'
-            scrollMotion
-            defaultAnchor='#normalInfo'
-            style={{
-              position: 'fixed',
-              left: '260px',
-              top: '100px',
-              width: '200px',
-              zIndex: 3,
-              fontSize: '18px',
-            }}
-          >
-            <Anchor.Link href='#normalInfo' title='基本信息' />
-            <Anchor.Link href='#thirdPartyLogin' title='第三方登录' />
-            {/* <Anchor.Link href='#deviceMange' title='设备管理' /> */}
-          </Anchor>
-        </div>
         <div className={styles.settingView}>
           <div id='normalInfo'>
             <div className={styles.settingBaseTitle}>基本信息</div>

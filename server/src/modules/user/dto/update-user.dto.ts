@@ -28,11 +28,6 @@ export class UpdateUserDto {
   @IsString()
   avatar?: string;
 
-  @ApiProperty({ description: '地址' })
-  @IsOptional()
-  @IsString()
-  address?: string;
-
   @ApiProperty({ description: '个人描述' })
   @IsOptional()
   @Length(0, 200)

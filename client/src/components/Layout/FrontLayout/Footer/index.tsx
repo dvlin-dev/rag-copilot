@@ -5,7 +5,7 @@ import { IconCloud } from '@douyinfe/semi-icons';
 import styles from './index.module.scss';
 import { group } from 'console';
 import DeployStatus from '../DeployStatus';
-import HoverLink from '../../HoverLink';
+import HoverLink from '../../../HoverLink';
 
 export default function Footer() {
   return (

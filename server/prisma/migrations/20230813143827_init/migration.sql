@@ -27,7 +27,6 @@ CREATE TABLE "UserProfile" (
     "gender" "ProfileGenderEnum" NOT NULL,
     "avatar" TEXT,
     "photo" TEXT,
-    "address" TEXT,
     "description" TEXT,
     "githubLogin" TEXT,
     "githubName" TEXT,
