@@ -45,7 +45,7 @@ export default function Code() {
         (item) => item.name === 'super' || item.name === 'admin'
       ) !== -1;
     // 判断权限
-    push(isAdmin ? '/admin' : '/');
+    push(isAdmin ? '/admin' : '/workspace');
     ToastSuccess('欢迎回来 👏');
   };
 

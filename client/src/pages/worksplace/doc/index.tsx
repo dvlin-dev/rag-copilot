@@ -3,16 +3,16 @@ import {
   IllustrationNoContent,
   IllustrationNoContentDark,
 } from '@douyinfe/semi-illustrations';
-import { Card, CardGroup, Empty, Typography } from '@douyinfe/semi-ui';
+import { Button, Card, CardGroup, Empty, Typography } from '@douyinfe/semi-ui';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
-const Project = () => {
+const Docs = () => {
   const { Text } = Typography;
   const { push } = useRouter();
-  const { data, isLoading } = useSWR('/project/list', fetcher);
+
+  const { data, isLoading } = useSWR('/doc/list', fetcher);
   if (isLoading) return <div>loading...</div>;
-  if (data.data.length === 0) return <div>暂无项目</div>;
   const isEmpty = data.data.length === 0;
   const empty = () => (
     <Empty
@@ -21,7 +21,7 @@ const Project = () => {
         <IllustrationNoContentDark style={{ width: 150, height: 150 }} />
       }
       title='无数据'
-      description='请先创建项目，暂时只能通过 /api/doc 路由手动创建'
+      description='请先创建知识库，暂时只能通过 /api/doc 路由手动创建'
     />
   );
   return (
@@ -39,9 +39,7 @@ const Project = () => {
               headerExtraContent={
                 <Text
                   link
-                  onClick={() =>
-                    push(`/worksplace/project/workshop?id=${item.id}`)
-                  }
+                  onClick={() => push(`/worksplace/doc/data?id=${item.id}`)}
                 >
                   进入
                 </Text>
@@ -56,4 +54,4 @@ const Project = () => {
   );
 };
 
-export default Project;
+export default Docs;

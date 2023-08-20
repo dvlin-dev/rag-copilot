@@ -42,6 +42,7 @@ export default function Login() {
             block
             className={styles.loginPathButton}
             onClick={githubAuth}
+            disabled
           >
             Github 授权
           </Button>

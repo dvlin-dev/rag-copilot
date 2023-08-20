@@ -109,7 +109,7 @@ declare interface Index {
   source?: string | null;
   namespace?: string | null;
   metadata?: any;
-  docsId: string;
+  docId: string;
 }
 
 declare interface Conversation {

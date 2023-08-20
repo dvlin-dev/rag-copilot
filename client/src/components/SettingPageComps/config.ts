@@ -22,7 +22,7 @@ export const settingConfig: settingConfigType = {
   avatar: {
     title: '头像',
     description: '点击头像从你的文件中上传一个定制的头像。',
-    tips: '头像体积限制 X MB',
+    tips: '（bug 修复中',
   },
   username: {
     title: '你的名字',
@@ -30,10 +30,10 @@ export const settingConfig: settingConfigType = {
   },
   email: {
     title: '邮箱',
-    tips: '我们将通过电子邮件向您确认更改',
+    tips: '我们将通过电子邮件向您确认更改（ 暂不会确认 =，=',
   },
   description: {
     title: '个人简介',
-    tips: '请输入 200 字符以内的简介',
+    tips: '请输入 200 字符以内的简介（ bug 修复中',
   },
 };

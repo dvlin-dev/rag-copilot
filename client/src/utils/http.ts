@@ -61,7 +61,11 @@ http.interceptors.response.use(
 
 const Handle401 = (message: string) => {
   const { pathname } = window.location;
-  if (!pathname.includes('login') && pathname !== '/') {
+  if (
+    !pathname.includes('login') &&
+    pathname !== '/' &&
+    !pathname.includes('examples')
+  ) {
     ToastError(message);
     window.location.href = '/login';
   }

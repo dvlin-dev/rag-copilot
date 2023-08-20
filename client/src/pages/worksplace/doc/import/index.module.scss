@@ -1,0 +1,17 @@
+.importContainer {
+  display: flex;
+  flex-direction: column;
+  .importContent {
+    .manualContainer {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      > div {
+        margin-bottom: 20px;
+      }
+    }
+    .importBtn {
+      width: 60px;
+    }
+  }
+}

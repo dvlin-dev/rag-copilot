@@ -1,0 +1,14 @@
+.workShop {
+  width: 100%;
+  .searchContainer {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    .searchInput {
+      flex: 1;
+    }
+    .searchBtn {
+      width: 60px;
+    }
+  }
+}

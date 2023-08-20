@@ -11,11 +11,6 @@ export interface MenuItem {
 
 const PROJECT_CONFIG: MenuItem[] = [
   {
-    itemKey: '1-1',
-    text: 'worksplace.project.list',
-    path: '/worksplace/project/list',
-  },
-  {
     itemKey: '1-2',
     text: 'worksplace.project.workshop',
     path: '/worksplace/project/workshop',
@@ -32,22 +27,22 @@ const PROJECT_CONFIG: MenuItem[] = [
   },
 ];
 
-const DOCS_CONFIG: MenuItem[] = [
+const DOC_CONFIG: MenuItem[] = [
   {
     itemKey: '2-1',
-    text: 'worksplace.docs.list',
-    path: '/worksplace/docs/list',
+    text: 'worksplace.doc.data',
+    path: '/worksplace/doc/data',
   },
   {
     itemKey: '2-2',
-    text: 'worksplace.docs.import',
-    path: '/worksplace/docs/import',
+    text: 'worksplace.doc.import',
+    path: '/worksplace/doc/import',
   },
   {
     itemKey: '2-3',
-    text: 'worksplace.docs.workshop',
-    path: '/worksplace/docs/workshop',
+    text: 'worksplace.doc.workshop',
+    path: '/worksplace/doc/workshop',
   },
 ];
 
-export { PROJECT_CONFIG, DOCS_CONFIG };
+export { PROJECT_CONFIG, DOC_CONFIG };

@@ -17,11 +17,15 @@ interface WorkSplaceLayoutProps {
 const WorkSplaceLayout: React.FC<WorkSplaceLayoutProps> = ({ children }) => {
   const { pathname } = useRouter();
 
+  const isSubRoute = (path: string, baseRoute: string) => {
+    return pathname.startsWith(baseRoute) && pathname !== baseRoute;
+  };
+
   const contentSiderType: ContentSiderType = React.useMemo(() => {
-    if (pathname.startsWith('/worksplace/project')) {
+    if (isSubRoute(pathname, '/worksplace/project')) {
       return 'project';
-    } else if (pathname.startsWith('/worksplace/docs')) {
-      return 'docs';
+    } else if (isSubRoute(pathname, '/worksplace/doc')) {
+      return 'doc';
     }
   }, [pathname]);
 
@@ -33,11 +37,11 @@ const WorkSplaceLayout: React.FC<WorkSplaceLayoutProps> = ({ children }) => {
           <Header />
           <Content className='layout-content'>
             <ContentSider contentSiderType={contentSiderType}>
-              <Suspense
+              {/* <Suspense
                 fallback={<SuspendFallbackLoading message='正在加载中' />}
-              >
-                {children}
-              </Suspense>
+              > */}
+              {children}
+              {/* </Suspense> */}
             </ContentSider>
           </Content>
         </Layout>

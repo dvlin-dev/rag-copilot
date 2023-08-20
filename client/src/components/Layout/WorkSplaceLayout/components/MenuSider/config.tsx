@@ -17,9 +17,9 @@ const MENU_CONFIG: MenuItem[] = [
   },
   {
     itemKey: '2',
-    text: 'worksplace.docs',
+    text: 'worksplace.doc',
     icon: <IconGallery />,
-    path: '/worksplace/docs',
+    path: '/worksplace/doc',
   },
   {
     itemKey: '3',

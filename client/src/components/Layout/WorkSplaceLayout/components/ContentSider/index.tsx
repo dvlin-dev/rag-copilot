@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Layout, Nav } from '@douyinfe/semi-ui';
-import { MenuItem, DOCS_CONFIG, PROJECT_CONFIG } from './config';
+import { MenuItem, DOC_CONFIG, PROJECT_CONFIG } from './config';
 import { useRouter } from 'next/router';
 import { useLocale } from '@/locales';
 import useStore from '@/store/common/global';
@@ -23,7 +23,7 @@ function findMenuByPath(menus: MenuItem[], path: string, keys: any[]): any {
   return [];
 }
 
-export type ContentSiderType = 'project' | 'docs' | undefined;
+export type ContentSiderType = 'project' | 'doc' | undefined;
 
 interface ContentSiderProps {
   contentSiderType: ContentSiderType;
@@ -36,7 +36,7 @@ const ContentSider: FC<ContentSiderProps> = ({
   contentSiderType,
   children,
 }) => {
-  const { pathname, push } = useRouter();
+  const { pathname, push, query } = useRouter();
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const { formatMessage } = useLocale();
@@ -45,8 +45,8 @@ const ContentSider: FC<ContentSiderProps> = ({
   const menuList = useMemo(() => {
     if (contentSiderType === 'project') {
       return PROJECT_CONFIG;
-    } else if (contentSiderType === 'docs') {
-      return DOCS_CONFIG;
+    } else if (contentSiderType === 'doc') {
+      return DOC_CONFIG;
     } else {
       return [];
     }
@@ -63,8 +63,11 @@ const ContentSider: FC<ContentSiderProps> = ({
   }, [menuList, locale]);
 
   const onSelect = (data) => {
+    const id = query.id;
+    const path = data.selectedItems[0].path as string;
+    const pathWithId = id ? `${path}?id=${id}` : path;
     setSelectedKeys([...data.selectedKeys]);
-    push(data.selectedItems[0].path as string);
+    push(pathWithId);
   };
   const onOpenChange = (data) => {
     setOpenKeys([...data.openKeys]);
@@ -94,7 +97,7 @@ const ContentSider: FC<ContentSiderProps> = ({
               selectedKeys={selectedKeys}
               onSelect={onSelect}
               onOpenChange={onOpenChange}
-              style={{ maxWidth: 220, height: '100%' }}
+              style={{ width: 160, height: '100%' }}
             />
             <Content className='layout-content'>{children}</Content>
           </Sider>
