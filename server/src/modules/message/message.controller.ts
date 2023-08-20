@@ -26,6 +26,7 @@ import { JwtGuard } from 'src/guards/jwt.guard';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { MessageService } from './message.service';
+import { CreateChatDto } from './dto/create-chat.dto';
 
 @ApiTags('消息')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -47,7 +48,7 @@ export class MessageController {
   @ApiOperation({ summary: '获取消息列表' })
   @ApiResponse({ status: 200, description: '成功获取消息列表' })
   @Get(':conversationId/list')
-  async getAll(@Query('conversationId') conversationId: string) {
+  async getAll(@Param('conversationId') conversationId: string) {
     const data = await this.messageService.getAll(conversationId);
     return {
       data,
@@ -74,5 +75,14 @@ export class MessageController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.messageService.delete(id);
+  }
+
+  @ApiOperation({ summary: 'chat' })
+  @Post(':conversationId/chat')
+  chat(
+    @Param('conversationId') conversationId: string,
+    @Body() createChatDto: CreateChatDto
+  ) {
+    return this.messageService.chat(conversationId, createChatDto);
   }
 }

@@ -53,36 +53,36 @@ export class VectorService {
     });
   }
 
-  getAll(docsId: string) {
+  getAll(docId: string) {
     return this.prisma.index.findMany({
       where: {
-        docsId,
+        docId,
       },
     });
   }
 
   async create(createVectorDto: CreateVectorDto) {
-    const { docsId, content, source, namespace, metadata } = createVectorDto;
+    const { docId, content, source, namespace, metadata } = createVectorDto;
     const keyConfiguration = getKeyConfigurationFromEnvironment();
     const vectorStore = await this.getVectorStore(keyConfiguration);
     return await vectorStore.addModels(
       await this.prisma.$transaction([
         this.prisma.index.create({
-          data: { content, docsId, source, namespace, metadata },
+          data: { content, docId, source, namespace, metadata },
         }),
       ])
     );
   }
 
-  async similaritySearch(searchVectorDto: SearchVectorDto) {
-    const { message, size, docsId } = searchVectorDto;
+  async similaritySearch(docId: string, searchVectorDto: SearchVectorDto) {
+    const { message, size } = searchVectorDto;
     const keyConfiguration = getKeyConfigurationFromEnvironment();
     const vectorStore = await this.getVectorStore(keyConfiguration);
     const docs = await vectorStore.similaritySearchWithScore(
       message,
       Number(size),
       {
-        docsId: { equals: docsId },
+        docId: { equals: docId },
       }
     );
     return docs.map((item) => item[0]);
@@ -104,5 +104,31 @@ export class VectorService {
         },
       }
     );
+  }
+
+  async chat_test(docId: string, searchVectorDto: SearchVectorDto) {
+    const { message, size } = searchVectorDto;
+    const keyConfiguration = getKeyConfigurationFromEnvironment();
+    const vectorStore = await this.getVectorStore(keyConfiguration);
+    const docs = await vectorStore.similaritySearchWithScore(
+      message,
+      Number(size),
+      {
+        docId: { equals: docId },
+      }
+    );
+    const model = await getModel(keyConfiguration);
+    const context = docs.reduce((acc, item) => {
+      return acc + item[0].pageContent + '\n';
+    }, '');
+    const prompt = PromptTemplate.fromTemplate(
+      '在结尾处用以下几段语境回答问题。如果你不知道答案，只需说你不知道，不要尝试编造答案。\n\n{context}\n\n问题：{question}\n有用的答案：'
+    );
+    const chain = new LLMChain({ llm: model, prompt });
+    const result = (await chain.call({ context, question: message })).text;
+    return {
+      result,
+      docs,
+    };
   }
 }

@@ -99,7 +99,7 @@ CREATE TABLE "ProjectDetail" (
 );
 
 -- CreateTable
-CREATE TABLE "Docs" (
+CREATE TABLE "Doc" (
     "id" TEXT NOT NULL,
     "name" TEXT,
     "description" TEXT,
@@ -107,7 +107,7 @@ CREATE TABLE "Docs" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
 
-    CONSTRAINT "Docs_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Doc_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -118,7 +118,7 @@ CREATE TABLE "Index" (
     "source" TEXT,
     "namespace" TEXT,
     "metadata" JSONB,
-    "docsId" TEXT NOT NULL,
+    "docId" TEXT NOT NULL,
 
     CONSTRAINT "Index_pkey" PRIMARY KEY ("id")
 );
@@ -146,7 +146,7 @@ CREATE TABLE "Message" (
 );
 
 -- CreateTable
-CREATE TABLE "_DocsToProject" (
+CREATE TABLE "_DocToProject" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
@@ -173,10 +173,10 @@ CREATE UNIQUE INDEX "UsersRole_user_id_key" ON "UsersRole"("userId");
 CREATE UNIQUE INDEX "UsersRole_role_id_key" ON "UsersRole"("roleId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_DocsToProject_AB_unique" ON "_DocsToProject"("A", "B");
+CREATE UNIQUE INDEX "_DocToProject_AB_unique" ON "_DocToProject"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_DocsToProject_B_index" ON "_DocsToProject"("B");
+CREATE INDEX "_DocToProject_B_index" ON "_DocToProject"("B");
 
 -- AddForeignKey
 ALTER TABLE "UserProfile" ADD CONSTRAINT "Profile_user_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -197,10 +197,10 @@ ALTER TABLE "UsersRole" ADD CONSTRAINT "UsersRole_user_id_fkey" FOREIGN KEY ("us
 ALTER TABLE "Project" ADD CONSTRAINT "Project_user_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Docs" ADD CONSTRAINT "Docs_user_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Doc" ADD CONSTRAINT "Doc_user_id_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Index" ADD CONSTRAINT "Index_docs_id_fkey" FOREIGN KEY ("docsId") REFERENCES "Docs"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Index" ADD CONSTRAINT "Index_doc_id_fkey" FOREIGN KEY ("docId") REFERENCES "Doc"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Conversation" ADD CONSTRAINT "Conversation_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -209,7 +209,7 @@ ALTER TABLE "Conversation" ADD CONSTRAINT "Conversation_projectId_fkey" FOREIGN 
 ALTER TABLE "Message" ADD CONSTRAINT "Message_conversationId_fkey" FOREIGN KEY ("conversationId") REFERENCES "Conversation"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_DocsToProject" ADD CONSTRAINT "_DocsToProject_A_fkey" FOREIGN KEY ("A") REFERENCES "Docs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_DocToProject" ADD CONSTRAINT "_DocToProject_A_fkey" FOREIGN KEY ("A") REFERENCES "Doc"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_DocsToProject" ADD CONSTRAINT "_DocsToProject_B_fkey" FOREIGN KEY ("B") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_DocToProject" ADD CONSTRAINT "_DocToProject_B_fkey" FOREIGN KEY ("B") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

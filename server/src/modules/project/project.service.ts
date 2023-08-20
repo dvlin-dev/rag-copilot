@@ -64,6 +64,7 @@ export class ProjectService {
       whiteList,
       ipLimit: Number(ipLimit),
     };
+
     return this.prisma.project.update({
       where: {
         id,

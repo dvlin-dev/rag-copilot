@@ -7,11 +7,6 @@ export class SearchVectorDto {
   @IsNotEmpty()
   message: string;
 
-  @ApiProperty({ description: '知识库 id', required: true })
-  @IsString()
-  @IsNotEmpty()
-  docsId: string;
-
   @ApiProperty({ description: '数量', required: true })
   @IsNotEmpty()
   size: number;

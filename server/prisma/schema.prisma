@@ -14,7 +14,7 @@ model Project {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now())
   userId        String
-  documents     Docs[]
+  docs          Doc[]
   conversations Conversation[]
   user          User           @relation(fields: [userId], references: [id])
   projectDetail ProjectDetail?
@@ -30,7 +30,7 @@ model ProjectDetail {
   Project   Project  @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
-model Docs {
+model Doc {
   id          String    @id @default(uuid())
   name        String?
   description String?
@@ -49,8 +49,8 @@ model Index {
   source    String?
   namespace String?
   metadata  Json?
-  docsId    String
-  docs      Docs                   @relation(fields: [docsId], references: [id])
+  docId     String
+  doc       Doc                    @relation(fields: [docId], references: [id])
 }
 
 model Conversation {
@@ -91,7 +91,7 @@ model User {
   profile     UserProfile?
   roles       UsersRole[]
   Project     Project[]
-  Docs        Docs[]
+  Docs        Doc[]
 }
 
 model UserProfile {

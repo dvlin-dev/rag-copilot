@@ -10,7 +10,7 @@ export class CreateVectorDto {
   @ApiProperty({ description: '知识库 id', required: true })
   @IsString()
   @IsNotEmpty()
-  docsId: string;
+  docId: string;
 
   @ApiProperty({ description: '来源', required: false })
   @IsString()

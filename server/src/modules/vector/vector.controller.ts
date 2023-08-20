@@ -45,11 +45,11 @@ export class VectorController {
 
   @ApiOperation({ summary: '获取所有的向量列表' })
   @ApiResponse({ status: 200, description: '成功获取用户资料' })
-  @Get(':id/getVectors')
-  async getAll(@Query('docsId') docsId: string) {
-    const vectors = await this.vectorService.getAll(docsId);
+  @Get(':docId/list')
+  async getAll(@Param('docId') docId: string) {
+    const data = await this.vectorService.getAll(docId);
     return {
-      vectors,
+      data,
     };
   }
 
@@ -79,11 +79,30 @@ export class VectorController {
 
   @ApiOperation({ summary: '相似度搜索' })
   @ApiResponse({ status: 200, description: '成功获取' })
-  @Get(':id/similarity_search')
-  async similaritySearch(@Query() searchVectorDto: SearchVectorDto) {
-    const docs = await this.vectorService.similaritySearch(searchVectorDto);
+  @Get(':docId/similarity_search')
+  async similaritySearch(
+    @Param('docId') docId: string,
+    @Query() searchVectorDto: SearchVectorDto
+  ) {
+    const data = await this.vectorService.similaritySearch(
+      docId,
+      searchVectorDto
+    );
     return {
-      docs,
+      data,
+    };
+  }
+
+  @ApiOperation({ summary: 'chat_test' })
+  @ApiResponse({ status: 200, description: '成功获取' })
+  @Get(':docId/chat_test')
+  async chatTest(
+    @Param('docId') docId: string,
+    @Query() searchVectorDto: SearchVectorDto
+  ) {
+    const data = await this.vectorService.chat_test(docId, searchVectorDto);
+    return {
+      data,
     };
   }
 }

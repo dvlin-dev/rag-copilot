@@ -11,7 +11,7 @@ import { ConfigEnum } from './enum/config.enum';
 import { StatusModule } from './modules/status/status.module';
 import { OssModule } from './modules/oss/oss.module';
 import { VectorModule } from './modules/vector/vector.module';
-import { DocsModule } from './modules/docs/docs.module';
+import { DocModule } from './modules/doc/doc.module';
 import { PrismaModule } from './utils/prisma/prisma.module';
 import { ProjectModule } from './modules/project/project.module';
 import { ConversationModule } from './modules/conversation/conversation.module';
@@ -89,7 +89,7 @@ const schema = Joi.object({
     StatusModule,
     OssModule,
     VectorModule,
-    DocsModule,
+    DocModule,
     ProjectModule,
     ConversationModule,
     MessagetModule,
