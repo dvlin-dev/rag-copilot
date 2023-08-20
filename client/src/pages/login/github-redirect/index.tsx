@@ -2,7 +2,6 @@ import { getGithubUser } from '@/api/github';
 import { generateDeviceInfo } from '@/utils/device';
 import React, { useEffect } from 'react';
 import useUserStore from '@/store/user';
-import { User } from '@/types/user';
 import { useRouter } from 'next/router';
 import { ToastError, ToastSuccess } from '@/utils/common';
 import { Empty, Spin } from '@douyinfe/semi-ui';
@@ -18,12 +17,12 @@ const GithubRedirect = () => {
   const afterLoginSuccess = (user: User) => {
     const { roles } = user;
     setUser(user);
-    const isAdmin =
-      roles.findIndex(
-        (item) => item.name === 'super' || item.name === 'admin'
-      ) !== -1;
+    // const isAdmin =
+    //   roles.findIndex(
+    //     (item) => item.name === 'super' || item.name === 'admin'
+    //   ) !== -1;
     // 判断权限
-    push(isAdmin ? '/admin' : '/');
+    push('/workspace');
     ToastSuccess('欢迎 👏');
   };
 

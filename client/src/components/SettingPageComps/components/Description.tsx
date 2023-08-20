@@ -11,7 +11,7 @@ const DescriptionSettingCard = () => {
   const config = settingConfig.description;
 
   const { user, setUser } = useUserStore();
-  const initialValue = user?.profile.description || '';
+  const initialValue = user?.profile?.description || '';
 
   const handleInputChange = (value: string) => {
     setInputValue(value);

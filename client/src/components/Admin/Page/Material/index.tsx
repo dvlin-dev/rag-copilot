@@ -3,7 +3,6 @@ import { IconDelete, IconMore } from '@douyinfe/semi-icons';
 import { Button, Table } from '@douyinfe/semi-ui';
 import { fetcher } from '@/utils/http';
 import { useState, useMemo } from 'react';
-import { User } from '@/types/user';
 import moment from 'moment';
 import Avatar from '@/components/CustomAvatar';
 

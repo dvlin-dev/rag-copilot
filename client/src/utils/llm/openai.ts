@@ -1,6 +1,4 @@
 import { OpenAIChat } from 'langchain/llms/openai';
-import { ModelType } from '../../../types/chat';
-import { KeyConfiguration } from '../../../types/keyConfiguration';
 
 export const getModel = async (keyConfiguration: KeyConfiguration) => {
   const {

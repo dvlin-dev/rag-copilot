@@ -5,7 +5,7 @@ import DescriptionSettingCard from '@/components/SettingPageComps/components/Des
 
 import styles from './style/index.module.scss';
 import DeviceMange from '@/components/SettingPageComps/components/DeviceMange';
-import ThirdPartyLoginInfoCard from '@/components/ThirdPartyLoginInfoCard';
+// import ThirdPartyLoginInfoCard from '@/components/ThirdPartyLoginInfoCard';
 import AvatarettingCard from '@/components/SettingPageComps/components/Avatar';
 import useUserStore from '@/store/user';
 
@@ -34,11 +34,11 @@ const Account = () => {
               <DescriptionSettingCard />
             </div>
           </div>
-          {user && user.githubId && (
+          {/* {user && user.githubId && (
             <div id='thirdPartyLogin'>
               <ThirdPartyLoginInfoCard />
             </div>
-          )}
+          )} */}
           {/* <div id='deviceMange'>
             <DeviceMange />
           </div> */}

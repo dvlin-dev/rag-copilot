@@ -10,7 +10,7 @@ const AvatarettingCard = () => {
   const { user, setUser } = useUserStore();
 
   const config = settingConfig.avatar;
-  const defaultAvatar = user?.profile.avatar || '';
+  const defaultAvatar = user?.profile?.avatar || '';
 
   const successHandle = (url) => {
     return new Promise((resolve, reject) => {

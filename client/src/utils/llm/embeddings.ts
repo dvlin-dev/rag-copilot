@@ -1,6 +1,4 @@
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
-import { KeyConfiguration } from '../../../types/keyConfiguration';
-import { ModelType } from '../../../types/chat';
 
 export const getEmbeddings = (keyConfiguration: KeyConfiguration) => {
   const {

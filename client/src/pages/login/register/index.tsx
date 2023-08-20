@@ -2,7 +2,6 @@ import styles from './index.module.scss';
 import { Form, Button } from '@douyinfe/semi-ui';
 import { useRouter } from 'next/router';
 import { loginApi, register } from '@/api/user';
-import { LoginByPasswordParams, RegisterByEmail, User } from '@/types/user';
 import { useState } from 'react';
 import { ToastSuccess } from '@/utils/common';
 import useUserStore from '@/store/user';
@@ -46,12 +45,13 @@ export default function Email() {
   const afterLoginSuccess = (user: User) => {
     const { roles } = user;
     setUser(user);
-    const isAdmin =
-      roles.findIndex(
-        (item) => item.name === 'super' || item.name === 'admin'
-      ) !== -1;
+    // const isAdmin =
+    //   roles.findIndex(
+    //     (item) => item.name === 'super' || item.name === 'admin'
+    //   ) !== -1;
     // 判断权限
-    push(isAdmin ? '/admin' : '/');
+    // push(isAdmin ? '/admin' : '/');
+    push('/workspace');
     ToastSuccess('欢迎 👏');
   };
 
