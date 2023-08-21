@@ -56,7 +56,7 @@ const Index: FC = () => {
         position='bottomLeft'
         render={
           <Dropdown.Menu>
-            <Dropdown.Item onClick={() => push('/worksplace/account')}>
+            <Dropdown.Item onClick={() => push('/workspace/account')}>
               个人设置
             </Dropdown.Item>
             <DropdownDivider />

@@ -12,36 +12,36 @@ export interface MenuItem {
 const PROJECT_CONFIG: MenuItem[] = [
   {
     itemKey: '1-2',
-    text: 'worksplace.project.workshop',
-    path: '/worksplace/project/workshop',
+    text: 'workspace.project.workshop',
+    path: '/workspace/project/workshop',
   },
   {
     itemKey: '1-3',
-    text: 'worksplace.project.feekback',
-    path: '/worksplace/project/feekback',
+    text: 'workspace.project.feekback',
+    path: '/workspace/project/feekback',
   },
   {
     itemKey: '1-4',
-    text: 'worksplace.project.setting',
-    path: '/worksplace/project/setting',
+    text: 'workspace.project.setting',
+    path: '/workspace/project/setting',
   },
 ];
 
 const DOC_CONFIG: MenuItem[] = [
   {
     itemKey: '2-1',
-    text: 'worksplace.doc.data',
-    path: '/worksplace/doc/data',
+    text: 'workspace.doc.data',
+    path: '/workspace/doc/data',
   },
   {
     itemKey: '2-2',
-    text: 'worksplace.doc.import',
-    path: '/worksplace/doc/import',
+    text: 'workspace.doc.import',
+    path: '/workspace/doc/import',
   },
   {
     itemKey: '2-3',
-    text: 'worksplace.doc.workshop',
-    path: '/worksplace/doc/workshop',
+    text: 'workspace.doc.workshop',
+    path: '/workspace/doc/workshop',
   },
 ];
 

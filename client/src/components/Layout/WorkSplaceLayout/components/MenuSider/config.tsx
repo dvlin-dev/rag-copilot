@@ -11,21 +11,21 @@ export interface MenuItem {
 const MENU_CONFIG: MenuItem[] = [
   {
     itemKey: '1',
-    text: 'worksplace.project',
+    text: 'workspace.project',
     icon: <IconComponent />,
-    path: '/worksplace/project',
+    path: '/workspace/project',
   },
   {
     itemKey: '2',
-    text: 'worksplace.doc',
+    text: 'workspace.doc',
     icon: <IconGallery />,
-    path: '/worksplace/doc',
+    path: '/workspace/doc',
   },
   {
     itemKey: '3',
-    text: 'worksplace.account',
+    text: 'workspace.account',
     icon: <IconIdCard />,
-    path: '/worksplace/account',
+    path: '/workspace/account',
   },
 ];
 

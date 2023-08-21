@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-export default function Worksplace() {
+export default function workspace() {
   const { push } = useRouter();
 
   useEffect(() => {

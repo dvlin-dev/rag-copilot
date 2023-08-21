@@ -22,9 +22,9 @@ const WorkSplaceLayout: React.FC<WorkSplaceLayoutProps> = ({ children }) => {
   };
 
   const contentSiderType: ContentSiderType = React.useMemo(() => {
-    if (isSubRoute(pathname, '/worksplace/project')) {
+    if (isSubRoute(pathname, '/workspace/project')) {
       return 'project';
-    } else if (isSubRoute(pathname, '/worksplace/doc')) {
+    } else if (isSubRoute(pathname, '/workspace/doc')) {
       return 'doc';
     }
   }, [pathname]);

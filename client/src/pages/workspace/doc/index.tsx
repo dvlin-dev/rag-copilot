@@ -39,7 +39,7 @@ const Docs = () => {
               headerExtraContent={
                 <Text
                   link
-                  onClick={() => push(`/worksplace/doc/data?id=${item.id}`)}
+                  onClick={() => push(`/workspace/doc/data?id=${item.id}`)}
                 >
                   进入
                 </Text>

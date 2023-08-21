@@ -1,5 +1,5 @@
 import { enGB_menu } from './menu';
-import { enGBWorkSplace } from './worksplace';
+import { enGBWorkSplace } from './workspace';
 const en_GB = {
   ...enGB_menu,
   ...enGBWorkSplace,

@@ -1,5 +1,5 @@
 import { zhCN_menu } from './menu';
-import { WorkSplaceZhCN } from './worksplace';
+import { WorkSplaceZhCN } from './workspace';
 const zh_CN = {
   ...zhCN_menu,
   ...WorkSplaceZhCN,

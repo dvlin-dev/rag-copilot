@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [locale]);
 
   const isAdminRoute = router.pathname.startsWith('/admin');
-  const isWorkSplaceRoute = router.pathname.startsWith('/worksplace');
+  const isWorkSplaceRoute = router.pathname.startsWith('/workspace');
 
   const LayoutComponent = isAdminRoute
     ? AdminLayout

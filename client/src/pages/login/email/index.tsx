@@ -43,7 +43,7 @@ export default function Email() {
     //     (item) => item.name === 'super' || item.name === 'admin'
     //   ) !== -1;
     // 判断权限
-    push('/worksplace');
+    push('/workspace');
     ToastSuccess('欢迎回来 👏');
   };
 

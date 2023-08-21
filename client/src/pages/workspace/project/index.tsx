@@ -40,7 +40,7 @@ const Project = () => {
                 <Text
                   link
                   onClick={() =>
-                    push(`/worksplace/project/workshop?id=${item.id}`)
+                    push(`/workspace/project/workshop?id=${item.id}`)
                   }
                 >
                   进入
