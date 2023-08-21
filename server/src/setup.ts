@@ -59,8 +59,9 @@ export const setupApp = (app: INestApplication) => {
           'https://devlink.wiki',
           `https://${config['DB_HOST']}`,
           `http://${config['DB_HOST']}`,
-        ]; // 您可以在此列表中添加更多允许的域名
-        // 如果 origin 未定义（例如，通过 Postman 进行 API 调用），允许请求
+          `https://${config['WHITE_DOMAIN']}`,
+          `http://${config['WHITE_DOMAIN']}`,
+        ]; 
         if (!origin) return callback(null, true);
 
         // 检查 origin 是否在允许的域名列表中
