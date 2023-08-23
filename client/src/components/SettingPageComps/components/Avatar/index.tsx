@@ -16,8 +16,8 @@ const AvatarettingCard = () => {
     return new Promise((resolve, reject) => {
       updateUserInfo({ avatar: url })
         .then((data) => {
-          setUser(data.data);
-          resolve(data.data);
+          setUser(data);
+          resolve(data);
         })
         .catch(reject);
     });

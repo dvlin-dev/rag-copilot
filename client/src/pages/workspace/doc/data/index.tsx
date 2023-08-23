@@ -23,7 +23,7 @@ const Data = () => {
   );
   if (isLoading) return <div>数据列表获取中...</div>;
   if (error) return <div>数据列表获取失败</div>;
-  if (data.data.length === 0)
+  if (data.length === 0)
     return (
       <Empty
         image={<IllustrationNoContent style={{ width: 150, height: 150 }} />}
@@ -71,9 +71,9 @@ const Data = () => {
   return (
     <Table
       columns={columns}
-      dataSource={data.data}
+      dataSource={data}
       rowSelection={rowSelection}
-      pagination={data.data.length > 10 ? { pageSize: 10 } : false}
+      pagination={data.length > 10 ? { pageSize: 10 } : false}
       rowKey={(record) => record.id}
     />
   );

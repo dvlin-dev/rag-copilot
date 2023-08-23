@@ -19,7 +19,7 @@ export default function Jsdesign() {
       size: 5,
     })
       .then((res) => {
-        const { result, docs } = res.data.data;
+        const { result, docs } = res.data;
         setResult(result);
         const _docs = docs.map((item) => item[0].metadata.content);
         console.log(_docs);

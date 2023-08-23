@@ -27,7 +27,7 @@ const Project = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { data, isLoading, mutate } = useSWR('/project/list', fetcher);
   if (isLoading) return <div>loading...</div>;
-  const isEmpty = data.data.length === 0;
+  const isEmpty = data.length === 0;
   const empty = () => (
     <Empty
       image={<IllustrationNoContent style={{ width: 150, height: 150 }} />}
@@ -62,7 +62,7 @@ const Project = () => {
         empty()
       ) : (
         <CardGroup spacing={18}>
-          {data.data.map((item) => (
+          {data.map((item) => (
             <Card
               key={item.id}
               title={item.name}

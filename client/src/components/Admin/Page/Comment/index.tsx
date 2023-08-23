@@ -67,7 +67,7 @@ export default function CommentPageTable() {
   return (
     <Table
       columns={columns}
-      dataSource={data.data}
+      dataSource={data}
       rowSelection={rowSelection}
       pagination
       rowKey={(record) => record.id}

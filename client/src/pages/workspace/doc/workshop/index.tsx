@@ -65,7 +65,7 @@ const WorkShop = () => {
     };
     similaritySearch(params)
       .then((res) => {
-        setList(res.data.data);
+        setList(res.data);
       })
       .finally(() => {
         setLoading(false);

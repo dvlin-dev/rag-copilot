@@ -13,7 +13,7 @@ const Docs = () => {
 
   const { data, isLoading } = useSWR('/doc/list', fetcher);
   if (isLoading) return <div>loading...</div>;
-  const isEmpty = data.data.length === 0;
+  const isEmpty = data.length === 0;
   const empty = () => (
     <Empty
       image={<IllustrationNoContent style={{ width: 150, height: 150 }} />}
@@ -30,7 +30,7 @@ const Docs = () => {
         empty()
       ) : (
         <CardGroup spacing={18}>
-          {data.data.map((item) => (
+          {data.map((item) => (
             <Card
               key={item.id}
               title={item.name}

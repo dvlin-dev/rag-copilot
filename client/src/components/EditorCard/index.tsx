@@ -7,6 +7,7 @@ interface BaseSettingCardProps {
   title: string;
   tips?: string;
   description?: string;
+  footer?: React.ReactNode;
 }
 
 interface InputSettingCardProps extends BaseSettingCardProps {
@@ -31,7 +32,7 @@ interface CumstomSettingCardProps extends BaseSettingCardProps {
 type SettingCardProps = InputSettingCardProps | CumstomSettingCardProps;
 
 const EditorCard = (props: SettingCardProps) => {
-  const { title, type, tips, description } = props;
+  const { title, type, tips, description, footer } = props;
 
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -48,6 +49,26 @@ const EditorCard = (props: SettingCardProps) => {
   const finalDisabled =
     isDisabled || (props as InputSettingCardProps).isExternallyDisabled;
 
+  const getFooter = () => {
+    return footer ? (
+      footer
+    ) : (
+      <div className={styles.footerStyle}>
+        {tips}
+        {type === 'input' && (
+          <Button
+            theme='solid'
+            type='primary'
+            onClick={(props as InputSettingCardProps).onSave}
+            disabled={finalDisabled}
+            loading={(props as InputSettingCardProps).loading}
+          >
+            保存
+          </Button>
+        )}
+      </div>
+    );
+  };
   return (
     <Card
       className={styles.SettingCard}
@@ -76,22 +97,7 @@ const EditorCard = (props: SettingCardProps) => {
         lineHeight: 1.6,
         padding: '12px 24px',
       }}
-      footer={
-        <div className={styles.footerStyle}>
-          {tips}
-          {type === 'input' && (
-            <Button
-              theme='solid'
-              type='primary'
-              onClick={(props as InputSettingCardProps).onSave}
-              disabled={finalDisabled}
-              loading={(props as InputSettingCardProps).loading}
-            >
-              保存
-            </Button>
-          )}
-        </div>
-      }
+      footer={getFooter()}
       bodyStyle={{ display: 'none' }}
     />
   );

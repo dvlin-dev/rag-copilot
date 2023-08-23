@@ -17,7 +17,7 @@ http.interceptors.request.use(
 
 // 添加响应拦截器
 http.interceptors.response.use(
-  (response) => response,
+  (response) => response.data,
   (error) => {
     // 对响应错误做点什么
     if (error.response) {

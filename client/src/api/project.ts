@@ -8,3 +8,9 @@ export const createProjectApi = (data: CreateProject) =>
     method: 'post',
     data,
   });
+export const updateProjectApi = (data: UpdateProject) =>
+  http({
+    url: '/project',
+    method: 'patch',
+    data,
+  });
