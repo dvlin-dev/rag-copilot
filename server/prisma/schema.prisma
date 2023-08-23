@@ -8,16 +8,16 @@ generator client {
 }
 
 model Project {
-  id            String         @id @default(uuid())
-  name          String
-  description   String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(now())
-  userId        String
-  docs          Doc[]
+  id          String  @id @default(uuid())
+  name        String
+  description String?
   conversations Conversation[]
+  userId        String
   user          User           @relation(fields: [userId], references: [id])
   projectDetail ProjectDetail?
+  docs          Doc[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now())
 }
 
 model ProjectDetail {
@@ -35,11 +35,11 @@ model Doc {
   name        String?
   description String?
   indexs      Index[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
-  project     Project[]
+  projects    Project[]
   userId      String
   user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
 }
 
 model Index {

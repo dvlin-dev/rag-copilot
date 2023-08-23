@@ -39,7 +39,7 @@ export class ProjectController {
   @ApiOperation({ summary: '获取项目详情' })
   @ApiResponse({ status: 200, description: '成功获取项目资料' })
   @Get(':id/detail')
-  get(@Query('id') id: string) {
+  get(@Param('id') id: string) {
     return this.projectService.get(id);
   }
 

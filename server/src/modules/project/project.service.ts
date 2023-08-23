@@ -7,8 +7,8 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 export class ProjectService {
   constructor(private prisma: PrismaService) {}
 
-  get(id: string) {
-    return this.prisma.project.findUnique({
+  async get(id: string) {
+    const data = await this.prisma.project.findUnique({
       where: {
         id,
       },
@@ -22,8 +22,18 @@ export class ProjectService {
             profile: true,
           },
         },
+        docs: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
       },
     });
+    return {
+      data,
+    };
   }
 
   getAll(userId: string) {
@@ -56,8 +66,16 @@ export class ProjectService {
   }
 
   async update(updateProjectDto: UpdateProjectDto) {
-    const { id, name, description, prompt, questions, whiteList, ipLimit } =
-      updateProjectDto;
+    const {
+      id,
+      name,
+      description,
+      prompt,
+      questions,
+      whiteList,
+      ipLimit,
+      docIds,
+    } = updateProjectDto;
     const projectDetail = {
       prompt,
       questions,
@@ -65,7 +83,7 @@ export class ProjectService {
       ipLimit: Number(ipLimit),
     };
 
-    return this.prisma.project.update({
+    const data = await this.prisma.project.update({
       where: {
         id,
       },
@@ -75,11 +93,19 @@ export class ProjectService {
         projectDetail: {
           update: projectDetail,
         },
+        docs: {
+          connect: docIds.map((docId) => ({ id: docId })),
+        },
       },
       include: {
         projectDetail: true,
+        docs: true,
       },
     });
+
+    return {
+      data,
+    };
   }
 
   delete(id: string) {

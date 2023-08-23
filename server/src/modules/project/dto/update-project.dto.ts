@@ -42,4 +42,9 @@ export class UpdateProjectDto {
   @IsNumber()
   @IsOptional()
   ipLimit: string;
+
+  @ApiProperty({ description: 'docIds', required: false })
+  @IsArray()
+  @IsOptional()
+  docIds: string[];
 }
