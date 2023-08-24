@@ -50,10 +50,7 @@ export class ProjectController {
   @ApiBearerAuth()
   async getAll(@Req() req) {
     const userId = req.user.userId;
-    const data = await this.projectService.getAll(userId);
-    return {
-      data,
-    };
+    return this.projectService.getAll(userId);
   }
 
   @ApiOperation({ summary: '创建项目' })

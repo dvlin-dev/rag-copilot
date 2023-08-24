@@ -76,9 +76,7 @@ export class AuthController {
   @ApiOperation({ summary: '根据 refreshToken 生成新的 accessToken' })
   @Post('/refreshToken')
   async refreshToken(@Body('refreshToken') refreshToken: string) {
-    return await this.authService.generateAccessTokenFromRefreshToken(
-      refreshToken
-    );
+    return this.authService.generateAccessTokenFromRefreshToken(refreshToken);
   }
 
   // 退出登录
@@ -91,7 +89,7 @@ export class AuthController {
       throw new UnauthorizedException(TokenExpiredMessage);
     }
     const { userId } = req.user;
-    return await this.redis.del(`${userId}_${deviceId}_token`);
+    return this.redis.del(`${userId}_${deviceId}_token`);
   }
 
   @ApiOperation({ summary: '注册' })
@@ -105,7 +103,7 @@ export class AuthController {
   @ApiOkResponse({ description: '验证码', type: String })
   @Post('send-code')
   async sendVerificationCode(@Body('email') email: string): Promise<void> {
-    await this.emailService.sendVerificationCode(email);
+    return this.emailService.sendVerificationCode(email);
   }
 
   // @ApiOperation({ summary: '获取当前登录设备' })
@@ -136,7 +134,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'github 授权' })
   @Post('github')
-  async githubaAuth(@Body() dto: SignInByGithubAuthDto, @Req() req) {
-    return await this.authService.githubAUth(dto, req);
+  githubaAuth(@Body() dto: SignInByGithubAuthDto, @Req() req) {
+    return this.authService.githubAUth(dto, req);
   }
 }

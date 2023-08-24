@@ -8,7 +8,7 @@ export class ProjectService {
   constructor(private prisma: PrismaService) {}
 
   async get(id: string) {
-    const data = await this.prisma.project.findUnique({
+    return this.prisma.project.findUnique({
       where: {
         id,
       },
@@ -31,9 +31,6 @@ export class ProjectService {
         },
       },
     });
-    return {
-      data,
-    };
   }
 
   getAll(userId: string) {

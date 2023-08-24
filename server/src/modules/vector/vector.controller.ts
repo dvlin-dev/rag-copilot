@@ -47,10 +47,7 @@ export class VectorController {
   @ApiResponse({ status: 200, description: '成功获取用户资料' })
   @Get(':docId/list')
   async getAll(@Param('docId') docId: string) {
-    const data = await this.vectorService.getAll(docId);
-    return {
-      data,
-    };
+    return this.vectorService.getAll(docId);
   }
 
   @ApiOperation({ summary: '添加向量数据' })
@@ -84,13 +81,7 @@ export class VectorController {
     @Param('docId') docId: string,
     @Query() searchVectorDto: SearchVectorDto
   ) {
-    const data = await this.vectorService.similaritySearch(
-      docId,
-      searchVectorDto
-    );
-    return {
-      data,
-    };
+    return this.vectorService.similaritySearch(docId, searchVectorDto);
   }
 
   @ApiOperation({ summary: 'chat_test' })
@@ -100,9 +91,6 @@ export class VectorController {
     @Param('docId') docId: string,
     @Query() searchVectorDto: SearchVectorDto
   ) {
-    const data = await this.vectorService.chat_test(docId, searchVectorDto);
-    return {
-      data,
-    };
+    return this.vectorService.chat_test(docId, searchVectorDto);
   }
 }

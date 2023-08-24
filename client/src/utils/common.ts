@@ -1,5 +1,5 @@
 import { getInfo } from '@/api/user';
-import { Modal, Toast, Notification } from '@douyinfe/semi-ui';
+import { Modal, Toast } from '@douyinfe/semi-ui';
 import type { FormApi } from '@douyinfe/semi-ui/lib/es/form';
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -9,14 +9,6 @@ export function ToastSuccess(content: string, duration = 4) {
     content: content,
     duration,
     showClose: false,
-  });
-}
-
-export function NoticeSuccess(title: string, content?: string, duration = 3) {
-  return Notification.success({
-    title: title,
-    content: content,
-    duration,
   });
 }
 
@@ -186,19 +178,10 @@ export function compareArrays(
 export const handleCopy = (text: string) => {
   navigator.clipboard.writeText(text).then(
     () => {
-      Notification.success({
-        title: '复制成功',
-        duration: 3,
-        theme: 'light',
-      });
+      ToastSuccess('复制成功');
     },
     (err) => {
-      Notification.error({
-        title: '复制失败',
-        content: err,
-        duration: 3,
-        theme: 'light',
-      });
+      ToastError('复制失败');
     }
   );
 };

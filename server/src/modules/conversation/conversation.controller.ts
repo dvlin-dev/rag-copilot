@@ -47,10 +47,7 @@ export class ConversationController {
   @ApiResponse({ status: 200, description: '成功获取会话列表' })
   @Get(':projectId/list')
   async getAll(@Query('projectId') projectId: string) {
-    const data = await this.conversationService.getAll(projectId);
-    return {
-      data,
-    };
+    return this.conversationService.getAll(projectId);
   }
 
   @ApiOperation({ summary: '创建会话' })

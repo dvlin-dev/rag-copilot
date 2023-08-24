@@ -42,8 +42,8 @@ export async function uploadFile(blob: Blob, fileName: string) {
       method: 'POST',
       data: formData,
     })
-      .then((data) => {
-        resolve(data.url);
+      .then((res) => {
+        resolve(res.data.url);
       })
       .catch((error) => {
         reject(error);

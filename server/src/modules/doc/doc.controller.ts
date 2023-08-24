@@ -50,10 +50,7 @@ export class DocController {
   @ApiBearerAuth()
   async getAll(@Req() req) {
     const userId = req.user.userId;
-    const data = await this.docService.getAll(userId);
-    return {
-      data,
-    };
+    return this.docService.getAll(userId);
   }
 
   @ApiOperation({ summary: '创建知识库' })

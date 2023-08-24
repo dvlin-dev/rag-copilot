@@ -21,7 +21,7 @@ export class TransformInterceptor<T>
   ): Observable<Response<T>> {
     return next.handle().pipe(
       map((data) => ({
-        ...data,
+        data,
         timestamp: new Date().toISOString(),
       }))
     );

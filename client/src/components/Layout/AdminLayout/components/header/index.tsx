@@ -2,8 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import {
   Layout,
   Nav,
-  Button,
-  Badge,
   Dropdown,
   RadioGroup,
   Radio,
@@ -16,7 +14,7 @@ import { useRouter } from 'next/router';
 import CustomAvatar from '@/components/CustomAvatar';
 import { getDeviceId } from '@/utils/device';
 import { logout } from '@/api/user';
-import { NoticeSuccess, clearUserToken } from '@/utils/common';
+import { ToastSuccess, clearUserToken } from '@/utils/common';
 
 const { Header } = Layout;
 
@@ -34,7 +32,7 @@ const Index: FC = () => {
     deviceId &&
       logout(deviceId)
         .then(() => {
-          NoticeSuccess('退出成功', user?.username);
+          ToastSuccess('退出成功');
           push('/login');
           clearUserToken();
           clearUser();

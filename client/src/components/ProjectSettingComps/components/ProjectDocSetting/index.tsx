@@ -10,10 +10,9 @@ import { useState } from 'react';
 import { fetcher } from '@/utils/http';
 import { useRouter } from 'next/router';
 import { updateProjectApi } from '@/api/project';
-import { NoticeSuccess, ToastError, ToastSuccess } from '@/utils/common';
+import { ToastError, ToastSuccess } from '@/utils/common';
 
 const ProjectDocSetting = () => {
-  const { user, setUser } = useUserStore();
   const [docModalVisible, setDocModalVisible] = useState(false);
   const [docConfirmLoading, setDocConfirmLoading] = useState(false);
   const config = ProjectSettingConfig.doc;
@@ -38,7 +37,6 @@ const ProjectDocSetting = () => {
   const successHandle = (url) => {
     return new Promise((resolve, reject) => {});
   };
-  console.info('data.docs', data.docs);
   const getFooter = () => {
     return (
       <div className={styles.projectDocSettingfooter}>

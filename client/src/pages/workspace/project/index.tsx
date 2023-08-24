@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import styles from './index.module.scss';
 import { useState } from 'react';
-import { NoticeSuccess, ToastWaring } from '@/utils/common';
+import { ToastSuccess } from '@/utils/common';
 import { createProjectApi } from '@/api/project';
 
 const Project = () => {
@@ -43,7 +43,7 @@ const Project = () => {
     setConfirmLoading(true);
     createProjectApi(values)
       .then((res) => {
-        NoticeSuccess('创建成功');
+        ToastSuccess('创建成功');
         setVisible(false);
         mutate();
       })

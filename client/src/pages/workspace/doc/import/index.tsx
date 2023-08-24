@@ -8,7 +8,7 @@ import {
 } from '@douyinfe/semi-ui';
 import styles from './index.module.scss';
 import { useState } from 'react';
-import { NoticeSuccess, ToastWaring } from '@/utils/common';
+import { ToastSuccess, ToastWaring } from '@/utils/common';
 import { addVector } from '@/api/vector';
 import { useRouter } from 'next/router';
 
@@ -38,7 +38,7 @@ const Import = () => {
       };
       addVector(vector)
         .then(() => {
-          NoticeSuccess('添加成功');
+          ToastSuccess('添加成功');
           formApi.reset();
         })
         .finally(() => {

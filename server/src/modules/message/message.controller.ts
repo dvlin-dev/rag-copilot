@@ -49,10 +49,7 @@ export class MessageController {
   @ApiResponse({ status: 200, description: '成功获取消息列表' })
   @Get(':conversationId/list')
   async getAll(@Param('conversationId') conversationId: string) {
-    const data = await this.messageService.getAll(conversationId);
-    return {
-      data,
-    };
+    return this.messageService.getAll(conversationId);
   }
 
   @ApiOperation({ summary: '创建消息' })

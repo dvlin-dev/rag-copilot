@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import useUserStore from '@/store/user';
 import { useState } from 'react';
 import { logout } from '@/api/user';
-import { NoticeSuccess, clearUserToken } from '@/utils/common';
+import { ToastSuccess, clearUserToken } from '@/utils/common';
 import { getDeviceId } from '@/utils/device';
 import CustomAvatar from '@/components/CustomAvatar';
 
@@ -46,7 +46,7 @@ export default function NavBar() {
     deviceId &&
       logout(deviceId)
         .then(() => {
-          NoticeSuccess('退出成功', user?.username);
+          ToastSuccess('退出成功');
           push('/login');
           clearUserToken();
           clearUser();
