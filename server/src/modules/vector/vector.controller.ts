@@ -78,10 +78,10 @@ export class VectorController {
   @ApiResponse({ status: 200, description: '成功获取' })
   @Get(':docId/similarity_search')
   async similaritySearch(
-    @Param('docId') docId: string,
+    @Param('docIds') docIds: string[],
     @Query() searchVectorDto: SearchVectorDto
   ) {
-    return this.vectorService.similaritySearch(docId, searchVectorDto);
+    return this.vectorService.similaritySearch(docIds, searchVectorDto);
   }
 
   @ApiOperation({ summary: 'chat_test' })

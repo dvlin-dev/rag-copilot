@@ -10,10 +10,15 @@ import { PrismaService } from 'src/utils/prisma/prisma.service';
 import { LLMChain, PromptTemplate } from 'langchain';
 import { getModel } from './utils/openai';
 import { UpdateVectorDto } from './dto/update-vector.dto';
+import { ConfigService } from '@nestjs/config';
+import { Document } from 'langchain/document';
 
 @Injectable()
 export class VectorService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService
+  ) {}
 
   get(id: string) {
     return this.prisma.index.findUnique({
@@ -74,18 +79,75 @@ export class VectorService {
     );
   }
 
-  async similaritySearch(docId: string, searchVectorDto: SearchVectorDto) {
+  async similaritySearch(docIds: string[], searchVectorDto: SearchVectorDto) {
     const { message, size } = searchVectorDto;
-    const keyConfiguration = getKeyConfigurationFromEnvironment();
-    const vectorStore = await this.getVectorStore(keyConfiguration);
-    const docs = await vectorStore.similaritySearchWithScore(
+    const idsString = docIds.map((id) => `'${id}'`).join(', ');
+    const filterSqlString = `WHERE "docId" IN (${idsString})`;
+    const filterSql = Prisma.raw(filterSqlString);
+
+    const docs = await this.customSimilaritySearchVectorWithScore(
       message,
       Number(size),
-      {
-        docId: { equals: docId },
-      }
+      filterSql
     );
-    return docs.map((item) => item[0]);
+    return docs;
+  }
+
+  async customSimilaritySearchVectorWithScore(
+    message: string,
+    k: number,
+    filterSql?: Prisma.Sql
+  ) {
+    const vectorColumnRaw = Prisma.raw(`"vector"`);
+    const tableNameRaw = Prisma.raw(`"Index"`);
+    const columns = {
+      id: PrismaVectorStore.IdColumn,
+      content: PrismaVectorStore.ContentColumn,
+      namespace: PrismaVectorStore.ContentColumn,
+      source: PrismaVectorStore.ContentColumn,
+      metadata: PrismaVectorStore.ContentColumn,
+      docId: PrismaVectorStore.ContentColumn,
+    };
+    const entries = Object.entries(columns);
+
+    const selectColumns = entries
+      .map(([key, alias]) => (alias && key) || null)
+      .filter((x): x is string => !!x);
+
+    const selectRaw = Prisma.raw(selectColumns.map((x) => `"${x}"`).join(', '));
+    const keyConfiguration = getKeyConfigurationFromEnvironment();
+    const query = await getEmbeddings(keyConfiguration).embedQuery(message);
+    const vector = `[${query.join(',')}]`;
+    const querySql = Prisma.join(
+      [
+        Prisma.sql`
+          SELECT ${selectRaw}, ${vectorColumnRaw} <=> ${vector}::vector as "_distance"
+          FROM ${tableNameRaw}
+        `,
+        filterSql ? filterSql : null,
+        Prisma.sql`
+          ORDER BY "_distance" ASC
+          LIMIT ${k};
+        `,
+      ].filter((x) => x != null),
+      ''
+    );
+    const articles: any = await this.prisma.$queryRaw(querySql);
+
+    console.info('articles', articles);
+    const results = [];
+    for (const article of articles) {
+      if (article._distance != null && article['content'] != null) {
+        results.push(
+          new Document({
+            pageContent: article['content'],
+            metadata: article,
+          })
+        );
+      }
+    }
+
+    return results;
   }
 
   async getVectorStore(keyConfiguration: KeyConfiguration): Promise<any> {
@@ -101,6 +163,7 @@ export class VectorService {
           namespace: PrismaVectorStore.ContentColumn,
           source: PrismaVectorStore.ContentColumn,
           metadata: PrismaVectorStore.ContentColumn,
+          docId: PrismaVectorStore.ContentColumn,
         },
       }
     );
