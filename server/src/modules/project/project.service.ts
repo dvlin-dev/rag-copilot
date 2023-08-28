@@ -2,10 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { PrismaService } from 'src/utils/prisma/prisma.service';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { ChatDto } from './dto/chat.dto';
+import { VectorService } from '../vector/vector.service';
 
 @Injectable()
 export class ProjectService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly vectorService: VectorService
+  ) {}
 
   async get(id: string) {
     return this.prisma.project.findUnique({
@@ -110,6 +115,26 @@ export class ProjectService {
       where: {
         id,
       },
+    });
+  }
+
+  async similaritySearchFromDocs(id: string, createChatDto: ChatDto) {
+    const { content, size } = createChatDto;
+
+    const { docs } = await this.prisma.project.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        docs: true,
+      },
+    });
+
+    const docIds = docs.map((doc) => doc.id);
+
+    return await this.vectorService.similaritySearch(docIds, {
+      message: content,
+      size,
     });
   }
 }

@@ -22,8 +22,4 @@ export class CreateMessageDto {
   @ApiProperty({ description: '角色', required: true })
   @IsString()
   role: MessageRole;
-
-  @ApiProperty({ description: '评分', required: true })
-  @IsNumber()
-  ratingValue: number;
 }

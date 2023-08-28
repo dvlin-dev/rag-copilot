@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/utils/prisma/prisma.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
-import { CreateChatDto } from './dto/create-chat.dto';
 
 @Injectable()
 export class MessageService {
@@ -54,19 +53,5 @@ export class MessageService {
         id,
       },
     });
-  }
-
-  async chat(conversationId: string, createChatDto: CreateChatDto) {
-    const { content, projectId } = createChatDto;
-    // 根据 conversationId 查到对应的 project，然后根据 project 的 docId 查到对应的 docs, 然后调用 similaritySearch
-    // const { docs } = await this.prisma.project.findUnique({
-    //   where: {
-    //     id: projectId,
-    //   },
-    //   include: {
-    //     docs: true,
-    //   },
-    // });
-    // console.log(docs);
   }
 }

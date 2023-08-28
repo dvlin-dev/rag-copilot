@@ -25,6 +25,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { ChatDto } from './dto/chat.dto';
 
 @ApiTags('项目')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -76,5 +77,11 @@ export class ProjectController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.projectService.delete(id);
+  }
+
+  @ApiOperation({ summary: 'similarity_search_from_docs' })
+  @Post(':id/similarity_search_from_docs')
+  chat(@Param('id') id: string, @Body() chatDto: ChatDto) {
+    return this.projectService.similaritySearchFromDocs(id, chatDto);
   }
 }

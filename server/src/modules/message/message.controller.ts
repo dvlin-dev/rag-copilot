@@ -26,7 +26,6 @@ import { JwtGuard } from 'src/guards/jwt.guard';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { MessageService } from './message.service';
-import { CreateChatDto } from './dto/create-chat.dto';
 
 @ApiTags('消息')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -72,14 +71,5 @@ export class MessageController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.messageService.delete(id);
-  }
-
-  @ApiOperation({ summary: 'chat' })
-  @Post(':conversationId/chat')
-  chat(
-    @Param('conversationId') conversationId: string,
-    @Body() createChatDto: CreateChatDto
-  ) {
-    return this.messageService.chat(conversationId, createChatDto);
   }
 }
