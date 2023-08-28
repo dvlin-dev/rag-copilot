@@ -9,6 +9,7 @@ import {
   OPENAI_API_KEY,
   OPENAI_API_MODEL,
   OPENAI_TYPE,
+  OPENAI_PROXY,
 } from './const';
 
 export const getKeyConfigurationFromEnvironment = (): KeyConfiguration => {
@@ -21,6 +22,7 @@ export const getKeyConfigurationFromEnvironment = (): KeyConfiguration => {
     azureApiVersion: AZURE_OPENAI_API_VERSION,
     azureDeploymentName: AZURE_OPENAI_API_DEPLOYMENT_NAME,
     azureEmbeddingDeploymentName: AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME,
+    basePath: OPENAI_PROXY,
   };
   validateKeyConfiguration(keyConfiguration);
   return keyConfiguration;
