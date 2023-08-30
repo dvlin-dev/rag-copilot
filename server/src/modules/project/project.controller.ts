@@ -79,8 +79,8 @@ export class ProjectController {
     return this.projectService.delete(id);
   }
 
-  @ApiOperation({ summary: 'similarity_search_from_docs' })
-  @Post(':id/similarity_search_from_docs')
+  @ApiOperation({ summary: 'similaritySearchFromDocs' })
+  @Post(':id/similaritySearchFromDocs')
   chat(@Param('id') id: string, @Body() chatDto: ChatDto) {
     return this.projectService.similaritySearchFromDocs(id, chatDto);
   }

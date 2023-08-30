@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVectorDto } from './dto/create-vector.dto';
 import { SearchVectorDto } from './dto/seatch.dto';
-import { getKeyConfigurationFromEnvironment } from './utils/configuration';
+import { getKeyConfigurationFromEnvironment } from '../../utils/llm/configuration';
 import { KeyConfiguration } from 'src/types/keyConfiguration';
 import { PrismaVectorStore } from 'langchain/vectorstores/prisma';
-import { getEmbeddings } from './utils/embeddings';
 import { Index, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/utils/prisma/prisma.service';
-import { LLMChain, PromptTemplate } from 'langchain';
-import { getModel } from './utils/openai';
 import { UpdateVectorDto } from './dto/update-vector.dto';
 import { ConfigService } from '@nestjs/config';
 import { Document } from 'langchain/document';
+import { getEmbeddings } from 'src/utils/llm/embeddings';
 
 @Injectable()
 export class VectorService {
@@ -167,31 +165,5 @@ export class VectorService {
         },
       }
     );
-  }
-
-  async chat_test(docId: string, searchVectorDto: SearchVectorDto) {
-    const { message, size } = searchVectorDto;
-    const keyConfiguration = getKeyConfigurationFromEnvironment();
-    const vectorStore = await this.getVectorStore(keyConfiguration);
-    const docs = await vectorStore.similaritySearchWithScore(
-      message,
-      Number(size),
-      {
-        docId: { equals: docId },
-      }
-    );
-    const model = await getModel(keyConfiguration);
-    const context = docs.reduce((acc, item) => {
-      return acc + item[0].pageContent + '\n';
-    }, '');
-    const prompt = PromptTemplate.fromTemplate(
-      '在结尾处用以下几段语境回答问题。如果你不知道答案，只需说你不知道，不要尝试编造答案。\n\n{context}\n\n问题：{question}\n有用的答案：'
-    );
-    const chain = new LLMChain({ llm: model, prompt });
-    const result = (await chain.call({ context, question: message })).text;
-    return {
-      result,
-      docs,
-    };
   }
 }

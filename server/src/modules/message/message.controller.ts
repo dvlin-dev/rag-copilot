@@ -57,7 +57,7 @@ export class MessageController {
     return this.messageService.create(createMessageDto);
   }
 
-  @ApiOperation({ summary: '更新项目信息' })
+  @ApiOperation({ summary: '更新消息信息' })
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @Patch('')

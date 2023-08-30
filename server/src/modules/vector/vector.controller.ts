@@ -83,14 +83,4 @@ export class VectorController {
   ) {
     return this.vectorService.similaritySearch(docIds, searchVectorDto);
   }
-
-  @ApiOperation({ summary: 'chat_test' })
-  @ApiResponse({ status: 200, description: '成功获取' })
-  @Get(':docId/chat_test')
-  async chatTest(
-    @Param('docId') docId: string,
-    @Query() searchVectorDto: SearchVectorDto
-  ) {
-    return this.vectorService.chat_test(docId, searchVectorDto);
-  }
 }

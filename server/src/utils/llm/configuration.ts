@@ -1,5 +1,5 @@
-import { ModelType } from '../../../types/chat';
-import { KeyConfiguration } from '../../../types/keyConfiguration';
+import { ModelType } from '../../types/chat';
+import { KeyConfiguration } from '../../types/keyConfiguration';
 import {
   AZURE_OPENAI_API_DEPLOYMENT_NAME,
   AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME,

@@ -16,6 +16,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -24,7 +25,7 @@ import { ConversationService } from './conversation.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
-import { UpdateConversationDto } from './dto/update-conversation.dto';
+import { CreateDto } from './dto/chat.dto';
 
 @ApiTags('会话')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -62,5 +63,14 @@ export class ConversationController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.conversationService.delete(id);
+  }
+
+  @ApiOperation({ summary: 'chat' })
+  @ApiResponse({ status: 200, description: '成功获取' })
+  @ApiBearerAuth()
+  @ApiBody({ type: CreateDto })
+  @Post('/chat')
+  async chat(@Body('content') content: string) {
+    return this.conversationService.chat(content);
   }
 }
