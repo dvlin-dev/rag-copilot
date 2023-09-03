@@ -1,16 +1,23 @@
 import { Button, Form, Select } from '@douyinfe/semi-ui';
 import styles from './index.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PromptSetting from '@/components/ProjectSettingComps/components/PromptSetting';
 import ProjectDocSetting from '@/components/ProjectSettingComps/components/ProjectDocSetting';
+import Chat from '@/components/Chat';
+import { useRouter } from 'next/router';
+import { getConversationList, searchByNameSpace } from '@/api/chat';
 
 const WorkShop = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
-
+  const { query } = useRouter();
+  const projectId = query.id as string;
   const changeSetting = (values) => {};
+
   return (
     <div className={styles.workShopContainer}>
-      <div className={styles.chatContainer}>chat</div>
+      <div className={styles.chatContainer}>
+        <Chat projectId={projectId} />
+      </div>
       <div className={styles.setting}>
         <>
           <div className={styles.header}>
