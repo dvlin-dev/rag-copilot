@@ -1,7 +1,12 @@
 import styles from './index.module.scss';
 import { Form, Button } from '@douyinfe/semi-ui';
 import { useRouter } from 'next/router';
-import { loginApi, register } from '@/api/user';
+import {
+  LoginByPasswordParams,
+  RegisterByEmail,
+  loginApi,
+  register,
+} from '@/api/user';
 import { useState } from 'react';
 import { ToastSuccess } from '@/utils/common';
 import useUserStore from '@/store/user';

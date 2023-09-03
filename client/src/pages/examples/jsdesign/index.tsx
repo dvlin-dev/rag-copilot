@@ -1,4 +1,3 @@
-import { searchVector } from '@/api/vector';
 import { Button, Input } from '@douyinfe/semi-ui';
 import { useState } from 'react';
 import styles from './index.module.scss';
@@ -13,21 +12,6 @@ export default function Jsdesign() {
 
   const search = () => {
     setLoading(true);
-    searchVector({
-      message,
-      docId: query.docId as string,
-      size: 5,
-    })
-      .then((res) => {
-        const { result, docs } = res.data;
-        setResult(result);
-        const _docs = docs.map((item) => item[0].metadata.content);
-        console.log(_docs);
-        setDocs(_docs);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   };
   return (
     <div className={styles.exampleContainer}>

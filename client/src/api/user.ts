@@ -1,13 +1,13 @@
 import http from '../utils/http';
 
-interface LoginByPasswordParams {
+export interface LoginByPasswordParams {
   email: string;
   password: string;
   deviceId: string;
   deviceType: string;
 }
 
-type RegisterByEmail = {
+export type RegisterByEmail = {
   email: 'string';
   password: 'string';
   code: 'string';

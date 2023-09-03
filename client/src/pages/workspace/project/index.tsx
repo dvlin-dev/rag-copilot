@@ -113,6 +113,7 @@ const Project = () => {
                 label='描述'
                 style={{ width: '100%' }}
                 placeholder='请输入应用描述'
+                rules={[{ required: true, message: '请输入应用描述' }]}
               ></Form.TextArea>
               <div
                 style={{

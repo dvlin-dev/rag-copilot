@@ -18,7 +18,7 @@ const SelectDocModal: React.FC<SelectDocModalProps> = ({
   docs,
   confirmLoading,
 }) => {
-  const [checkedList, setCheckedList] = useState([]);
+  const [checkedList, setCheckedList] = useState<string[]>([]);
   const { data, isLoading } = useSWR('/doc/list', fetcher);
   if (isLoading) return <div>loading...</div>;
   const docIds = docs.map((item) => item.id);
@@ -37,7 +37,7 @@ const SelectDocModal: React.FC<SelectDocModalProps> = ({
         type='card'
         direction='vertical'
         value={checkedIds}
-        onChange={(value) => setCheckedList(value)}
+        onChange={(value: string[]) => setCheckedList(value)}
       >
         {data.map((item) => (
           <Checkbox value={item.id} extra={item.description} key={item.id}>

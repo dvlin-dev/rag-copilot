@@ -21,7 +21,7 @@ export const getModel = async (
   } = keyConfiguration;
 
   const commonConfig = {
-    temperature: 0.6,
+    temperature: 0,
     // streaming: true,
   };
 

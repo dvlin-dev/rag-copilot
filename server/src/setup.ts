@@ -55,13 +55,12 @@ export const setupApp = (app: INestApplication) => {
       origin: (origin, callback) => {
         console.info('origin', origin);
         const allowedOrigins = [
-          'https://devlink.wiki',
-          'https://devlink.wiki',
+          'https://docs-copilot.devlink.wiki',
           `https://${config['DB_HOST']}`,
           `http://${config['DB_HOST']}`,
           `https://${config['WHITE_DOMAIN']}`,
           `http://${config['WHITE_DOMAIN']}`,
-        ]; 
+        ];
         if (!origin) return callback(null, true);
 
         // 检查 origin 是否在允许的域名列表中
