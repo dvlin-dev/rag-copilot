@@ -1,0 +1,17 @@
+.docContainer {
+  background-color: var(--semi-color-bg-1);
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 20px;
+  .header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+    .headerTitle {
+      font-size: 18px;
+      font-size: 500;
+    }
+  }
+}

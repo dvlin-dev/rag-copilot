@@ -19,25 +19,23 @@ const WorkShop = () => {
         <Chat projectId={projectId} />
       </div>
       <div className={styles.setting}>
-        <>
-          <div className={styles.header}>
-            <div className={styles.title}>应用配置</div>
-            <Button
-              htmlType='submit'
-              type='primary'
-              theme='solid'
-              loading={confirmLoading}
-            >
-              保存
-            </Button>
-          </div>
-          <Select defaultValue={'gpt3.5'} disabled>
-            <Select.Option value='gpt3.5'>gpt3.5</Select.Option>
-            <Select.Option value='gpt4'>gpt4</Select.Option>
-          </Select>
-          <ProjectDocSetting />
-          <PromptSetting />
-        </>
+        <div className={styles.header}>
+          <div className={styles.title}>应用配置</div>
+          <Button
+            htmlType='submit'
+            type='primary'
+            theme='solid'
+            loading={confirmLoading}
+          >
+            保存
+          </Button>
+        </div>
+        <Select defaultValue={'gpt3.5'} disabled>
+          <Select.Option value='gpt3.5'>gpt3.5</Select.Option>
+          <Select.Option value='gpt4'>gpt4</Select.Option>
+        </Select>
+        <ProjectDocSetting />
+        <PromptSetting />
       </div>
     </div>
   );

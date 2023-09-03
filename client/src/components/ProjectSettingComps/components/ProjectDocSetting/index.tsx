@@ -18,7 +18,7 @@ const ProjectDocSetting = () => {
   const config = ProjectSettingConfig.doc;
   const { query } = useRouter();
   const { data, isLoading } = useSWR(`/project/${query.id}/detail`, fetcher);
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading || !data) return <div>loading...</div>;
   const docHandleOk = (checkedList) => {
     const projectId = query.id;
     if (typeof projectId !== 'string') return;
@@ -37,6 +37,7 @@ const ProjectDocSetting = () => {
   const successHandle = (url) => {
     return new Promise((resolve, reject) => {});
   };
+
   const getFooter = () => {
     return (
       <div className={styles.projectDocSettingfooter}>
@@ -44,6 +45,9 @@ const ProjectDocSetting = () => {
       </div>
     );
   };
+  const getDocs = () =>
+    data.docs.map((item) => <DocCard doc={item} key={item.id} />);
+
   return (
     <EditorCard
       title={config.title}
@@ -53,9 +57,7 @@ const ProjectDocSetting = () => {
       footer={getFooter()}
     >
       <div className={styles.container}>
-        {data.docs.map((item) => (
-          <DocCard doc={item} key={item.id} />
-        ))}
+        {data.docs.length > 0 ? getDocs() : '请选择一个知识库'}
       </div>
       <SelectDocModal
         visible={docModalVisible}

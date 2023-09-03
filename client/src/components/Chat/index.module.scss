@@ -1,4 +1,20 @@
 .chatComponent {
+  .messageList {
+    .message {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+      .messageContent {
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 1.2rem;
+      }
+      .messageTime {
+        font-size: 1rem;
+      }
+    }
+  }
   .sendContainer {
     display: flex;
     justify-content: space-around;

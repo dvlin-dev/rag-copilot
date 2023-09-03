@@ -97,7 +97,7 @@ const ContentSider: FC<ContentSiderProps> = ({
               selectedKeys={selectedKeys}
               onSelect={onSelect}
               onOpenChange={onOpenChange}
-              style={{ width: 160, height: '100%' }}
+              style={{ minWidth: 160, width: 160, height: '100%' }}
             />
             <Content className='layout-content'>{children}</Content>
           </Sider>

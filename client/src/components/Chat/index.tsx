@@ -37,8 +37,10 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
 
   const sendMessage = async () => {
     setLoading(true);
+    // prompt
+    const humanContent = `${content}`;
     const humanMessage = {
-      content,
+      content: humanContent,
       role: MessageRole.human,
     };
     const contexts = await searchVectorFromDocsFunc();
@@ -55,7 +57,12 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
           content: res.data,
           role: MessageRole.ai,
         };
-        setChatList([...chatList, ...messages, result]);
+        const svaeMessages = [
+          ...chatList.slice(1),
+          ...systemMessages,
+          { content: content, role: MessageRole.human },
+        ];
+        setChatList([...chatList, ...svaeMessages, result]);
       })
       .finally(() => {
         setContent('');
@@ -76,10 +83,7 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
         });
     });
   };
-  console.info(
-    'getMessageList',
-    chatList.filter((item) => item.role !== MessageRole.system)
-  );
+
   return (
     <div className={styles.chatComponent}>
       <div className={styles.messageList}>{getMessageList}</div>
