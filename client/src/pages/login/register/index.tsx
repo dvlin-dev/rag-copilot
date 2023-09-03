@@ -19,6 +19,7 @@ export default function Email() {
   const { push } = useRouter();
 
   const handleSubmit = (values: RegisterByEmail) => {
+    setLoading(true);
     register(values)
       .then(() => {
         ToastSuccess('注册成功');

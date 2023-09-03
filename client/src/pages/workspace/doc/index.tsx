@@ -35,7 +35,7 @@ const Docs = () => {
         <IllustrationNoContentDark style={{ width: 150, height: 150 }} />
       }
       title='无数据'
-      description='请先创建知识库，暂时只能通过 /api/doc 路由手动创建'
+      description='请先创建知识库'
     />
   );
   const handleCancel = () => setVisible(false);
