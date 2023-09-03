@@ -67,15 +67,15 @@ model Message {
   content        String
   role           MessageRole
   ratingValue    Int?
-  createdAt      DateTime      @default(now())
   conversationId String?
+  createdAt      DateTime      @default(now())
   conversation   Conversation? @relation(fields: [conversationId], references: [id])
 }
 
 enum MessageRole {
   system
   ai
-  hunman
+  human
 }
 
 model User {

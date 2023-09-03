@@ -25,7 +25,7 @@ import { ConversationService } from './conversation.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
-import { CreateDto } from './dto/chat.dto';
+import { ChatDto } from './dto/chat.dto';
 
 @ApiTags('会话')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -67,10 +67,8 @@ export class ConversationController {
 
   @ApiOperation({ summary: 'chat' })
   @ApiResponse({ status: 200, description: '成功获取' })
-  @ApiBearerAuth()
-  @ApiBody({ type: CreateDto })
   @Post('/chat')
-  async chat(@Body('content') content: string) {
-    return this.conversationService.chat(content);
+  async chat(@Body() chatDto: ChatDto) {
+    return this.conversationService.chat(chatDto);
   }
 }

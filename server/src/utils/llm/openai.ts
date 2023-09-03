@@ -17,6 +17,7 @@ export const getModel = async (
     azureApiVersion,
     apiModel,
     apiKey,
+    basePath,
   } = keyConfiguration;
 
   const commonConfig = {
@@ -29,11 +30,13 @@ export const getModel = async (
     azureOpenAIApiInstanceName: azureInstanceName,
     azureOpenAIApiDeploymentName: azureDeploymentName,
     azureOpenAIApiVersion: azureApiVersion,
+    basePath,
   };
 
   const openAIConfig = {
     modelName: apiModel,
     openAIApiKey: apiKey,
+    basePath,
   };
 
   return tpye === 'openAi'

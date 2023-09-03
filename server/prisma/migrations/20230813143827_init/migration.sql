@@ -6,7 +6,7 @@ CREATE TYPE "ProfileGenderEnum" AS ENUM ('male', 'female', 'other');
 CREATE TYPE "UserAccountTypeEnum" AS ENUM ('email', 'github');
 
 -- CreateEnum
-CREATE TYPE "MessageRole" AS ENUM ('system', 'ai', 'hunman');
+CREATE TYPE "MessageRole" AS ENUM ('system', 'ai', 'human');
 
 -- CreateTable
 CREATE TABLE "User" (
