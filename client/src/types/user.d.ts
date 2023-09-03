@@ -1,39 +1,69 @@
-declare interface LoginByPasswordParams {
-  email: string;
-  password: string;
-  deviceId: string;
-  deviceType: string;
+declare enum ProfileGenderEnum {
+  male = 'male',
+  female = 'female',
+  other = 'other',
 }
 
-declare type RegisterByEmail = {
-  email: 'string';
-  password: 'string';
-  code: 'string';
-  username: 'string';
-};
+declare enum UserAccountTypeEnum {
+  email = 'email',
+  github = 'github',
+}
 
 declare interface User {
   id: string;
-  githubId: string;
+  githubId?: string | null;
   username: string;
-  email: string;
-  password: string;
-  createdAt: string;
-  accountType: AccountType;
-  roles: Roles[];
-  profile: Profile;
+  email?: string | null;
+  password?: string | null;
+  accountType: UserAccountTypeEnum;
+  createdAt: Date;
+  device: Device[];
+  logs: Log[];
+  profile?: Profile | null;
+  roles: UsersRole[];
+  Project: Project[];
 }
 
 declare interface Profile {
   id: string;
-  gender: Gender;
-  avatar: string;
-  photo: string;
-  githubLogin: string;
-  githubName: string;
-  description: string;
-  refreshToken: string;
-  refreshTokenExpiresAt: number;
+  gender: ProfileGenderEnum;
+  avatar?: string | null;
+  photo?: string | null;
+  description?: string | null;
+  githubLogin?: string | null;
+  githubName?: string | null;
+  userId?: string | null;
+}
+
+declare interface Device {
+  id: string;
+  deviceId: string;
+  deviceType: string;
+  clientIp: string;
+  lastLoginAt: Date;
+  refreshToken?: string | null;
+  refreshTokenExpiresAt?: bigint | null;
+  userId?: string | null;
+}
+
+declare interface Log {
+  id: string;
+  createdAt: Date;
+  path: string;
+  data: string;
+  result: number;
+  userId?: string | null;
+}
+
+declare interface Role {
+  id: number;
+  name: string;
+  roles: UsersRole[];
+}
+
+declare interface UsersRole {
+  userId: string;
+  roleId: number;
 }
 
 declare enum Gender {
@@ -45,106 +75,4 @@ declare enum Gender {
 declare enum AccountType {
   EMAIL = 'email',
   GITHUB = 'github',
-}
-
-declare class Group {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  user: User;
-  material: Material[];
-}
-
-declare class CollectionGroup {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  user: User;
-  material: Material[];
-}
-
-declare interface Material {
-  id: string;
-  name: string;
-  npmName: string;
-  version: string;
-  abstract: string;
-  description: string;
-  installCommand: string;
-  startCommand: string;
-  ignore: string;
-  isPrivate: boolean;
-  createdAt: string;
-  updatedAt: string;
-  user: User;
-  tags: Tag[];
-  groups: Group[];
-  collectedInGroups: CollectionGroup[];
-  comments: Comment[];
-  likes: Like[];
-  stars: User[];
-}
-
-declare interface Comment {
-  id: string;
-
-  content: string;
-
-  emoticon: string;
-
-  createdAt: string;
-
-  updateAt: string;
-
-  material: Material;
-
-  parent: Comment;
-
-  children: Comment[];
-
-  user: User;
-}
-
-declare interface Tag {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  material: Material[];
-  user: User;
-}
-
-declare interface Like {
-  id: string;
-  user: User;
-  materials: Material;
-  likeDate: Date;
-}
-
-declare interface Follow {
-  id: string;
-  follower: User;
-  following: User;
-  followDate: Date;
-}
-declare interface Roles {
-  id: number;
-  name: string;
-}
-
-declare interface UpdateUserDto {
-  username?: string;
-
-  email?: string;
-
-  gender?: Gender;
-
-  avatar?: string;
-
-  photo?: string;
-
-  description?: string;
 }

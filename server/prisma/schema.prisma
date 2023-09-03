@@ -8,9 +8,9 @@ generator client {
 }
 
 model Project {
-  id          String  @id @default(uuid())
-  name        String
-  description String?
+  id            String         @id @default(uuid())
+  name          String
+  description   String?
   conversations Conversation[]
   userId        String
   user          User           @relation(fields: [userId], references: [id])
@@ -55,6 +55,7 @@ model Index {
 
 model Conversation {
   id        String    @id @default(uuid())
+  namespace String?
   messages  Message[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())

@@ -38,11 +38,12 @@ export class ConversationService {
   }
 
   create(createConversationDto: CreateConversationDto) {
-    const { projectId } = createConversationDto;
+    const { projectId, namespace } = createConversationDto;
 
     return this.prisma.conversation.create({
       data: {
         projectId,
+        namespace,
       },
     });
   }
@@ -88,6 +89,15 @@ export class ConversationService {
     ]);
 
     const chain = new ConversationChain({ llm: model, prompt });
-    return chain.call({ input });
+    const { response } = await chain.call({ input });
+    return response;
+  }
+
+  async search(namespace: string) {
+    return this.prisma.conversation.findMany({
+      where: {
+        namespace,
+      },
+    });
   }
 }

@@ -71,4 +71,11 @@ export class ConversationController {
   async chat(@Body() chatDto: ChatDto) {
     return this.conversationService.chat(chatDto);
   }
+
+  @ApiOperation({ summary: '查询' })
+  @ApiResponse({ status: 200, description: '成功获取' })
+  @Get(':id/search')
+  async search(@Query('namespace') namespace: string) {
+    return this.conversationService.search(namespace);
+  }
 }

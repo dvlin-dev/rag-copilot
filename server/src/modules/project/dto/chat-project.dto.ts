@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class ChatDto {
+export class SimilaritySearchFromDocsDto {
   @ApiProperty({ description: '内容', required: true })
   @IsString()
   @IsNotEmpty()

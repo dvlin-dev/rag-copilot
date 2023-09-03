@@ -1,6 +1,18 @@
 import http from '../utils/http';
 
-// TODO response type
+interface LoginByPasswordParams {
+  email: string;
+  password: string;
+  deviceId: string;
+  deviceType: string;
+}
+
+type RegisterByEmail = {
+  email: 'string';
+  password: 'string';
+  code: 'string';
+  username: 'string';
+};
 
 export const loginApi = (data: LoginByPasswordParams) =>
   http({
@@ -34,6 +46,20 @@ export const findAllUser = () => http('/user/findall');
 
 export function getInfo() {
   return http('/user/userinfo');
+}
+
+interface UpdateUserDto {
+  username?: string;
+
+  email?: string;
+
+  gender?: Gender;
+
+  avatar?: string;
+
+  photo?: string;
+
+  description?: string;
 }
 
 export function updateUserInfo(data: UpdateUserDto) {

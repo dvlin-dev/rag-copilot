@@ -25,7 +25,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { ChatDto } from './dto/chat.dto';
+import { SimilaritySearchFromDocsDto } from './dto/chat-project.dto';
 
 @ApiTags('项目')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -81,7 +81,13 @@ export class ProjectController {
 
   @ApiOperation({ summary: 'similaritySearchFromDocs' })
   @Post(':id/similaritySearchFromDocs')
-  chat(@Param('id') id: string, @Body() chatDto: ChatDto) {
-    return this.projectService.similaritySearchFromDocs(id, chatDto);
+  chat(
+    @Param('id') id: string,
+    @Body() similaritySearchFromDocsDto: SimilaritySearchFromDocsDto
+  ) {
+    return this.projectService.similaritySearchFromDocs(
+      id,
+      similaritySearchFromDocsDto
+    );
   }
 }

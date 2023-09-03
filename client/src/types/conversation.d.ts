@@ -17,5 +17,5 @@ declare interface Index {
   questions: string[];
   createdAt: Date;
   updatedAt: Date;
-  // documents: Document[];
+  docs: Doc[];
 }

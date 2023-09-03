@@ -60,9 +60,9 @@ export class MessageController {
   @ApiOperation({ summary: '更新消息信息' })
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
-  @Patch('')
-  update(@Body() updateMessageDto: UpdateMessageDto) {
-    return this.messageService.update(updateMessageDto);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateMessageDto: UpdateMessageDto) {
+    return this.messageService.update(id, updateMessageDto);
   }
 
   @ApiOperation({ summary: '删除消息' })

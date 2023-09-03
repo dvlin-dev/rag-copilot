@@ -35,8 +35,8 @@ export class MessageService {
     });
   }
 
-  update(updateMessageDto: UpdateMessageDto) {
-    const { id, ratingValue } = updateMessageDto;
+  update(id: string, updateMessageDto: UpdateMessageDto) {
+    const { ratingValue } = updateMessageDto;
     return this.prisma.message.update({
       where: {
         id,

@@ -4,8 +4,10 @@ declare enum ModelType {
 }
 
 declare interface Message {
-  role: Role;
+  role: MessageRole;
   content: string;
+  createdAt: string;
+  ratingValue?: number;
 }
 
 declare interface ChatFolder {
@@ -13,14 +15,7 @@ declare interface ChatFolder {
   name: string;
 }
 
-declare interface ChatBody {
-  messages: Message[];
-  prompt: string;
-}
-
 declare interface KeyValuePair {
   key: string;
   value: any;
 }
-
-declare type Role = 'assistant' | 'user';

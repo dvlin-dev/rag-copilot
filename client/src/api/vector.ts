@@ -1,11 +1,24 @@
 import http from '@/utils/http';
 
-export const searchVector = (params: searchVector) =>
-  http({
-    url: `/vector/${params.docId}/chat_test`,
-    method: 'get',
-    params,
-  });
+interface searchVector {
+  message: string;
+
+  docId: string;
+
+  size: number;
+}
+
+interface addVector {
+  content: string;
+
+  docId: string;
+
+  source: string;
+
+  namespace: string;
+
+  metadata: string;
+}
 
 export const addVector = (data: addVector) =>
   http({
@@ -13,6 +26,14 @@ export const addVector = (data: addVector) =>
     method: 'post',
     data,
   });
+
+interface similaritySearch {
+  message: string;
+
+  docId: string;
+
+  size: number;
+}
 
 export const similaritySearch = (params: similaritySearch) =>
   http({
