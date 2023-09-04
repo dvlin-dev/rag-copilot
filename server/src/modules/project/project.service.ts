@@ -135,7 +135,8 @@ export class ProjectService {
 
     const docIds = docs.map((doc) => doc.id);
 
-    return await this.vectorService.similaritySearch(docIds, {
+    return await this.vectorService.similaritySearch({
+      docIds,
       message: content,
       size,
     });

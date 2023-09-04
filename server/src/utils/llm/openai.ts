@@ -30,24 +30,29 @@ export const getModel = async (
     azureOpenAIApiInstanceName: azureInstanceName,
     azureOpenAIApiDeploymentName: azureDeploymentName,
     azureOpenAIApiVersion: azureApiVersion,
-    basePath,
   };
 
   const openAIConfig = {
     modelName: apiModel,
     openAIApiKey: apiKey,
-    basePath,
+  };
+
+  const getConfiguration = (apiType: ModelType) => {
+    switch (apiType) {
+      case ModelType.OPENAI:
+        return {
+          ...commonConfig,
+          ...azureConfig,
+        };
+      case ModelType.AZURE_OPENAI:
+        return {
+          ...commonConfig,
+          ...openAIConfig,
+        };
+    }
   };
 
   return tpye === 'openAi'
-    ? new OpenAI(
-        apiType === ModelType.AZURE_OPENAI
-          ? { ...commonConfig, ...azureConfig }
-          : { ...commonConfig, ...openAIConfig }
-      )
-    : new ChatOpenAI(
-        apiType === ModelType.AZURE_OPENAI
-          ? { ...commonConfig, ...azureConfig }
-          : { ...commonConfig, ...openAIConfig }
-      );
+    ? new OpenAI(getConfiguration(apiType), { basePath })
+    : new ChatOpenAI(getConfiguration(apiType), { basePath });
 };

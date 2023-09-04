@@ -38,7 +38,7 @@ export class VectorController {
 
   @ApiOperation({ summary: '获取向量详情' })
   @ApiResponse({ status: 200, description: '成功获取用户资料' })
-  @Get(':id')
+  @Get(':id/detail')
   get(@Query('id') id: string) {
     return this.vectorService.get(id);
   }
@@ -76,11 +76,8 @@ export class VectorController {
 
   @ApiOperation({ summary: '相似度搜索' })
   @ApiResponse({ status: 200, description: '成功获取' })
-  @Get(':docId/similarity_search')
-  async similaritySearch(
-    @Param('docIds') docIds: string[],
-    @Query() searchVectorDto: SearchVectorDto
-  ) {
-    return this.vectorService.similaritySearch(docIds, searchVectorDto);
+  @Get('similarity_search')
+  async similaritySearch(@Query() searchVectorDto: SearchVectorDto) {
+    return this.vectorService.similaritySearch(searchVectorDto);
   }
 }

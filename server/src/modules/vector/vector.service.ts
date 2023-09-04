@@ -77,8 +77,8 @@ export class VectorService {
     );
   }
 
-  async similaritySearch(docIds: string[], searchVectorDto: SearchVectorDto) {
-    const { message, size } = searchVectorDto;
+  async similaritySearch(searchVectorDto: SearchVectorDto) {
+    const { message, size, docIds } = searchVectorDto;
     const idsString = docIds.map((id) => `'${id}'`).join(', ');
     const filterSqlString = `WHERE "docId" IN (${idsString})`;
     const filterSql = Prisma.raw(filterSqlString);
@@ -132,7 +132,6 @@ export class VectorService {
     );
     const articles: any = await this.prisma.$queryRaw(querySql);
 
-    console.info('articles', articles);
     const results = [];
     for (const article of articles) {
       if (article._distance != null && article['content'] != null) {

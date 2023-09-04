@@ -25,7 +25,7 @@ export class EmailService {
       });
       await this.redis.set(`${to}_code`, code, 'EX', 60 * 30);
     } catch (error) {
-      console.info('send email error: ', error);
+      console.error('send email error: ', error);
     }
   }
 }
