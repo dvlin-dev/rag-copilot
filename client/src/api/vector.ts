@@ -30,14 +30,14 @@ export const addVector = (data: addVector) =>
 interface similaritySearch {
   message: string;
 
-  docId: string;
+  docIds: string[];
 
   size: number;
 }
 
 export const similaritySearch = (params: similaritySearch) =>
   http({
-    url: `/vector/${params.docId}/similarity_search`,
+    url: `/vector/similarity_search`,
     method: 'get',
     params,
   });

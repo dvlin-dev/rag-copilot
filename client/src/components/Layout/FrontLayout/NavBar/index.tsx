@@ -1,25 +1,13 @@
-import {
-  Nav,
-  Dropdown,
-  Button,
-  Typography,
-  DropdownDivider,
-  Spin,
-} from '@douyinfe/semi-ui';
+import { Nav, Button, Typography } from '@douyinfe/semi-ui';
 import Image from 'next/image';
 import styles from './index.module.scss';
 import { useRouter } from 'next/router';
 import useUserStore from '@/store/user';
-import { useState } from 'react';
-import { logout } from '@/api/user';
-import { ToastSuccess, clearUserToken } from '@/utils/common';
-import { getDeviceId } from '@/utils/device';
-import CustomAvatar from '@/components/CustomAvatar';
+import AuthRightBox from '../../components/AuthRightBox';
 
 export default function NavBar() {
-  const { push, pathname } = useRouter();
+  const { push } = useRouter();
   const { user, clearUser } = useUserStore();
-  const [logoutIsLoading, setLogoutIsLoading] = useState(false);
 
   const UnAuthRightBox = () => {
     const { Text } = Typography;
@@ -40,60 +28,8 @@ export default function NavBar() {
     );
   };
 
-  const logoutHandle = async () => {
-    setLogoutIsLoading(true);
-    const deviceId = getDeviceId();
-    deviceId &&
-      logout(deviceId)
-        .then(() => {
-          ToastSuccess('退出成功');
-          push('/login');
-          clearUserToken();
-          clearUser();
-        })
-        .catch(() => {})
-        .finally(() => {
-          setLogoutIsLoading(false);
-        });
-  };
-
-  const AuthRightBox = () => (
-    <>
-      <Dropdown
-        position='bottomLeft'
-        render={
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => push(`/user/${user?.id}`)}>
-              个人主页
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => push('/user/setting')}>
-              个人设置
-            </Dropdown.Item>
-            <DropdownDivider />
-            <Dropdown.Item onClick={() => push('/admin')}>
-              后台管理
-            </Dropdown.Item>
-            <DropdownDivider />
-            <Dropdown.Item onClick={logoutHandle}>
-              {logoutIsLoading && <Spin />}
-              退出
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        }
-      >
-        <CustomAvatar
-          id={user?.id}
-          src={user?.profile?.avatar ?? ''}
-          username={user?.username as string}
-          size='small'
-        />
-        <div />
-      </Dropdown>
-    </>
-  );
-
   const renderRightBox = () => {
-    return <div>{!!user ? AuthRightBox() : UnAuthRightBox()}</div>;
+    return <div>{!!user ? <AuthRightBox /> : UnAuthRightBox()}</div>;
   };
 
   const renderHorizontal = () => {

@@ -37,8 +37,6 @@ const UserNameSettingCard = () => {
       });
   };
 
-  console.info('username', initialValue);
-
   return (
     <EditorCard
       title={config.title}

@@ -1,10 +1,8 @@
 import { chat } from '@/api/chat';
 import styles from './index.module.scss';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { ToastSuccess } from '@/utils/common';
+import { FC, useMemo, useState } from 'react';
 import { Button, Input } from '@douyinfe/semi-ui';
 import { IconSend } from '@douyinfe/semi-icons';
-import { similaritySearch } from '@/api/vector';
 import { similaritySearchFromDocs } from '@/api/project';
 import { MessageRole } from '@/types';
 

@@ -79,7 +79,6 @@ const Import = () => {
                   <TextArea
                     field='content'
                     label='内容'
-                    showClear
                     required
                     rules={[{ required: true, message: '请输入内容' }]}
                   />

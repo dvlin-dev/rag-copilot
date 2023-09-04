@@ -58,9 +58,10 @@ const WorkShop = () => {
 
   const search = () => {
     setLoading(true);
+    const id = query.id as string;
     const params = {
       message: searchValue,
-      docId: query.id as string,
+      docIds: [id],
       size: 3,
     };
     similaritySearch(params)
@@ -70,14 +71,12 @@ const WorkShop = () => {
       .finally(() => {
         setLoading(false);
       });
-    console.info('searchValue', searchValue);
   };
   return (
     <div className={styles.workShop}>
       <div className={styles.searchContainer}>
         <Input
           placeholder='请输入...'
-          showClear
           className={styles.searchInput}
           value={searchValue}
           onChange={setSearchValue}
