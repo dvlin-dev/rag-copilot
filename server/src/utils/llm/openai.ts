@@ -51,7 +51,6 @@ export const getModel = async (
         };
     }
   };
-
   return tpye === 'openAi'
     ? new OpenAI(getConfiguration(apiType), { basePath })
     : new ChatOpenAI(getConfiguration(apiType), { basePath });

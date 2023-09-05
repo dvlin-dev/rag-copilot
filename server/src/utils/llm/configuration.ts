@@ -1,28 +1,22 @@
+import type { ConfigService } from '@nestjs/config';
 import { ModelType } from '../../types/chat';
 import { KeyConfiguration } from '../../types/keyConfiguration';
-import {
-  AZURE_OPENAI_API_DEPLOYMENT_NAME,
-  AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME,
-  AZURE_OPENAI_API_INSTANCE_NAME,
-  AZURE_OPENAI_API_KEY,
-  AZURE_OPENAI_API_VERSION,
-  OPENAI_API_KEY,
-  OPENAI_API_MODEL,
-  OPENAI_TYPE,
-  OPENAI_PROXY,
-} from './const';
 
-export const getKeyConfigurationFromEnvironment = (): KeyConfiguration => {
+export const getKeyConfigurationFromEnvironment = (
+  configService: ConfigService
+): KeyConfiguration => {
   const keyConfiguration: KeyConfiguration = {
-    apiType: OPENAI_TYPE as ModelType,
-    apiKey: OPENAI_API_KEY,
-    apiModel: OPENAI_API_MODEL,
-    azureApiKey: AZURE_OPENAI_API_KEY,
-    azureInstanceName: AZURE_OPENAI_API_INSTANCE_NAME,
-    azureApiVersion: AZURE_OPENAI_API_VERSION,
-    azureDeploymentName: AZURE_OPENAI_API_DEPLOYMENT_NAME,
-    azureEmbeddingDeploymentName: AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME,
-    basePath: OPENAI_PROXY,
+    apiType: configService.get('OPENAI_TYPE') as ModelType,
+    apiKey: configService.get('OPENAI_API_KEY'),
+    apiModel: configService.get('OPENAI_API_MODEL'),
+    azureApiKey: configService.get('AZURE_OPENAI_API_KEY'),
+    azureInstanceName: configService.get('AZURE_OPENAI_API_INSTANCE_NAME'),
+    azureApiVersion: configService.get('AZURE_OPENAI_API_VERSION'),
+    azureDeploymentName: configService.get('AZURE_OPENAI_API_DEPLOYMENT_NAME'),
+    azureEmbeddingDeploymentName: configService.get(
+      'AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME'
+    ),
+    basePath: configService.get('OPENAI_PROXY'),
   };
   validateKeyConfiguration(keyConfiguration);
   return keyConfiguration;

@@ -39,7 +39,9 @@ export class VectorService {
         namespace,
       },
     });
-    const keyConfiguration = getKeyConfigurationFromEnvironment();
+    const keyConfiguration = getKeyConfigurationFromEnvironment(
+      this.configService
+    );
     const vector = await getEmbeddings(keyConfiguration).embedQuery(content);
     return this.prisma.$executeRaw`
           UPDATE "Index"
@@ -66,7 +68,9 @@ export class VectorService {
 
   async create(createVectorDto: CreateVectorDto) {
     const { docId, content, source, namespace, metadata } = createVectorDto;
-    const keyConfiguration = getKeyConfigurationFromEnvironment();
+    const keyConfiguration = getKeyConfigurationFromEnvironment(
+      this.configService
+    );
     const vectorStore = await this.getVectorStore(keyConfiguration);
     return await vectorStore.addModels(
       await this.prisma.$transaction([
@@ -113,7 +117,9 @@ export class VectorService {
       .filter((x): x is string => !!x);
 
     const selectRaw = Prisma.raw(selectColumns.map((x) => `"${x}"`).join(', '));
-    const keyConfiguration = getKeyConfigurationFromEnvironment();
+    const keyConfiguration = getKeyConfigurationFromEnvironment(
+      this.configService
+    );
     const query = await getEmbeddings(keyConfiguration).embedQuery(message);
     const vector = `[${query.join(',')}]`;
     const querySql = Prisma.join(

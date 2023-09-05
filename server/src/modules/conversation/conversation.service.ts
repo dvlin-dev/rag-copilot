@@ -13,10 +13,14 @@ import {
   HumanMessagePromptTemplate,
   SystemMessagePromptTemplate,
 } from 'langchain/prompts';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ConversationService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService
+  ) {}
 
   get(id: string) {
     return this.prisma.conversation.findUnique({
@@ -78,7 +82,9 @@ export class ConversationService {
         throw new BadRequestException('Invalid message role');
       });
 
-    const keyConfiguration = getKeyConfigurationFromEnvironment();
+    const keyConfiguration = getKeyConfigurationFromEnvironment(
+      this.configService
+    );
     const model = await getModel(keyConfiguration, 'chatOpenAi');
     const prompt = ChatPromptTemplate.fromPromptMessages([
       SystemMessagePromptTemplate.fromTemplate(
