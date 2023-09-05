@@ -31,7 +31,7 @@ export const getModel = async (
     azureOpenAIApiDeploymentName: azureDeploymentName,
     azureOpenAIApiVersion: azureApiVersion,
   };
-
+  console.info('apiModel', apiModel);
   const openAIConfig = {
     modelName: apiModel,
     openAIApiKey: apiKey,
@@ -42,12 +42,12 @@ export const getModel = async (
       case ModelType.OPENAI:
         return {
           ...commonConfig,
-          ...azureConfig,
+          ...openAIConfig,
         };
       case ModelType.AZURE_OPENAI:
         return {
           ...commonConfig,
-          ...openAIConfig,
+          ...azureConfig,
         };
     }
   };

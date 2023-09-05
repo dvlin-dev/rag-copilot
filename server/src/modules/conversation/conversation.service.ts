@@ -1,18 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { PrismaService } from 'src/utils/prisma/prisma.service';
 import { getKeyConfigurationFromEnvironment } from 'src/utils/llm/configuration';
 import { getModel } from 'src/utils/llm/openai';
-import { ConversationChain } from 'langchain/chains';
+import { LLMChain } from 'langchain/chains';
 import { ChatDto } from './dto/chat.dto';
-import { AIMessage, HumanMessage, SystemMessage } from 'langchain/schema';
-import { BufferMemory, ChatMessageHistory } from 'langchain/memory';
-import {
-  AIMessagePromptTemplate,
-  ChatPromptTemplate,
-  HumanMessagePromptTemplate,
-  SystemMessagePromptTemplate,
-} from 'langchain/prompts';
+import { PromptTemplate } from 'langchain/prompts';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -62,41 +55,46 @@ export class ConversationService {
 
   async chat(chatDto: ChatDto) {
     const { messages } = chatDto;
-    let input: string;
-    if (messages.length === 1) {
-      input = messages[0].content;
-    } else {
-      input = messages[messages.length - 1].content;
-    }
+    const extractInput = (messages): string =>
+      messages[messages.length - 1].content;
 
-    const historyMessages = messages
-      ?.slice(0, messages.length - 1)
-      .map((message) => {
-        if (message.role === 'human') {
-          return HumanMessagePromptTemplate.fromTemplate(message.content);
-        } else if (message.role === 'ai') {
-          return AIMessagePromptTemplate.fromTemplate(message.content);
-        } else if (message.role === 'system') {
-          return SystemMessagePromptTemplate.fromTemplate(message.content);
-        }
-        throw new BadRequestException('Invalid message role');
-      });
+    const buildHistory = (messages): string =>
+      messages
+        .map((message) => {
+          switch (message.role) {
+            case 'human':
+              return `用户：${message.content}`;
+            case 'ai':
+              return `人工智能：${message.content}`;
+            default:
+              return '';
+          }
+        })
+        .join('\n');
 
+    const buildBackground = (messages): string =>
+      messages
+        .filter((message) => message.role === 'system')
+        .reduce((acc, cur) => `${acc}\n${cur.content}`, '');
+
+    const buildContext = (background: string, history: string): string =>
+      `${background}${history}`;
+
+    const input = extractInput(messages);
+    const contexts = messages.slice(0, -1);
+    const history = buildHistory(contexts);
+    const background = buildBackground(contexts);
+    const context = buildContext(background, history);
     const keyConfiguration = getKeyConfigurationFromEnvironment(
       this.configService
     );
     const model = await getModel(keyConfiguration, 'chatOpenAi');
-    const prompt = ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate(
-        '我是 docs-copilot 小助手，我会从上下文中获取答案，如果从中得不到问题的答案，我会诚实地说不知道。'
-      ),
-      ...historyMessages,
-      HumanMessagePromptTemplate.fromTemplate('{input}'),
-    ]);
-
-    const chain = new ConversationChain({ llm: model, prompt });
-    const { response } = await chain.call({ input });
-    return response;
+    const prompt = PromptTemplate.fromTemplate(
+      `以下是人类和人工智能之间的友好对话。人工智能从上下文中提供了许多具体的细节，人工智能的答案的原来都在上下中获取，它不会自己编造答案。如果人工智能无法从上下文中获取问题的答案，它会诚实地说它不知道。\n 上下文：${context} 问题：${input}\n有用的答案：`
+    );
+    const chain = new LLMChain({ llm: model, prompt });
+    const { text } = await chain.call({ context, input });
+    return text;
   }
 
   async search(namespace: string) {
