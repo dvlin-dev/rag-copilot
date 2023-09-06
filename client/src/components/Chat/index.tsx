@@ -26,7 +26,9 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
       .map((message) => {
         return (
           <div className={styles.message}>
-            <div className={styles.messageContent}>{message.content}</div>
+            <div className={styles.messageContent}>
+              {message.role && `${message.role} :`} {message.content}
+            </div>
             <div className={styles.messageTime}>{message.createdAt}</div>
           </div>
         );

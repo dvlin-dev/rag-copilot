@@ -35,10 +35,10 @@ const AuthRightBox = () => {
         position='bottomLeft'
         render={
           <Dropdown.Menu>
-            <Dropdown.Item onClick={() => push('workspace/project')}>
+            <Dropdown.Item onClick={() => push('/workspace/project')}>
               应用列表
             </Dropdown.Item>
-            <Dropdown.Item onClick={() => push('workspace/doc')}>
+            <Dropdown.Item onClick={() => push('/workspace/doc')}>
               知识库列表
             </Dropdown.Item>
             <Dropdown.Item onClick={() => push('/workspace/account')}>

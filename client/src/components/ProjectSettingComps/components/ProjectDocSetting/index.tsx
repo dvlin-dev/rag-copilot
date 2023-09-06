@@ -17,7 +17,10 @@ const ProjectDocSetting = () => {
   const [docConfirmLoading, setDocConfirmLoading] = useState(false);
   const config = ProjectSettingConfig.doc;
   const { query } = useRouter();
-  const { data, isLoading } = useSWR(`/project/${query.id}/detail`, fetcher);
+  const { data, isLoading, mutate } = useSWR(
+    `/project/${query.id}/detail`,
+    fetcher
+  );
   if (isLoading || !data) return <div>loading...</div>;
   const docHandleOk = (checkedList) => {
     const projectId = query.id;
@@ -25,6 +28,7 @@ const ProjectDocSetting = () => {
     updateProjectApi({ docIds: checkedList, id: projectId })
       .then(() => {
         ToastSuccess('更新成功');
+        mutate();
         setDocModalVisible(false);
       })
       .catch(() => {
