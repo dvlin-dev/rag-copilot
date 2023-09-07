@@ -90,7 +90,7 @@ export class ConversationService {
     );
     const model = await getModel(keyConfiguration, 'chatOpenAi');
     const prompt = PromptTemplate.fromTemplate(
-      `以下是人类和人工智能之间的友好对话。人工智能从上下文中提供了许多具体的细节，人工智能的答案的原来都在上下中获取，它不会自己编造答案。如果人工智能无法从上下文中获取问题的答案，它会诚实地说它不知道。\n 上下文：${context} 问题：${input}\n有用的答案：`
+      `以下是人类和人工智能之间的友好对话。上下文中提供了许多具体的细节，人工智能的答案的来源都在上下中获取，它不会自己编造答案。如果人工智能无法从上下文中获取问题的答案，它会诚实地说它不知道。\n 上下文：${context} 问题：${input}\n有用的答案：`
     );
     const chain = new LLMChain({ llm: model, prompt });
     const { text } = await chain.call({ context, input });
