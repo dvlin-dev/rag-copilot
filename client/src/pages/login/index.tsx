@@ -15,7 +15,7 @@ export default function Login() {
     <main className={styles.loginScreen}>
       <div className={styles.loginCard}>
         <div className={styles.loginHeader}>
-          <h1 className={styles.title}>登录 docs-copilot</h1>
+          <h1 className={styles.title}>docs-copilot</h1>
         </div>
         <div className={styles.loginPath}>
           <Button
@@ -36,16 +36,15 @@ export default function Login() {
           >
             验证码登录
           </Button>
-          <Button
+          {/* <Button
             type='primary'
             theme='solid'
             block
             className={styles.loginPathButton}
             onClick={githubAuth}
-            disabled
           >
             Github 授权
-          </Button>
+          </Button> */}
         </div>
         <div className={styles.forgetContainer}>
           <Button
