@@ -8,6 +8,7 @@ interface BaseSettingCardProps {
   tips?: string;
   description?: string;
   footer?: React.ReactNode;
+  onlyDisplay?: boolean;
 }
 
 interface InputSettingCardProps extends BaseSettingCardProps {
@@ -32,7 +33,7 @@ interface CumstomSettingCardProps extends BaseSettingCardProps {
 type SettingCardProps = InputSettingCardProps | CumstomSettingCardProps;
 
 const EditorCard = (props: SettingCardProps) => {
-  const { title, type, tips, description, footer } = props;
+  const { title, type, tips, description, footer, onlyDisplay } = props;
 
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -74,7 +75,7 @@ const EditorCard = (props: SettingCardProps) => {
       className={styles.SettingCard}
       cover={
         <div className={styles.cardCover}>
-          {title}
+          <div className={styles.title}>{title}</div>
           {type === 'input' ? (
             <Input
               value={
@@ -83,6 +84,7 @@ const EditorCard = (props: SettingCardProps) => {
               }
               onChange={handleInputChange}
               placeholder={(props as InputSettingCardProps).placeholder}
+              disabled={onlyDisplay}
             />
           ) : (
             props.children
@@ -97,7 +99,7 @@ const EditorCard = (props: SettingCardProps) => {
         lineHeight: 1.6,
         padding: '12px 24px',
       }}
-      footer={getFooter()}
+      footer={!onlyDisplay && getFooter()}
       bodyStyle={{ display: 'none' }}
     />
   );

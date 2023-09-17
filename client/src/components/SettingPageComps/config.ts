@@ -22,18 +22,18 @@ export const settingConfig: settingConfigType = {
   avatar: {
     title: '头像',
     description: '点击头像从你的文件中上传一个定制的头像。',
-    tips: '（bug 修复中',
+    tips: '允许上传图片最大体积 10MB',
   },
   username: {
-    title: '你的名字',
-    tips: '请输入6 至 20 位字符',
+    title: '用户名',
+    tips: '请输入 6 至 20 位字符',
   },
   email: {
     title: '邮箱',
-    tips: '我们将通过电子邮件向您确认更改（ 暂不会确认 =，=',
+    // tips: '我们将通过电子邮件向您确认更改',
   },
   description: {
     title: '个人简介',
-    tips: '请输入 200 字符以内的简介（ bug 修复中',
+    tips: '请输入 200 字符以内的简介',
   },
 };

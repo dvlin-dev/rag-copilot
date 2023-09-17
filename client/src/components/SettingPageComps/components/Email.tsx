@@ -48,6 +48,7 @@ const EmailSettingCard = () => {
       onSave={handleSave}
       loading={loading}
       isExternallyDisabled={isExternallyDisabled}
+      onlyDisplay
     />
   );
 };

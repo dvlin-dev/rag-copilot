@@ -154,7 +154,6 @@ export class UserService {
     return this.prisma.user.update({
       where: { id },
       data: {
-        ...updateUserDto,
         profile: {
           update: {
             ...(description && { description }),
