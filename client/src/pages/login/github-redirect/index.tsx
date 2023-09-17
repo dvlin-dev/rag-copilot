@@ -1,5 +1,4 @@
 import { getGithubUser } from '@/api/github';
-import { generateDeviceInfo } from '@/utils/device';
 import React, { useEffect } from 'react';
 import useUserStore from '@/store/user';
 import { useRouter } from 'next/router';
@@ -29,25 +28,19 @@ const GithubRedirect = () => {
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
     if (code) {
-      generateDeviceInfo(code).then((res) => {
-        const { deviceId, deviceType } = res;
-        const params = {
-          code,
-          deviceId,
-          deviceType,
-        };
-        getGithubUser(params)
-          .then((res) => {
-            const { accessToken, user } = res.data;
-            localStorage.setItem('bearerToken', accessToken);
-            afterLoginSuccess(user);
-          })
-          .catch(() => {
-            errorHandle();
-          });
-      });
+      const params = {
+        code,
+      };
+      getGithubUser(params)
+        .then((res) => {
+          const { accessToken, user } = res.data;
+          localStorage.setItem('bearerToken', accessToken);
+          afterLoginSuccess(user);
+        })
+        .catch(() => {
+          errorHandle();
+        });
     } else {
-      // 导航到登录界面，显示错误信息
       errorHandle();
     }
   }, []);

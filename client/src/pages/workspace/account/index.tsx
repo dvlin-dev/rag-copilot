@@ -4,7 +4,6 @@ import EmailSettingCard from '@/components/SettingPageComps/components/Email';
 import DescriptionSettingCard from '@/components/SettingPageComps/components/Description';
 
 import styles from './style/index.module.scss';
-import DeviceMange from '@/components/SettingPageComps/components/DeviceMange';
 // import ThirdPartyLoginInfoCard from '@/components/ThirdPartyLoginInfoCard';
 import AvatarettingCard from '@/components/SettingPageComps/components/Avatar';
 import useUserStore from '@/store/user';
@@ -39,9 +38,6 @@ const Account = () => {
               <ThirdPartyLoginInfoCard />
             </div>
           )} */}
-          {/* <div id='deviceMange'>
-            <DeviceMange />
-          </div> */}
         </div>
       </div>
     </main>

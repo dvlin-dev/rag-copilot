@@ -1,16 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 
-export class LoginBase {
-  @ApiProperty({ description: '设备Id' })
-  @IsNotEmpty()
-  deviceId: string;
-
-  @ApiProperty({ description: '设备类型' })
-  @IsNotEmpty()
-  deviceType: string;
-}
-export class SignInByEmailAndPassowrdDto extends LoginBase {
+export class SignInByEmailAndPassowrdDto {
   @ApiProperty({ description: '邮箱' })
   @IsEmail()
   @IsNotEmpty()
@@ -24,7 +15,7 @@ export class SignInByEmailAndPassowrdDto extends LoginBase {
   password: string;
 }
 
-export class SignInByEmailAndCodeDto extends LoginBase {
+export class SignInByEmailAndCodeDto {
   @ApiProperty({ description: '邮箱' })
   @IsEmail()
   @IsNotEmpty()

@@ -2,7 +2,6 @@ import { logout } from '@/api/user';
 import CustomAvatar from '@/components/CustomAvatar';
 import useUserStore from '@/store/user';
 import { ToastSuccess, clearUserToken } from '@/utils/common';
-import { getDeviceId } from '@/utils/device';
 import { Dropdown, DropdownDivider, Spin } from '@douyinfe/semi-ui';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -15,19 +14,17 @@ const AuthRightBox = () => {
 
   const logoutHandle = async () => {
     setLogoutIsLoading(true);
-    const deviceId = getDeviceId();
-    deviceId &&
-      logout(deviceId)
-        .then(() => {
-          ToastSuccess('退出成功');
-          push('/login');
-          clearUserToken();
-          clearUser();
-        })
-        .catch(() => {})
-        .finally(() => {
-          setLogoutIsLoading(false);
-        });
+    logout()
+      .then(() => {
+        ToastSuccess('退出成功');
+        push('/login');
+        clearUserToken();
+        clearUser();
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLogoutIsLoading(false);
+      });
   };
   return (
     <>

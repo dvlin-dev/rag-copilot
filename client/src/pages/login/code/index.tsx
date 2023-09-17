@@ -5,7 +5,6 @@ import { LoginByPasswordParams, smsLogin } from '@/api/user';
 import { useState } from 'react';
 import { ToastSuccess } from '@/utils/common';
 import useUserStore from '@/store/user';
-import { generateDeviceInfo } from '@/utils/device';
 import VerificationCodeInput from '@/components/VerificationCodeInput';
 
 export default function Code() {
@@ -15,16 +14,7 @@ export default function Code() {
   const { push } = useRouter();
   const handleSubmit = (values: LoginByPasswordParams) => {
     setLoading(true);
-    generateDeviceInfo(values.email)
-      .then((res) => {
-        const { deviceId, deviceType } = res;
-        const params: LoginByPasswordParams = {
-          ...values,
-          deviceId,
-          deviceType,
-        };
-        return smsLogin(params);
-      })
+    smsLogin(values)
       .then((res) => {
         const { user, accessToken } = res.data;
         localStorage.setItem('bearerToken', accessToken);

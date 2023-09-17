@@ -10,7 +10,6 @@ import {
 import { useState } from 'react';
 import { ToastSuccess } from '@/utils/common';
 import useUserStore from '@/store/user';
-import { generateDeviceInfo } from '@/utils/device';
 import VerificationCodeInput from '@/components/VerificationCodeInput';
 
 export default function Email() {
@@ -25,17 +24,8 @@ export default function Email() {
         ToastSuccess('注册成功');
         return Promise.resolve();
       })
-      .then(async () => {
-        const { deviceId, deviceType } = await generateDeviceInfo(values.email);
-        if (deviceId && deviceType) {
-          const params: LoginByPasswordParams = {
-            ...values,
-            deviceId,
-            deviceType,
-          };
-          return loginApi(params);
-        }
-        return Promise.reject();
+      .then(() => {
+        return loginApi(values);
       })
       .then((res) => {
         const { user, accessToken } = res.data;

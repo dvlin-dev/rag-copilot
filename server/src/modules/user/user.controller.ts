@@ -83,10 +83,6 @@ export class UserController {
   @ApiBearerAuth()
   @Patch('update')
   async updateUser(@Body() updateUserDto: UpdateUserDto, @Req() req) {
-    if (!req.user.userId) {
-      throw new UnauthorizedException(TokenExpiredMessage);
-    }
-
     return this.userService.update(req.user.userId, updateUserDto);
   }
 
@@ -101,10 +97,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   removeUser(@Param('id') id: string, @Req() req) {
-    if (!req.user.userId) {
-      throw new UnauthorizedException(TokenExpiredMessage);
-    }
     //TODO: 判断是否是管理员
-    return this.userService.remove(id);
+    // return this.userService.remove(id);
   }
 }

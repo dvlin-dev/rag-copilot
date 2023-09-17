@@ -17,7 +17,6 @@ declare interface User {
   password?: string | null;
   accountType: UserAccountTypeEnum;
   createdAt: Date;
-  device: Device[];
   logs: Log[];
   profile?: Profile | null;
   roles: UsersRole[];
@@ -33,17 +32,9 @@ declare interface Profile {
   githubLogin?: string | null;
   githubName?: string | null;
   userId?: string | null;
-}
-
-declare interface Device {
-  id: string;
-  deviceId: string;
-  deviceType: string;
-  clientIp: string;
   lastLoginAt: Date;
   refreshToken?: string | null;
   refreshTokenExpiresAt?: bigint | null;
-  userId?: string | null;
 }
 
 declare interface Log {

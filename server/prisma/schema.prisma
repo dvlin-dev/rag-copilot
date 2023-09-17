@@ -87,7 +87,6 @@ model User {
   password    String?
   accountType UserAccountTypeEnum @default(email)
   createdAt   DateTime            @default(now())
-  devices     Device[]
   logs        Log[]
   profile     UserProfile?
   roles       UsersRole[]
@@ -103,20 +102,9 @@ model UserProfile {
   description String?
   githubLogin String?
   githubName  String?
+  lastLoginAt           DateTime @default(now())
   userId      String            @unique
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Device {
-  id                    String   @id @default(uuid())
-  deviceId              String   @unique
-  deviceType            String
-  clientIp              String
-  lastLoginAt           DateTime @default(now())
-  refreshToken          String?
-  refreshTokenExpiresAt BigInt?
-  userId                String
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Log {

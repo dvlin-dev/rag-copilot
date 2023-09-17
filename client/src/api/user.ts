@@ -3,8 +3,6 @@ import http from '../utils/http';
 export interface LoginByPasswordParams {
   email: string;
   password: string;
-  deviceId: string;
-  deviceType: string;
 }
 
 export type RegisterByEmail = {
@@ -70,13 +68,10 @@ export function updateUserInfo(data: UpdateUserDto) {
   });
 }
 
-export function logout(deviceId: string) {
+export function logout() {
   return http({
     url: '/auth/logout',
     method: 'post',
-    data: {
-      deviceId,
-    },
   });
 }
 

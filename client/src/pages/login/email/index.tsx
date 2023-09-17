@@ -5,7 +5,6 @@ import { LoginByPasswordParams, loginApi } from '@/api/user';
 import { useState } from 'react';
 import { ToastSuccess } from '@/utils/common';
 import useUserStore from '@/store/user';
-import { generateDeviceInfo } from '@/utils/device';
 
 export default function Email() {
   const [loading, setLoading] = useState(false);
@@ -14,16 +13,7 @@ export default function Email() {
   const { push } = useRouter();
   const handleSubmit = (values: LoginByPasswordParams) => {
     setLoading(true);
-    generateDeviceInfo(values.email)
-      .then((res) => {
-        const { deviceId, deviceType } = res;
-        const params: LoginByPasswordParams = {
-          ...values,
-          deviceId,
-          deviceType,
-        };
-        return loginApi(params);
-      })
+    loginApi(values)
       .then((res) => {
         const { user, accessToken } = res.data;
         localStorage.setItem('bearerToken', accessToken);

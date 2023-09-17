@@ -11,7 +11,7 @@ import { getUserDto } from './dto/get-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 import { getServerConfig } from 'src/utils';
-import { User, ProfileGenderEnum } from '@prisma/client';
+import { ProfileGenderEnum } from '@prisma/client';
 import { RolesEnum, UserInput } from './dto/user.input';
 import { PrismaService } from 'src/utils/prisma/prisma.service';
 @Injectable()
@@ -114,8 +114,6 @@ export class UserService {
     return { data: users, total, totalPages };
   }
 
-  // ...
-
   find(username: string) {
     return this.prisma.user.findUnique({
       where: { username },
@@ -207,10 +205,6 @@ export class UserService {
 
     return userInfo;
   }
-
-  // 对于复杂的查询，您可能需要使用 Prisma 的原生 SQL 查询
-  // 或者使用 Prisma 提供的 API 来构造相同的查询。
-  // findLogByGroup 方法可能需要进一步调整。
 
   async createAdminAccount() {
     const config = getServerConfig(); // 确保这个方法是可用的

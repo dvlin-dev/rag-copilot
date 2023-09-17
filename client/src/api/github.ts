@@ -3,8 +3,6 @@ export const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
 interface githubAuthDto {
   code: string;
-  deviceId: string;
-  deviceType: string;
 }
 
 export const getGithubUser = (
