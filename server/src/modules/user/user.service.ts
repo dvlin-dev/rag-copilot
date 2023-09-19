@@ -35,7 +35,6 @@ export class UserService {
     }
 
     if (email) {
-      // 邮箱重复检测
       const userByEmail = await this.prisma.user.findUnique({
         where: { email },
       });
@@ -149,17 +148,20 @@ export class UserService {
       throw new NotFoundException('用户不存在');
     }
 
-    const { description, gender, avatar, photo } = updateUserDto;
+    const { username, email, description, gender, avatar, photo } =
+      updateUserDto;
 
     return this.prisma.user.update({
       where: { id },
       data: {
+        username,
+        email,
         profile: {
           update: {
-            ...(description && { description }),
-            ...(gender && { gender }),
-            ...(avatar && { avatar }),
-            ...(photo && { photo }),
+            description,
+            gender,
+            avatar,
+            photo,
           },
         },
       },
@@ -169,7 +171,6 @@ export class UserService {
 
   async updatePassword(passwordDto: UpdatePasswordDto) {
     const { email, code, password } = passwordDto;
-    const user = await this.prisma.user.findUnique({ where: { email } });
 
     const getCode = await this.redis.get(`${email}_code`);
     if (!code || code !== getCode) {
