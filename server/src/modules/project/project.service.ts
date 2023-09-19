@@ -95,9 +95,13 @@ export class ProjectService {
         projectDetail: {
           update: projectDetail,
         },
-        docs: {
-          connect: docIds.map((docId) => ({ id: docId })),
-        },
+        ...(docIds
+          ? {
+              docs: {
+                connect: docIds.map((docId) => ({ id: docId })),
+              },
+            }
+          : {}),
       },
       include: {
         projectDetail: true,
@@ -105,9 +109,7 @@ export class ProjectService {
       },
     });
 
-    return {
-      data,
-    };
+    return data;
   }
 
   delete(id: string) {
@@ -134,7 +136,9 @@ export class ProjectService {
     });
 
     const docIds = docs.map((doc) => doc.id);
-
+    if (!docIds.length) {
+      return [];
+    }
     return await this.vectorService.similaritySearch({
       docIds,
       message: content,

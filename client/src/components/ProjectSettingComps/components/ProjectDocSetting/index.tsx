@@ -6,26 +6,26 @@ import styles from './index.module.scss';
 import { DocCard } from './DocCard';
 import { Button } from '@douyinfe/semi-ui';
 import SelectDocModal from './SelectDocModal';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { fetcher } from '@/utils/http';
 import { useRouter } from 'next/router';
-import { updateProjectApi } from '@/api/project';
+import { updateProject } from '@/api/project';
 import { ToastError, ToastSuccess } from '@/utils/common';
 
-const ProjectDocSetting = () => {
+interface ProjectDocSettingProps {
+  docs: Doc[];
+}
+
+const ProjectDocSetting: FC<ProjectDocSettingProps> = ({ docs }) => {
   const [docModalVisible, setDocModalVisible] = useState(false);
   const [docConfirmLoading, setDocConfirmLoading] = useState(false);
   const config = ProjectSettingConfig.doc;
   const { query } = useRouter();
-  const { data, isLoading, mutate } = useSWR(
-    `/project/${query.id}/detail`,
-    fetcher
-  );
-  if (isLoading || !data) return <div>loading...</div>;
+  const { mutate } = useSWR(`/project/${query.id}/detail`, fetcher);
   const docHandleOk = (checkedList) => {
     const projectId = query.id;
     if (typeof projectId !== 'string') return;
-    updateProjectApi({ docIds: checkedList, id: projectId })
+    updateProject({ docIds: checkedList, id: projectId })
       .then(() => {
         ToastSuccess('更新成功');
         mutate();
@@ -50,7 +50,7 @@ const ProjectDocSetting = () => {
     );
   };
   const getDocs = () =>
-    data.docs.map((item) => <DocCard doc={item} key={item.id} />);
+    docs.map((item) => <DocCard doc={item} key={item.id} />);
 
   return (
     <EditorCard
@@ -61,11 +61,11 @@ const ProjectDocSetting = () => {
       footer={getFooter()}
     >
       <div className={styles.container}>
-        {data.docs.length > 0 ? getDocs() : '请选择一个知识库'}
+        {docs.length > 0 ? getDocs() : '请选择一个知识库'}
       </div>
       <SelectDocModal
         visible={docModalVisible}
-        docs={data.docs}
+        docs={docs}
         onOk={docHandleOk}
         onCancel={docHandleCancel}
         confirmLoading={docConfirmLoading}

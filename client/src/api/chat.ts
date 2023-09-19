@@ -3,6 +3,7 @@ import http from '@/utils/http';
 
 interface ChatBody {
   messages: Partial<Message>[];
+  projectId?: string;
 }
 
 export const chat = (data: ChatBody) =>

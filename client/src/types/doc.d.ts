@@ -17,7 +17,7 @@ declare interface ProjectDetail {
   ipLimit?: number | null;
 }
 
-declare interface Docs {
+declare interface Doc {
   id: string;
   name?: string | null;
   description?: string | null;

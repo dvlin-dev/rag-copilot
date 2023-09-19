@@ -10,6 +10,8 @@ interface CreateProject {
 }
 
 export const getProjectList = () => http('/project/list');
+export const getProjectDetail = (projectId: string) =>
+  http(`/project/${projectId}/detail`);
 export const createProjectApi = (data: CreateProject) =>
   http({
     url: '/project',
@@ -28,7 +30,7 @@ interface UpdateProject {
   docIds?: string[];
 }
 
-export const updateProjectApi = (data: UpdateProject) =>
+export const updateProject = (data: UpdateProject) =>
   http({
     url: '/project',
     method: 'patch',

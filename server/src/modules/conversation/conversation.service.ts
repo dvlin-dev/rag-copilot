@@ -54,7 +54,7 @@ export class ConversationService {
   }
 
   async chat(chatDto: ChatDto) {
-    const { messages } = chatDto;
+    const { messages, projectId } = chatDto;
     const extractInput = (messages): string =>
       messages[messages.length - 1].content;
 
@@ -84,17 +84,30 @@ export class ConversationService {
     const contexts = messages.slice(0, -1);
     const history = buildHistory(contexts);
     const background = buildBackground(contexts);
-    const context = buildContext(background, history);
+    // const context = buildContext(background, history);
     const keyConfiguration = getKeyConfigurationFromEnvironment(
       this.configService
     );
     const model = await getModel(keyConfiguration, 'chatOpenAi');
-    const prompt = PromptTemplate.fromTemplate(
-      `以下是人类和人工智能之间的友好对话。上下文中提供了许多具体的细节，人工智能的答案的来源都在上下中获取，它不会自己编造答案。如果人工智能无法从上下文中获取问题的答案，它会诚实地说它不知道。\n 上下文：${context} 问题：${input}\n有用的答案：`
-    );
+    // `以下是人类和人工智能之间的友好对话。上下文中提供了许多具体的细节，人工智能的答案的来源都在上下中获取，它不会自己编造答案。如果人工智能无法从上下文中获取问题的答案，它会诚实地说它不知道。
+    const baseProjectPrompt =
+      '\n 上下文：{background}。\n 历史消息：{history}。 问题：{input} \n 有用的答案：';
+    const projectPrompt = projectId
+      ? (await this.getProjectPrompt(projectId)) || baseProjectPrompt
+      : baseProjectPrompt;
+    const prompt = PromptTemplate.fromTemplate(projectPrompt);
     const chain = new LLMChain({ llm: model, prompt });
-    const { text } = await chain.call({ context, input });
+    const { text } = await chain.call({ background, history, input });
     return text;
+  }
+
+  async getProjectPrompt(projectId: string) {
+    return (
+      await this.prisma.project.findUnique({
+        where: { id: projectId },
+        include: { projectDetail: true },
+      })
+    ).projectDetail.prompt;
   }
 
   async search(namespace: string) {

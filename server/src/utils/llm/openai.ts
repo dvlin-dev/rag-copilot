@@ -31,7 +31,6 @@ export const getModel = async (
     azureOpenAIApiDeploymentName: azureDeploymentName,
     azureOpenAIApiVersion: azureApiVersion,
   };
-  console.info('apiModel', apiModel);
   const openAIConfig = {
     modelName: apiModel,
     openAIApiKey: apiKey,

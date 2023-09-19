@@ -25,7 +25,7 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
       .filter((item) => item.role !== MessageRole.system)
       .map((message) => {
         return (
-          <div className={styles.message}>
+          <div className={styles.message} key={message.createdAt}>
             <div className={styles.messageContent}>
               {message.role && `${message.role} :`} {message.content}
             </div>
@@ -51,7 +51,7 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
       };
     });
     const messages = [...chatList.slice(1), ...systemMessages, humanMessage];
-    chat({ messages })
+    chat({ messages, projectId })
       .then((res) => {
         const result = {
           content: res.data,

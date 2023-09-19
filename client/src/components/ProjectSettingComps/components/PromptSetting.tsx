@@ -1,17 +1,23 @@
 import EditorCard from '@/components/EditorCard';
 import { ProjectSettingConfig } from '../config';
-import { useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import useUserStore from '@/store/user';
-import { updateUserInfo } from '@/api/user';
+import { updateProject } from '@/api/project';
+import useSWR from 'swr';
+import { fetcher } from '@/utils/http';
+import { ToastSuccess } from '@/utils/common';
 
-const PromptSetting = () => {
+interface PromptSettingProps {
+  projectId: string;
+  prompt: string;
+}
+
+const PromptSetting: FC<PromptSettingProps> = ({ projectId, prompt }) => {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [isExternallyDisabled, setIsExternallyDisabled] = useState(false);
   const config = ProjectSettingConfig.prompt;
-
-  const { user, setUser } = useUserStore();
-  const initialValue = user?.profile?.description || '';
+  const initialValue = prompt || '';
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
@@ -24,11 +30,11 @@ const PromptSetting = () => {
 
   const handleSave = () => {
     setLoading(true);
-    updateUserInfo({ description: inputValue })
+    updateProject({ prompt: inputValue, id: projectId })
       .then((res) => {
-        setUser(res.data);
-        setInputValue(res.data.profile.description);
+        setInputValue(res.data.projectDetail.prompt);
         setIsExternallyDisabled(true);
+        ToastSuccess('修改成功');
       })
       .catch((err) => err)
       .finally(() => {
