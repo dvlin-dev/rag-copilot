@@ -101,6 +101,19 @@ export class ConversationService {
     return text;
   }
 
+  async completions(message: string) {
+    const keyConfiguration = getKeyConfigurationFromEnvironment(
+      this.configService
+    );
+    const model = await getModel(keyConfiguration, 'openAi');
+
+    const prompt = PromptTemplate.fromTemplate(message);
+
+    const chain = new LLMChain({ llm: model, prompt });
+    const { text } = await chain.call({});
+    return text;
+  }
+
   async getProjectPrompt(projectId: string) {
     return (
       await this.prisma.project.findUnique({

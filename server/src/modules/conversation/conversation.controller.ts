@@ -72,6 +72,13 @@ export class ConversationController {
     return this.conversationService.chat(chatDto);
   }
 
+  @ApiOperation({ summary: 'completions' })
+  @ApiResponse({ status: 200, description: '成功获取' })
+  @Post('/completions')
+  async completions(@Body() message: string) {
+    return this.conversationService.completions(message);
+  }
+
   @ApiOperation({ summary: '查询' })
   @ApiResponse({ status: 200, description: '成功获取' })
   @Get(':id/search')
