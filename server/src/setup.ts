@@ -54,15 +54,20 @@ export const setupApp = (app: INestApplication) => {
     app.enableCors({
       origin: (origin, callback) => {
         console.info('origin', origin);
-        const whiteDomain = (config['WHITE_DOMAIN'] as string)
-          .split(',')
-          .map((item) => `https://${item}`);
+        const WhiteDomainArrays = (config['WHITE_DOMAIN'] as string).split(',');
+        const httpWhiteDomain = WhiteDomainArrays.map(
+          (item) => `https://${item}`
+        );
+        const httpsWhiteDomain = WhiteDomainArrays.map(
+          (item) => `https://${item}`
+        );
 
         const allowedOrigins = [
           'https://docs-copilot.devlink.wiki',
           `https://${config['DB_HOST']}`,
           `http://${config['DB_HOST']}`,
-          ...whiteDomain,
+          ...httpWhiteDomain,
+          ...httpsWhiteDomain,
         ];
         if (!origin) return callback(null, true);
 
