@@ -23,3 +23,10 @@ export class ChatDto {
   @IsString()
   projectId?: string;
 }
+
+export class CompletionsDto {
+  @ApiProperty({ description: 'message', required: true })
+  @IsNotEmpty()
+  @IsString()
+  message: string;
+}

@@ -4,7 +4,7 @@ import { PrismaService } from 'src/utils/prisma/prisma.service';
 import { getKeyConfigurationFromEnvironment } from 'src/utils/llm/configuration';
 import { getModel } from 'src/utils/llm/openai';
 import { LLMChain } from 'langchain/chains';
-import { ChatDto } from './dto/chat.dto';
+import { ChatDto, CompletionsDto } from './dto/chat.dto';
 import { PromptTemplate } from 'langchain/prompts';
 import { ConfigService } from '@nestjs/config';
 
@@ -97,6 +97,20 @@ export class ConversationService {
     const prompt = PromptTemplate.fromTemplate(projectPrompt);
     const chain = new LLMChain({ llm: model, prompt });
     const { text } = await chain.call({ background, history, input });
+    return text;
+  }
+
+  async completions(completionsDto: CompletionsDto) {
+    const { message } = completionsDto;
+    const keyConfiguration = getKeyConfigurationFromEnvironment(
+      this.configService
+    );
+    const model = await getModel(keyConfiguration, 'openAi');
+
+    const prompt = PromptTemplate.fromTemplate(message);
+
+    const chain = new LLMChain({ llm: model, prompt });
+    const { text } = await chain.call({});
     return text;
   }
 
