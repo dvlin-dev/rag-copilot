@@ -131,7 +131,7 @@ export class VectorService {
         `,
         filterSql ? filterSql : null,
         Prisma.sql`
-          ORDER BY "_distance" ASC
+          ORDER BY "_distance" DESC
           LIMIT ${k};
         `,
       ].filter((x) => x != null),

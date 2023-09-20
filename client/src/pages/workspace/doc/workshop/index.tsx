@@ -4,6 +4,7 @@ import {
   Input,
   List,
   Modal,
+  Progress,
   Skeleton,
   Slider,
 } from '@douyinfe/semi-ui';
@@ -50,12 +51,21 @@ const WorkShop = () => {
                   {item.pageContent}
                 </p>
                 {/* <Slider defaultValue={item.metadata._distance} disabled /> */}
-                <span
-                  style={{ color: 'var(--semi-color-text-3)', margin: '4px 0' }}
+                <div
+                  style={{
+                    color: 'var(--semi-color-text-3)',
+                    margin: '4px 0',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
                 >
                   相似度：
-                  {item.metadata._distance === 0 ? 1 : item.metadata._distance}
-                </span>
+                  <Progress
+                    percent={item.metadata._distance * 100}
+                    showInfo={true}
+                    aria-label='disk usage'
+                  />
+                </div>
               </div>
             }
           />
