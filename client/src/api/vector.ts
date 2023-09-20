@@ -8,7 +8,7 @@ interface searchVector {
   size: number;
 }
 
-interface addVector {
+interface AddVector {
   content: string;
 
   docId: string;
@@ -20,14 +20,14 @@ interface addVector {
   metadata: string;
 }
 
-export const addVector = (data: addVector) =>
+export const addVector = (data: AddVector) =>
   http({
     url: `/vector`,
     method: 'post',
     data,
   });
 
-interface similaritySearch {
+interface SimilaritySearch {
   message: string;
 
   docIds: string[];
@@ -35,9 +35,30 @@ interface similaritySearch {
   size: number;
 }
 
-export const similaritySearch = (params: similaritySearch) =>
+export const similaritySearch = (params: SimilaritySearch) =>
   http({
     url: `/vector/similarity_search`,
     method: 'get',
     params,
+  });
+
+export const deleteVector = (id: string) =>
+  http({
+    url: `/vector/${id}`,
+    method: 'delete',
+  });
+
+interface UpdateVector {
+  id: string;
+  content?: string;
+  source?: string;
+  namespace?: string;
+  metadata?: string;
+}
+
+export const updateVector = (data: UpdateVector) =>
+  http({
+    url: '/vector',
+    method: 'patch',
+    data,
   });

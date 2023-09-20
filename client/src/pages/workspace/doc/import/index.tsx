@@ -82,7 +82,7 @@ const Import = () => {
                     required
                     rules={[{ required: true, message: '请输入内容' }]}
                   />
-                  <Input field='source' label='来源' />
+                  {/* <Input field='source' label='来源' /> */}
                   <Button
                     className={styles.importBtn}
                     loading={loading}

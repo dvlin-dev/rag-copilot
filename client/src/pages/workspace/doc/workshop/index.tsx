@@ -1,4 +1,12 @@
-import { Button, Input, List, Skeleton, Slider } from '@douyinfe/semi-ui';
+import {
+  Button,
+  Form,
+  Input,
+  List,
+  Modal,
+  Skeleton,
+  Slider,
+} from '@douyinfe/semi-ui';
 import { useState } from 'react';
 
 import styles from './index.module.scss';

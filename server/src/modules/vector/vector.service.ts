@@ -28,7 +28,7 @@ export class VectorService {
 
   async update(updateVectorDto: UpdateVectorDto) {
     const { id, content, source, metadata, namespace } = updateVectorDto;
-    const { id: index_id } = await this.prisma.index.update({
+    const updateVector = await this.prisma.index.update({
       where: {
         id,
       },
@@ -43,11 +43,12 @@ export class VectorService {
       this.configService
     );
     const vector = await getEmbeddings(keyConfiguration).embedQuery(content);
-    return this.prisma.$executeRaw`
+    this.prisma.$executeRaw`
           UPDATE "Index"
           SET "vector" = ${`[${vector.join(',')}]`}::vector
-          WHERE "id" = ${index_id}
+          WHERE "id" = ${updateVector.id}
         `;
+    return updateVector;
   }
 
   delete(id: string) {

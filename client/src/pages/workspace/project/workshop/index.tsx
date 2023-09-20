@@ -30,14 +30,6 @@ const WorkShop = () => {
       <div className={styles.setting}>
         <div className={styles.header}>
           <div className={styles.title}>应用配置</div>
-          <Button
-            htmlType='submit'
-            type='primary'
-            theme='solid'
-            loading={confirmLoading}
-          >
-            保存
-          </Button>
         </div>
         <Select defaultValue={'gpt3.5'} disabled>
           <Select.Option value='gpt3.5'>gpt3.5</Select.Option>

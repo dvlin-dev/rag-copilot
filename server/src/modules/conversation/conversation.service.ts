@@ -90,8 +90,7 @@ export class ConversationService {
     );
     const model = await getModel(keyConfiguration, 'chatOpenAi');
     // `以下是人类和人工智能之间的友好对话。上下文中提供了许多具体的细节，人工智能的答案的来源都在上下中获取，它不会自己编造答案。如果人工智能无法从上下文中获取问题的答案，它会诚实地说它不知道。
-    const baseProjectPrompt =
-      '\n 上下文：{background}。\n 历史消息：{history}。 问题：{input} \n 有用的答案：';
+    const baseProjectPrompt = `\n 上下文：{background}。\n 历史消息：{history}。 问题：{input} \n 有用的答案：`;
     const projectPrompt = projectId
       ? (await this.getProjectPrompt(projectId)) || baseProjectPrompt
       : baseProjectPrompt;
@@ -102,12 +101,13 @@ export class ConversationService {
   }
 
   async getProjectPrompt(projectId: string) {
-    return (
+    const prompt = (
       await this.prisma.project.findUnique({
         where: { id: projectId },
         include: { projectDetail: true },
       })
     ).projectDetail.prompt;
+    return `${prompt}`;
   }
 
   async search(namespace: string) {

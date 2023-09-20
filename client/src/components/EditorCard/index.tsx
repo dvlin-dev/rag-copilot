@@ -1,4 +1,4 @@
-import { Card, Button, Input } from '@douyinfe/semi-ui';
+import { Card, Button, Input, TextArea } from '@douyinfe/semi-ui';
 
 import styles from './index.module.scss';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ interface InputSettingCardProps extends BaseSettingCardProps {
   initialValue: string;
   onInputChange: (
     value: string,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.MouseEvent<HTMLTextAreaElement>
   ) => void;
   onSave: () => void;
   loading?: boolean;
@@ -39,7 +39,7 @@ const EditorCard = (props: SettingCardProps) => {
 
   const handleInputChange = (
     value: string,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.MouseEvent<HTMLTextAreaElement>
   ) => {
     if (type === 'input') {
       setIsDisabled(value === (props as InputSettingCardProps).initialValue);
@@ -77,7 +77,9 @@ const EditorCard = (props: SettingCardProps) => {
         <div className={styles.cardCover}>
           <div className={styles.title}>{title}</div>
           {type === 'input' ? (
-            <Input
+            <TextArea
+              autosize
+              rows={1}
               value={
                 (props as InputSettingCardProps).value ||
                 (props as InputSettingCardProps).initialValue

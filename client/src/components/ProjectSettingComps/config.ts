@@ -24,6 +24,6 @@ export const ProjectSettingConfig: settingConfigType = {
   },
   prompt: {
     title: '提示词',
-    tips: '通过设定模型的固定提示词，我们可以引导模型交流的方向。这些内容将始终位于上下文的开始位置',
+    tips: '上下文：{background}。 历史消息：{history}。 问题：{input} ',
   },
 };

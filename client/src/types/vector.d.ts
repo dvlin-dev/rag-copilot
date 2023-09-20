@@ -8,3 +8,13 @@ declare interface similaritySearchResponseItem {
     _distance: number;
   };
 }
+
+declare interface Vector {
+  id: string;
+  docId: string;
+  content: string;
+  vector: any;
+  source?: string;
+  namespace?: string;
+  metadata?: string;
+}
