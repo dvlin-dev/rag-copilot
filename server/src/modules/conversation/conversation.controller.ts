@@ -25,7 +25,7 @@ import { ConversationService } from './conversation.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
-import { ChatDto } from './dto/chat.dto';
+import { ChatDto, CompletionsDto } from './dto/chat.dto';
 
 @ApiTags('会话')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -75,8 +75,8 @@ export class ConversationController {
   @ApiOperation({ summary: 'completions' })
   @ApiResponse({ status: 200, description: '成功获取' })
   @Post('/completions')
-  async completions(@Body() message: string) {
-    return this.conversationService.completions(message);
+  async completions(@Body() completionsDto: CompletionsDto) {
+    return this.conversationService.completions(completionsDto);
   }
 
   @ApiOperation({ summary: '查询' })
