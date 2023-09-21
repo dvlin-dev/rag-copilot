@@ -15,9 +15,30 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .title {
         font-size: 18px;
-        font-weight: 400;
+        font-weight: 600;
+      }
+    }
+    .item {
+      display: flex;
+      gap: 10px;
+
+      .title {
+        font-weight: 500;
+      }
+      .content {
+        flex: 1;
+        display: flex;
+        gap: 15px;
+
+        .idContainer {
+          width: 60%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-wrap: nowrap;
+        }
       }
     }
   }
