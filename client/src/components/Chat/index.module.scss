@@ -1,22 +1,97 @@
 .chatComponent {
+  padding-bottom: 4rem;
+  height: 100%;
+  position: relative;
+  .header {
+    font-weight: 600;
+    height: 3rem;
+    padding: 0 2rem;
+    border-bottom-width: 1px;
+    border-color: rgb(243 244 246);
+    line-height: 3rem;
+    border-style: solid;
+  }
   .messageList {
+    font-size: 1rem;
+
+    height: calc(100% - 3rem);
+    overflow-y: auto;
+    padding: 1rem 0 2rem 0;
     .message {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 10px 0;
-      .messageContent {
-        padding: 10px;
-        border-radius: 10px;
-        font-size: 1.2rem;
+      .messageContainer {
+        display: flex;
+        width: 100%;
+        margin: 1rem;
+        position: relative;
       }
-      .messageTime {
-        font-size: 1rem;
+
+      .systemMessage,
+      .aiMessage {
+        justify-content: flex-start;
+      }
+
+      .humanMessage {
+        justify-content: flex-end;
+      }
+
+      .messageContent {
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+      }
+      .systemContent,
+      .aiContent {
+        background-color: rgb(243 244 246);
+        justify-content: flex-start;
+      }
+
+      .humanContent {
+        background-color: rgb(228, 239, 252);
+        justify-content: flex-end;
+      }
+
+      .messageControll {
+        position: absolute;
+        display: flex;
+        gap: 5px;
+        bottom: -12px;
+        button {
+          border-radius: 5px;
+        }
+      }
+      .systemControll,
+      .aiControll {
+        left: 2px;
+      }
+
+      .humanControll {
+        right: 2px;
       }
     }
   }
   .sendContainer {
     display: flex;
     justify-content: space-around;
+    padding: 1rem;
+    gap: 0.5rem;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top-width: 1px;
+    border-color: #f3f4f6;
+    border-style: solid;
+    background-color: white;
+    height: 4rem;
+    padding-top: 0.75rem;
+    .sendInput,
+    .sendBtn {
+      height: 2.5rem;
+    }
+
+    .sendBtn {
+      padding-left: 0.7rem;
+      padding-right: 0.7rem;
+    }
   }
 }

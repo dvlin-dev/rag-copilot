@@ -1,41 +1,119 @@
-import { chat } from '@/api/chat';
-import styles from './index.module.scss';
-import { FC, useMemo, useState } from 'react';
-import { Button, Input } from '@douyinfe/semi-ui';
-import { IconSend } from '@douyinfe/semi-icons';
-import { similaritySearchFromDocs } from '@/api/project';
-import { MessageRole } from '@/types';
+import { IconCopy, IconMicrophone, IconSend } from '@douyinfe/semi-icons';
+import { Button, Input, Spin } from '@douyinfe/semi-ui';
+import ClassNames from 'classnames';
+import { FC, useEffect, useMemo, useState } from 'react';
 
+import { similaritySearchFromDocs } from '../../api/project';
+// import useBrowserSpeechToText, {
+//   SupportedLanguages,
+// } from '../../hooks/useBrowserSpeechToText';
+import { useTTSStore } from '../../store/tts';
+import { handleCopy, ToastWaring } from '../../utils/common';
+import styles from './index.module.scss';
+import { MessageRole } from '@/types';
+import { chat } from '@/api/chat';
 interface ChatProps {
   projectId: string;
 }
-
 const Chat: FC<ChatProps> = ({ projectId }) => {
   const [loading, setLoading] = useState(false);
+  // const { transcript, isListening, setIsListening } = useBrowserSpeechToText({
+  //   language: SupportedLanguages['zh-CN'],
+  // });
   const [chatList, setChatList] = useState<Partial<Message>[]>([
-    {
-      content: '你好,我是 docs-copilot 小助手',
-    },
+    // {
+    //   content: '我叫 JS Siri，是你的 AI 助理',
+    //   role: MessageRole.ai,
+    // },
   ]);
   const [content, setContent] = useState('');
-  const size = 3;
-
+  const speak = useTTSStore((state) => state.speak);
   const getMessageList = useMemo(() => {
     return chatList
       .filter((item) => item.role !== MessageRole.system)
       .map((message) => {
         return (
           <div className={styles.message} key={message.createdAt}>
-            <div className={styles.messageContent}>
-              {message.role && `${message.role} :`} {message.content}
+            <div
+              className={ClassNames({
+                [styles.messageContainer]: true,
+                [styles.systemMessage]: message.role === MessageRole.system,
+                [styles.aiMessage]: message.role === MessageRole.ai,
+                [styles.humanMessage]: message.role === MessageRole.human,
+              })}
+            >
+              <div
+                className={ClassNames({
+                  [styles.messageContent]: true,
+                  [styles.systemContent]: message.role === MessageRole.system,
+                  [styles.aiContent]: message.role === MessageRole.ai,
+                  [styles.humanContent]: message.role === MessageRole.human,
+                })}
+              >
+                {message.content}
+              </div>
+              {/* <div
+                className={ClassNames({
+                  [styles.messageControll]: true,
+                  [styles.systemControll]: message.role === MessageRole.system,
+                  [styles.aiControll]: message.role === MessageRole.ai,
+                  [styles.humanControll]: message.role === MessageRole.human,
+                })}
+              >
+                <Button
+                  icon={<IconMicrophone size='small' />}
+                  className={styles.sendBtn}
+                  onClick={() => speak(message.content as string)}
+                  size='small'
+                  disabled={loading}
+                />
+                <Button
+                  icon={<IconCopy size='small' />}
+                  className={styles.sendBtn}
+                  onClick={() => handleCopy(message.content as string)}
+                  size='small'
+                  disabled={loading}
+                />
+              </div> */}
             </div>
-            <div className={styles.messageTime}>{message.createdAt}</div>
           </div>
         );
       });
-  }, [chatList.length]);
+  }, [chatList.length, loading]);
+
+  const docSearch = async () => {
+    const size = 2;
+    const searchVectorFromDocsFunc = (): Promise<
+      similaritySearchResponseItem[]
+    > => {
+      return new Promise((resolve) => {
+        similaritySearchFromDocs({ content, projectId, size })
+          .then((res) => {
+            resolve(res.data);
+          })
+          .catch(() => {
+            resolve([]);
+          });
+      });
+    };
+
+    const contexts = await searchVectorFromDocsFunc();
+
+    const systemMessages = contexts.map((context) => {
+      return {
+        content: context.pageContent,
+        role: MessageRole.system,
+      };
+    });
+    return systemMessages;
+  };
 
   const sendMessage = async () => {
+    if (loading) return;
+    if (!content) {
+      ToastWaring('请输入内容');
+      return;
+    }
     setLoading(true);
     // prompt
     const humanContent = `${content}`;
@@ -43,14 +121,11 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
       content: humanContent,
       role: MessageRole.human,
     };
-    const contexts = await searchVectorFromDocsFunc();
-    const systemMessages = contexts.map((context) => {
-      return {
-        content: context.pageContent,
-        role: MessageRole.system,
-      };
-    });
-    const messages = [...chatList.slice(1), ...systemMessages, humanMessage];
+    const systemMessages = await docSearch();
+    const chatHistory = [...chatList]
+      .filter((item) => item.role !== MessageRole.system)
+      .slice(-4); // maxContext
+    const messages = [...chatHistory, ...systemMessages, humanMessage];
     chat({ messages, projectId })
       .then((res) => {
         const result = {
@@ -58,11 +133,11 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
           role: MessageRole.ai,
         };
         const svaeMessages = [
-          ...chatList.slice(1),
-          ...systemMessages,
+          ...chatHistory,
           { content: content, role: MessageRole.human },
         ];
-        setChatList([...chatList, ...svaeMessages, result]);
+        setChatList([...svaeMessages, result]);
+        // speech(result.content);
       })
       .finally(() => {
         setContent('');
@@ -70,31 +145,48 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
       });
   };
 
-  const searchVectorFromDocsFunc = (): Promise<
-    similaritySearchResponseItem[]
-  > => {
-    return new Promise((resolve, reject) => {
-      similaritySearchFromDocs({ content, projectId, size })
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch(() => {
-          resolve([]);
-        });
+  const speech = (content: string) => {
+    speak(content, () => {
+      console.log('speak done');
     });
   };
+
+  // const speechToText = () => {
+  //   setIsListening(!isListening);
+  // };
+
+  // useEffect(() => {
+  //   setContent(transcript);
+  // }, [transcript]);
 
   return (
     <div className={styles.chatComponent}>
       <div className={styles.messageList}>{getMessageList}</div>
       <div className={styles.sendContainer}>
-        <Input showClear value={content} onChange={setContent}></Input>
+        <Input
+          showClear
+          value={content}
+          onChange={setContent}
+          className={styles.sendInput}
+          onEnterPress={sendMessage}
+        ></Input>
+        {/* <Button
+          theme='solid'
+          onClick={speechToText}
+          className={styles.sendBtn}
+          size='small'
+          disabled={loading}
+        >
+          <IconMicrophone />
+          {isListening && <>录音中</>}
+        </Button> */}
         <Button
           icon={<IconSend />}
           theme='solid'
-          style={{ marginRight: 10 }}
           onClick={sendMessage}
           loading={loading}
+          className={styles.sendBtn}
+          size='small'
         />
       </div>
     </div>
