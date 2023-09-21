@@ -131,7 +131,7 @@ export class VectorService {
         `,
         filterSql ? filterSql : null,
         Prisma.sql`
-          ORDER BY "_distance" DESC
+          ORDER BY "_distance" ASC
           LIMIT ${k};
         `,
       ].filter((x) => x != null),
@@ -145,7 +145,10 @@ export class VectorService {
         results.push(
           new Document({
             pageContent: article['content'],
-            metadata: article,
+            metadata: {
+              ...article,
+              _distance: 1 - article._distance,
+            },
           })
         );
       }
