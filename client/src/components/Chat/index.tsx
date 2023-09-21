@@ -18,7 +18,7 @@ const Chat: FC<ChatProps> = ({ projectId }) => {
     },
   ]);
   const [content, setContent] = useState('');
-  const size = 2;
+  const size = 3;
 
   const getMessageList = useMemo(() => {
     return chatList

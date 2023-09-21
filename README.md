@@ -1,5 +1,5 @@
 # docs-copilot
-
+[![Deploy](https://github.com/bowling00/docs-copilot/actions/workflows/deploy.yml/badge.svg)](https://github.com/bowling00/docs-copilot/actions/workflows/deploy.yml)
 ## 产品文档
 [PRD](https://bowling00.notion.site/MVP1-0-4d6d9ccfab7c4ac784b3d9bc138d4e32?pvs=4)
 

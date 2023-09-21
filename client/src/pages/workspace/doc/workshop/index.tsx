@@ -80,7 +80,7 @@ const WorkShop = () => {
     const params = {
       message: searchValue,
       docIds: [id],
-      size: 3,
+      size: 10,
     };
     similaritySearch(params)
       .then((res) => {
