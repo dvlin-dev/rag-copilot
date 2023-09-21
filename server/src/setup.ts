@@ -50,40 +50,40 @@ export const setupApp = (app: INestApplication) => {
   );
 
   const isProd = process.env.NODE_ENV === 'production';
-  if (isProd) {
-    app.enableCors({
-      origin: (origin, callback) => {
-        console.info('origin', origin);
-        const WhiteDomainArrays = (config['WHITE_DOMAIN'] as string).split(',');
-        const httpWhiteDomain = WhiteDomainArrays.map(
-          (item) => `https://${item}`
-        );
-        const httpsWhiteDomain = WhiteDomainArrays.map(
-          (item) => `https://${item}`
-        );
+  // if (isProd) {
+  //   app.enableCors({
+  //     origin: (origin, callback) => {
+  //       console.info('origin', origin);
+  //       const WhiteDomainArrays = (config['WHITE_DOMAIN'] as string).split(',');
+  //       const httpWhiteDomain = WhiteDomainArrays.map(
+  //         (item) => `https://${item}`
+  //       );
+  //       const httpsWhiteDomain = WhiteDomainArrays.map(
+  //         (item) => `https://${item}`
+  //       );
 
-        const allowedOrigins = [
-          'https://docs-copilot.devlink.wiki',
-          `https://${config['DB_HOST']}`,
-          `http://${config['DB_HOST']}`,
-          ...httpWhiteDomain,
-          ...httpsWhiteDomain,
-        ];
-        if (!origin) return callback(null, true);
+  //       const allowedOrigins = [
+  //         'https://docs-copilot.devlink.wiki',
+  //         `https://${config['DB_HOST']}`,
+  //         `http://${config['DB_HOST']}`,
+  //         ...httpWhiteDomain,
+  //         ...httpsWhiteDomain,
+  //       ];
+  //       if (!origin) return callback(null, true);
 
-        // 检查 origin 是否在允许的域名列表中
-        if (allowedOrigins.indexOf(origin) === -1) {
-          const msg = `CORS policy: ${origin} is not allowed.`;
-          return callback(new Error(msg), false);
-        }
+  //       // 检查 origin 是否在允许的域名列表中
+  //       if (allowedOrigins.indexOf(origin) === -1) {
+  //         const msg = `CORS policy: ${origin} is not allowed.`;
+  //         return callback(new Error(msg), false);
+  //       }
 
-        return callback(null, true);
-      },
-    });
-    const adminAccountService = app.get(UserService);
-    adminAccountService.createAdminAccount();
-  } else {
-    app.enableCors();
-  }
-  console.info('WHITE_DOMAIN', config['WHITE_DOMAIN']);
+  //       return callback(null, true);
+  //     },
+  //   });
+  //   const adminAccountService = app.get(UserService);
+  //   adminAccountService.createAdminAccount();
+  // } else {
+  //   app.enableCors();
+  // }
+  app.enableCors();
 };
