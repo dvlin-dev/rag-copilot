@@ -24,6 +24,6 @@ export const ProjectSettingConfig: settingConfigType = {
   },
   prompt: {
     title: '提示词',
-    tips: '上下文：{background}。 历史消息：{history}。 问题：{input} ',
+    tips: '修改或者删除下面三个参数：background、history、input，会导致对应的功能缺失。',
   },
 };

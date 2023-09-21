@@ -22,7 +22,7 @@ model Project {
 
 model ProjectDetail {
   id        String   @id @default(uuid())
-  prompt    String?
+  prompt    String?  @default("上下文：{background}。 历史消息：{history}。 问题：{input}。有效的答案：")
   questions String[]
   whiteList String[]
   ipLimit   Int?
@@ -102,7 +102,7 @@ model UserProfile {
   description String?
   githubLogin String?
   githubName  String?
-  lastLoginAt           DateTime @default(now())
+  lastLoginAt DateTime          @default(now())
   userId      String            @unique
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
