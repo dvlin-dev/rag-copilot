@@ -27,6 +27,11 @@ export default function Footer() {
         <div className={styles.group}>
           <div className={styles.groupHeader}>产品</div>
           <div className={styles.groupItem}>
+            <HoverLink href='https://github.com/bowling00/assistant'>
+              assistant
+            </HoverLink>
+          </div>
+          <div className={styles.groupItem}>
             <HoverLink href='https://github.com/bowling00/docs-copilot'>
               docs-copilot
             </HoverLink>
