@@ -20,7 +20,7 @@ jobs:
           node-version: '18.16.1'
 
       - name: install dependencies
-        run: npm install -g pnpm && cd server && pnpm install
+        run: npm install -g pnpm && cd server && pnpm install --no-frozen-lockfile
 
       - name: build
         run: ls && cd server && pnpm run build
