@@ -105,7 +105,7 @@ export class ConversationService {
     const keyConfiguration = getKeyConfigurationFromEnvironment(
       this.configService
     );
-    const model = await getModel(keyConfiguration, 'openAi');
+    const model = await getModel(keyConfiguration);
 
     const prompt = PromptTemplate.fromTemplate(message);
 
