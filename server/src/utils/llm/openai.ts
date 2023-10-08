@@ -7,7 +7,7 @@ type GetModelType = 'openAi' | 'chatOpenAi';
 
 export const getModel = async (
   keyConfiguration: KeyConfiguration,
-  tpye: GetModelType = 'openAi'
+  type: GetModelType = 'openAi'
 ) => {
   const {
     apiType,
@@ -22,6 +22,7 @@ export const getModel = async (
 
   const commonConfig = {
     temperature: 0,
+    maxTokens: 400
     // streaming: true,
   };
 
@@ -51,7 +52,7 @@ export const getModel = async (
     }
   };
 
-  return tpye === 'chatOpenAi'
+  return type === 'chatOpenAi'
     ? new ChatOpenAI(getConfiguration(apiType), { basePath })
     : new OpenAI(getConfiguration(apiType), { basePath });
 };
