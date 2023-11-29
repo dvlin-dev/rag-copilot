@@ -7,7 +7,6 @@ import { LLMChain } from 'langchain/chains';
 import { ChatDto, CompletionsDto } from './dto/chat.dto';
 import { PromptTemplate } from 'langchain/prompts';
 import { ConfigService } from '@nestjs/config';
-import fetch from 'node-fetch'
 
 @Injectable()
 export class ConversationService {
@@ -113,17 +112,6 @@ export class ConversationService {
     const chain = new LLMChain({ llm: model, prompt });
     const { text } = await chain.call({});
     return text;
-  }
-
-  async googleSearch(completionsDto: CompletionsDto) {
-    const { message } = completionsDto;
-    const GOOGLE_API_KEY = this.configService.get('GOOGLE_API_KEY');
-    const GOOGLE_SEARCH_ENGINE_ID = this.configService.get('GOOGLE_SEARCH_ENGINE_ID');
-    const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_ENGINE_ID}&q=${encodeURIComponent(message)}`
-    const response = await fetch(url);
-
-    const data = await response.json();
-    return data;
   }
 
   async getProjectPrompt(projectId: string) {

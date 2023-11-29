@@ -79,13 +79,6 @@ export class ConversationController {
     return this.conversationService.completions(completionsDto);
   }
 
-  @ApiOperation({ summary: 'google-search' })
-  @ApiResponse({ status: 200, description: '成功获取' })
-  @Post('/google-search')
-  async googleSearch(@Body() completionsDto: CompletionsDto) {
-    return this.conversationService.googleSearch(completionsDto);
-  }
-
   @ApiOperation({ summary: '查询' })
   @ApiResponse({ status: 200, description: '成功获取' })
   @Get(':id/search')
